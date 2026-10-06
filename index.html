@@ -282,6 +282,18 @@
   .hist-head .v{ font-family:'Staatliches',sans-serif; font-size:22px; }
   .hist-ev{ display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:5px 0 0 52px; color:var(--sand-dim); }
   .hist-ev span:last-child{ font-weight:700; color:var(--sand); }
+
+  .wl-row{ display:flex; align-items:center; gap:10px; padding:8px 4px; border-bottom:1px solid var(--line); }
+  .wl-row:last-of-type{ border-bottom:none; }
+  .wl-n{ width:22px; text-align:center; font-family:'Staatliches',sans-serif; font-size:18px; color:var(--sand-dim); flex:none; }
+  .wl-t{ flex:1; min-width:0; }
+  .wl-t .t{ font-weight:700; font-size:14.5px; }
+  .wl-t .sub{ font-size:12px; color:var(--sand-dim); }
+  .wl-ctl{ display:flex; gap:2px; flex:none; }
+  .wl-ctl .iconbtn{ font-size:14px; padding:6px 8px; }
+  .wl-row.gray{ opacity:0.5; }
+  .wl-row.gray .thumb{ filter:grayscale(1); }
+  .wl-row.gray .t{ text-decoration:line-through; }
   .rubric-row{ display:grid; grid-template-columns:1fr 72px 32px; gap:8px; align-items:center; margin-bottom:8px; }
 </style>
 </head>
@@ -354,7 +366,7 @@ let myId = null;
 try { myId = localStorage.getItem("tt_member"); } catch (e) { myId = null; }
 const ui = {
   tab: "standings", watching: false, shuffleOnStart: true, scoringWeek: null, bonusWeek: null,
-  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null
+  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null, wlAdd: false
 };
 let toastTimer = null;
 
@@ -484,19 +496,66 @@ function onErr(e) {
 }
 onSnapshot(cfgRef, (s) => { config = s.exists() ? s.data() : null; loaded.config = true; maybeSeed(); render(true); }, onErr);
 onSnapshot(collection(db, "members"), (qs) => { members = {}; qs.forEach((d) => (members[d.id] = d.data())); loaded.members = true; render(true); }, onErr);
-onSnapshot(collection(db, "survivors"), (qs) => { survivors = {}; qs.forEach((d) => (survivors[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.survivors = true; render(true); }, onErr);
+onSnapshot(collection(db, "survivors"), (qs) => { survivors = {}; qs.forEach((d) => (survivors[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.survivors = true; maybeSeed(); render(true); }, onErr);
 onSnapshot(collection(db, "weeks"), (qs) => { weeks = {}; qs.forEach((d) => (weeks[d.id] = d.data())); loaded.weeks = true; render(true); }, onErr);
 onSnapshot(collection(db, "bonus"), (qs) => { bonus = {}; qs.forEach((d) => (bonus[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.bonus = true; render(true); }, onErr);
 
 async function maybeSeed() {
-  if (seeding || !loaded.config || config) return;
+  // Only ever runs on a brand-new, empty project. Existing data is never overwritten.
+  if (seeding || !loaded.config || !loaded.survivors || config) return;
   seeding = true;
   try {
     const batch = writeBatch(db);
     batch.set(cfgRef, { leagueName: "Torch & Tribe", currentWeek: 3, rubric: DEFAULT_RUBRIC, seeded: true });
-    DEFAULT_CAST.forEach(([name, age, job]) => batch.set(doc(db, "survivors", slug(name)), { name, age, job, eliminated: false }));
+    if (!Object.keys(survivors).length) DEFAULT_CAST.forEach(([name, age, job]) => batch.set(doc(db, "survivors", slug(name)), { name, age, job, eliminated: false }));
     await batch.commit();
   } catch (e) { onErr(e); }
+}
+
+
+/* ---------------- wishlist + auto-pick ---------------- */
+const wishlistOf = (id) => (members[id] && Array.isArray(members[id].wishlist) ? members[id].wishlist : []);
+const takenMap = (d) => { const t = {}; (d.feed || []).forEach((f) => (t[f.survivorId] = f.memberId)); return t; };
+function topAvailable(memberId, d) {
+  const taken = takenMap(d);
+  return wishlistOf(memberId).find((sid) => survivors[sid] && !survivors[sid].eliminated && !taken[sid]) || null;
+}
+const autoTried = new Set();
+function maybeAutoPick() {
+  if (!Object.values(loaded).every(Boolean)) return;
+  const wk = cfg().currentWeek, d = draftOf(wk);
+  if (d.status !== "in_progress") return;
+  const picker = currentPickerId(d);
+  if (!picker || !members[picker] || !members[picker].autopick) return;
+  const own = picker === myId, byAdmin = isAdmin();
+  if (!own && !byAdmin) return;
+  const key = wk + ":" + d.feed.length + ":" + picker;
+  if (autoTried.has(key)) return;
+  autoTried.add(key);
+  setTimeout(() => {
+    const d2 = draftOf(cfg().currentWeek);
+    if (d2.status !== "in_progress" || d2.feed.length !== d.feed.length) return;
+    pickFromWishlist(picker, true);
+  }, own ? 1500 : 2600);
+}
+function pickFromWishlist(memberId, silent) {
+  const sid = topAvailable(memberId, draftOf(cfg().currentWeek));
+  if (!sid) { if (!silent) toast("Nobody left on that wishlist — pick manually."); return; }
+  return makePick(sid, { expect: memberId, silent });
+}
+function saveWishlist(list) {
+  if (!me()) return toast("Sign in first.");
+  return guard(() => updateDoc(doc(db, "members", myId), { wishlist: list }));
+}
+function downloadBackup() {
+  if (!needAdmin()) return;
+  const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), config, members, survivors, weeks, bonus }, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "torch-and-tribe-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast("Backup downloaded ✓");
 }
 
 /* ---------------- actions ---------------- */
@@ -537,13 +596,15 @@ function startDraft() {
   if (draftOf(n).status !== "not_started") return toast("This week's draft already started.");
   return guard(() => setDoc(weekRef(n), { draft: { status: "in_progress", order: ui.shuffleOnStart ? shuffle(ids) : ids, round: 1, turnIndex: 0, picksPerMember: 5, feed: [] } }, { merge: true }));
 }
-function makePick(sid) {
+function makePick(sid, opts) {
+  opts = opts || {};
   const n = cfg().currentWeek;
-  return guard(() => runTransaction(db, async (tx) => {
+  const run = () => runTransaction(db, async (tx) => {
     const snap = await tx.get(weekRef(n));
     const data = snap.exists() ? snap.data() : null;
     if (!data || !data.draft || data.draft.status !== "in_progress") throw new Error("The draft isn't running.");
     const d = data.draft, picker = currentPickerId(d);
+    if (opts.expect && picker !== opts.expect) { if (opts.silent) return; throw new Error("The turn already moved on."); }
     if (picker !== myId && !isAdmin()) throw new Error("It's not your turn yet.");
     if (d.feed.some((f) => f.survivorId === sid)) throw new Error("Someone already drafted them this week.");
     const s = survivors[sid];
@@ -551,7 +612,9 @@ function makePick(sid) {
     const nd = Object.assign({}, d, { feed: d.feed.concat([{ memberId: picker, survivorId: sid, ts: Date.now() }]) });
     advanceDraft(nd);
     tx.update(weekRef(n), { draft: nd });
-  }), "Couldn't save the pick — try again.");
+  });
+  if (opts.silent) return run().catch((e) => console.warn("auto-pick skipped:", e && e.message));
+  return guard(run, "Couldn't save the pick — try again.");
 }
 function undoPick() {
   if (!needAdmin()) return;
@@ -614,6 +677,7 @@ function render(keep) {
   }
   document.querySelectorAll(".feed").forEach((el) => (el.scrollTop = el.scrollHeight));
   const dd = draftOf(cfg().currentWeek);
+  if (ready) maybeAutoPick();
   document.title = (ready && me() && dd.status === "in_progress" && currentPickerId(dd) === myId) ? "🔥 Your pick! · " + cfg().leagueName : cfg().leagueName;
 }
 
@@ -677,6 +741,30 @@ function renderStandings() {
   return out;
 }
 
+function renderWishlist(d) {
+  const m = me();
+  if (!m) return "";
+  const wl = wishlistOf(myId), taken = takenMap(d);
+  let firstAvail = null;
+  let out = '<div class="card"><div class="btw" style="margin-bottom:6px;"><div><div class="eyebrow">⭐ MY WISHLIST</div><div class="hero-sub">Rank who you want. They go gray as soon as someone drafts them.</div></div><button class="btn sm ' + (ui.wlAdd ? "primary" : "ghost") + '" data-act="wl-toggle-add">' + (ui.wlAdd ? "Done" : "+ Add castaways") + "</button></div>";
+  out += '<label class="row" style="margin:8px 0 10px;font-size:13.5px;cursor:pointer;"><input type="checkbox" data-act="wl-autopick" ' + (m.autopick ? "checked" : "") + ' style="width:auto;"> <span><b>⚡ Auto-pick for me</b> — drafts my top available player when it\'s my turn</span></label>';
+  if (!wl.length) out += '<div class="feed-empty">Nothing here yet — tap "+ Add castaways" and add your favorites in order of preference.</div>';
+  wl.forEach((sid, i) => {
+    const s = survivors[sid]; if (!s) return;
+    const by = taken[sid], gray = !!by || s.eliminated;
+    if (!gray && firstAvail === null) firstAvail = sid;
+    const sub = by ? "Drafted by " + (members[by] ? members[by].name : "someone") : s.eliminated ? "Eliminated" : (s.age ? s.age + " · " : "") + (s.job || "");
+    out += '<div class="wl-row' + (gray ? " gray" : "") + '"><span class="wl-n">' + (i + 1) + "</span>" + thumb(s, 38) + '<div class="wl-t"><div class="t">' + esc(s.name) + (firstAvail === sid ? ' <span class="correct-badge">next up</span>' : "") + '</div><div class="sub">' + esc(sub) + '</div></div><div class="wl-ctl"><button class="iconbtn" title="Move up" data-act="wl-up" data-id="' + sid + '">▲</button><button class="iconbtn" title="Move down" data-act="wl-down" data-id="' + sid + '">▼</button><button class="iconbtn" title="Remove" data-act="wl-remove" data-id="' + sid + '">✕</button></div></div>';
+  });
+  if (wl.length && firstAvail === null && d.status !== "complete") out += '<div class="banner" style="margin-top:10px;">Everyone on your wishlist is taken or out — add a few more so auto-pick has someone to grab.</div>';
+  if (ui.wlAdd) {
+    const inList = new Set(wl);
+    const pool = orderedCast().filter((s) => !s.eliminated && !inList.has(s.id));
+    out += '<div style="margin-top:12px;"><div class="field">Tap to add to the bottom of your list:</div>' + (pool.length ? '<div class="survivor-grid">' + pool.map((s) => '<button class="survivor-btn" data-act="wl-add" data-id="' + s.id + '">' + thumb(s, 40) + "<b>" + esc(s.name) + "</b>" + (taken[s.id] ? "<small>taken this week</small>" : "") + "</button>").join("") + "</div>" : '<div class="feed-empty">Everyone is already on your list.</div>') + "</div>";
+  }
+  return out + "</div>";
+}
+
 function renderDraft() {
   const wk = cfg().currentWeek, d = draftOf(wk), A = isAdmin();
   let out = "";
@@ -700,7 +788,7 @@ function renderDraft() {
     out += '<div class="check-chip" style="background:rgba(186,210,232,0.5);border-color:#BAD2E8;"><div style="flex:1;"><div class="lbl">Next up</div><div class="val">' + esc(pickerName) + "</div></div>" +
       (ph ? '<a class="btn primary sm" href="' + esc(smsLink(picker, "🔥 " + pickerName + ", you're on the clock in " + cfg().leagueName + "! Round " + d.round + " — make your pick: " + location.origin + location.pathname)) + '">📱 Text ' + esc(pickerName.split(" ")[0]) + "</a>" : '<button class="btn sm" data-act="set-phone" data-id="' + picker + '">Add their number to text them</button>') + "</div>";
   }
-  out += "</div><div class=\"card\">";
+  out += "</div>" + renderWishlist(d) + "<div class=\"card\">";
   if (d.status === "not_started") {
     if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> Shuffle order</label><button class="btn primary" data-act="start-draft">Start the draft</button></div>';
     else out += '<div class="feed-empty">The commissioner starts the draft from this screen.</div>';
@@ -715,6 +803,9 @@ function renderDraft() {
       if (picker === myId || A) {
         const avail = survivorList().filter((s) => !s.eliminated && !drafted.has(s.id));
         out += '<div class="btw" style="margin-bottom:8px;"><div style="font-size:13px;color:var(--sand-dim);">' + (picker === myId ? "Tap your pick:" : "Picking for " + esc(pickerName) + ":") + "</div>" + (A && d.feed.length ? '<button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button>' : "") + "</div>";
+        { const qp = topAvailable(picker, d);
+          if (picker === myId && qp) out += '<div style="margin-bottom:12px;"><button class="btn primary" data-act="wl-pick">⚡ Draft my top wishlist pick: ' + esc(survivors[qp].name) + "</button></div>";
+          else if (A && picker !== myId && qp) out += '<div style="margin-bottom:12px;"><button class="btn primary sm" data-act="wl-pick-for" data-id="' + picker + '">⚡ Pick from ' + esc(pickerName.split(" ")[0]) + "'s wishlist</button></div>"; }
         out += avail.length ? '<div class="survivor-grid">' + avail.map((s) => '<button class="survivor-btn" data-act="draft-pick" data-survivor="' + s.id + '">' + thumb(s, 54) + "<b>" + esc(s.name) + "</b><small>" + esc((s.age ? s.age + " · " : "") + (s.job || "")) + "</small></button>").join("") + "</div>" : '<div class="feed-empty">No eligible survivors left this week.</div>';
       } else out += '<div class="feed-empty">Sit tight — you\'ll get a turn.</div>';
     } else if (A) {
@@ -863,6 +954,7 @@ function renderSetup() {
 
   out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">League roster</h3>' + (memberList().length ? '<div class="list-wrap">' + memberList().map((x) => '<span class="chip"><span class="dot" style="background:' + x.color + '"></span>' + esc(x.name) + (x.id === myId ? " (you)" : "") + (A ? ' <button class="iconbtn" title="' + (phones()[x.id] ? "Number saved — tap to change" : "Add phone number (this device only)") + '" data-act="set-phone" data-id="' + x.id + '">' + (phones()[x.id] ? "📱" : "☎️") + '</button><button class="iconbtn" title="Reset PIN" data-act="reset-pin" data-id="' + x.id + '">🔑</button><button class="iconbtn" title="Remove" data-act="remove-member" data-id="' + x.id + '">✕</button>' : "") + "</span>").join("") + "</div>" + (A ? '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">☎️ phone numbers are only stored on this device, for the draft text button. 🔑 resets someone\'s PIN if they forget it.</div>' : "") : '<div class="empty">No one yet — share the link!</div>') + "</div>";
 
+  if (A) out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Backup</h3><div class="hero-sub" style="margin-bottom:10px;">Downloads a copy of everything — members, picks, scores, bonus answers, photos. Handy before big changes or once a week. Keep the file private.</div><button class="btn sm" data-act="backup">⬇ Download backup</button></div>';
   out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">Survivor cast</h3>';
   if (A) {
     out += '<div class="hero-sub" style="margin-bottom:6px;">Add a headshot for each castaway — it gets cropped and resized automatically.</div>' + survivorList().map((s) => '<div class="list-row"><div style="display:flex;align-items:center;gap:10px;">' + thumb(s, 40) + '<div><div class="t">' + esc(s.name) + '</div><div class="sub">' + esc((s.age ? s.age + " · " : "") + (s.job || "")) + '</div></div></div><div class="row" style="gap:6px;"><button class="btn sm" data-act="photo-pick" data-id="' + s.id + '">' + (s.photo ? "Change photo" : "Add photo") + "</button>" + (s.photo ? '<button class="btn sm ghost" data-act="photo-remove" data-id="' + s.id + '">Remove</button>' : "") + '<button class="iconbtn" data-act="remove-survivor" data-id="' + s.id + '">✕</button></div></div>').join("");
@@ -907,6 +999,14 @@ document.addEventListener("click", async (e) => {
     case "reset-pin": if (!needAdmin()) return; if (!confirm("Reset " + (members[id] ? members[id].name : "this person") + "'s PIN? They'll choose a new one next time they sign in.")) return; return guard(() => updateDoc(doc(db, "members", id), { pinHash: "" }));
     case "remove-member": if (!needAdmin()) return; if (!confirm("Remove " + (members[id] ? members[id].name : "this person") + " from the league?")) return; return guard(() => deleteDoc(doc(db, "members", id)));
     case "remove-survivor": if (!needAdmin()) return; if (!confirm("Remove " + (survivors[id] ? survivors[id].name : "this castaway") + " from the cast?")) return; return guard(() => deleteDoc(doc(db, "survivors", id)));
+    case "backup": return downloadBackup();
+    case "wl-toggle-add": ui.wlAdd = !ui.wlAdd; return render();
+    case "wl-add": { if (!me()) return toast("Sign in first."); const wl = wishlistOf(myId); if (wl.includes(id)) return; return saveWishlist(wl.concat([id])); }
+    case "wl-remove": return saveWishlist(wishlistOf(myId).filter((x) => x !== id));
+    case "wl-up": case "wl-down": { const wl = wishlistOf(myId).slice(), i = wl.indexOf(id), j = act === "wl-up" ? i - 1 : i + 1; if (i < 0 || j < 0 || j >= wl.length) return; [wl[i], wl[j]] = [wl[j], wl[i]]; return saveWishlist(wl); }
+    case "wl-autopick": if (!needMe()) return; return guard(() => updateDoc(doc(db, "members", myId), { autopick: !me().autopick }));
+    case "wl-pick": if (!needMe()) return; return pickFromWishlist(myId, false);
+    case "wl-pick-for": if (!needAdmin()) return; return pickFromWishlist(id, false);
     case "photo-pick": { if (!needAdmin()) return; ui.photoFor = id; const f = $("photo-file"); f.value = ""; return f.click(); }
     case "photo-remove": if (!needAdmin()) return; return guard(() => updateDoc(doc(db, "survivors", id), { photo: "" }));
     case "add-survivor": { const n = val("new-surv-name").trim(); if (!n) return; return addSurvivors([n + "|" + val("new-surv-age") + "|" + val("new-surv-job")]); }
