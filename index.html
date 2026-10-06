@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Torch &amp; Tribe">
+<meta name="theme-color" content="#F6F3CF">
+<title>Torch &amp; Tribe</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Warm daylight palette: cream base, sunset-orange torch, sage jungle, sky-blue lagoon */
+    --ink:#F6F3CF;
+    --panel:#FFFEF6;
+    --panel-2:#FBF8DC;
+    --panel-3:#FBD2D3;
+    --line: rgba(139,22,43,0.12);
+    --line-strong: rgba(139,22,43,0.20);
+    --sand:#8B162B;
+    --sand-dim: rgba(139,22,43,0.86);
+    --sand-faint: rgba(139,22,43,0.70);
+    --torch:#F37521;
+    --torch-light:#F9A15E;
+    --torch-text:#B3470B;
+    --torch-ink:#4A0A17;
+    --teal:#C6B63B;
+    --teal-light:#8B162B;
+    --rope:#F9B6B8;
+    --danger:#8B162B;
+    --danger-light:#8B162B;
+    --shadow: rgba(139,22,43,0.16);
+
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+    --r-lg:24px; --r-md:16px; --r-sm:12px;
+  }
+  :root[data-theme="dark"]{ }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(1000px 620px at 8% -8%, rgba(243,117,33,0.16), transparent 55%),
+      radial-gradient(900px 640px at 100% 0%, rgba(249,182,184,0.40), transparent 55%),
+      radial-gradient(800px 700px at 50% 110%, rgba(186,210,232,0.50), transparent 60%),
+      var(--ink);
+    color:var(--sand);
+    font-family:'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  h1,h2,h3,.display{ font-family:'Staatliches', 'Work Sans', sans-serif; letter-spacing:0.015em; font-weight:400; }
+  ::selection{ background:var(--torch); color:var(--torch-ink); }
+  a{ color:var(--torch-text); }
+  :focus-visible{ outline:2px solid var(--torch-text); outline-offset:2px; border-radius:6px; }
+
+  .shell{ display:flex; min-height:100%; max-width:1180px; margin:0 auto; }
+  .rail{
+    width:222px; flex:none; padding:var(--sp-5) var(--sp-3); display:flex; flex-direction:column; gap:2px;
+    border-right:1px solid var(--line);
+    position:sticky; top:0; height:100vh;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; padding:6px 10px var(--sp-5); }
+  .brand .flame{ font-size:25px; filter:drop-shadow(0 0 9px rgba(243,117,33,0.55)); }
+  .brand .name{ font-size:21px; line-height:1.1; }
+  .brand .sub{ font-size:11px; color:var(--sand-dim); margin-top:3px; }
+
+  .navbtn{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:var(--r-sm);
+    color:var(--sand-dim); cursor:pointer; border:1px solid transparent; background:none;
+    font-size:14.5px; text-align:left; width:100%; font-family:inherit; transition:background .12s ease, color .12s ease;
+  }
+  .navbtn .ic{ font-size:16px; width:20px; text-align:center; }
+  .navbtn:hover{ background:rgba(139,22,43,0.05); color:var(--sand); }
+  .navbtn.active{ background:var(--panel-3); border-color:var(--line-strong); color:var(--sand); font-weight:600; box-shadow:inset 3px 0 0 var(--torch); }
+  .navfoot{ margin-top:auto; padding:var(--sp-3); font-size:11px; color:var(--sand-faint); line-height:1.5; border-top:1px solid var(--line); }
+
+  .content{ flex:1; min-width:0; padding:var(--sp-6) 30px 90px; }
+  .pagehead{ margin-bottom:var(--sp-5); }
+  .pagehead h2{ font-size:32px; margin:0 0 3px; }
+  .pagehead .meta{ color:var(--sand-dim); font-size:14px; }
+
+  .greet{ margin-bottom:var(--sp-4); }
+  .greet h2{ font-size:30px; margin:0 0 2px; }
+  .greet .meta{ color:var(--sand-dim); font-size:14px; }
+
+  select.pill-select{ border-radius:999px; padding:10px 18px; font-weight:600; }
+
+  .eyebrow{ font-size:11.5px; font-weight:800; letter-spacing:0.06em; color:var(--torch-text); text-transform:uppercase; }
+  .hero-headline{ font-family:'Staatliches'; font-size:28px; margin:6px 0 2px; line-height:1.05; }
+  .hero-sub{ font-size:14px; color:var(--sand-dim); }
+
+  .progress-track{ height:8px; border-radius:999px; background:rgba(139,22,43,0.08); overflow:hidden; margin:14px 0 0; }
+  .progress-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg, var(--torch-light), var(--torch)); transition:width .3s ease; }
+
+  .check-chip{ display:flex; align-items:center; gap:12px; padding:13px 15px; border-radius:var(--r-md); background:rgba(198,182,59,0.20); border:1px solid rgba(198,182,59,0.60); margin-top:14px; }
+  .check-chip .tick{ width:24px; height:24px; border-radius:50%; background:var(--teal); color:#8B162B; display:flex; align-items:center; justify-content:center; font-size:13px; flex:none; }
+  .check-chip .lbl{ font-size:10.5px; font-weight:800; letter-spacing:0.05em; color:var(--sand-faint); text-transform:uppercase; }
+  .check-chip .val{ font-size:15.5px; font-weight:700; }
+
+  .statrow{ display:flex; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); padding:18px 8px; box-shadow:0 8px 22px var(--shadow); margin-bottom:var(--sp-4); }
+  .statrow .col{ flex:1; text-align:center; padding:0 4px; }
+  .statrow .col + .col{ border-left:1px solid var(--line); }
+  .statrow .n{ font-family:'Staatliches'; font-size:28px; line-height:1; }
+  .statrow .n.accent{ color:var(--teal-light); }
+  .statrow .l{ font-size:11px; color:var(--sand-dim); margin-top:4px; font-weight:600; }
+
+  .minirow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .minibox{ background:rgba(139,22,43,0.04); border:1px solid var(--line); border-radius:var(--r-sm); padding:7px 13px; text-align:center; min-width:58px; }
+  .minibox .n{ font-family:'Staatliches'; font-size:17px; }
+  .minibox .l{ font-size:10px; color:var(--sand-faint); margin-top:1px; }
+
+  .cast-scroll{ display:flex; gap:12px; overflow-x:auto; padding:2px 2px 6px; }
+  .cast-card{ flex:none; width:82px; text-align:center; }
+  .cast-avatar{ width:82px; height:82px; border-radius:var(--r-md); background:linear-gradient(160deg,#F9B6B8,#F37521); display:flex; align-items:center; justify-content:center; font-family:'Staatliches'; font-size:22px; color:#4A0A17; margin-bottom:6px; }
+  .cast-avatar.out{ opacity:0.4; filter:grayscale(65%); }
+  .cast-name{ font-size:12px; font-weight:700; line-height:1.2; }
+  .cast-sub{ font-size:10px; color:var(--sand-faint); }
+
+  .list-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:13px 2px; border-bottom:1px solid var(--line); }
+  .list-row:last-child{ border-bottom:none; }
+  .list-row .t{ font-weight:600; font-size:14.5px; }
+  .list-row .sub{ font-size:12px; color:var(--sand-faint); margin-top:2px; }
+  .list-row .v{ font-weight:700; font-size:14.5px; white-space:nowrap; }
+
+  .sticker{ display:inline-flex; align-items:center; gap:5px; padding:4px 11px; border-radius:999px; font-weight:800; font-size:12.5px; transform:rotate(-3deg); box-shadow:2px 3px 0 rgba(74,10,23,0.30); border:1.5px solid rgba(74,10,23,0.35); background:linear-gradient(135deg, var(--torch-light), var(--torch)); color:var(--torch-ink); }
+
+
+  .card{
+    background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:var(--r-lg); padding:var(--sp-5);
+    box-shadow:0 8px 22px var(--shadow);
+  }
+  .card + .card{ margin-top:var(--sp-4); }
+  .grid{ display:grid; gap:var(--sp-3); }
+  .row{ display:flex; align-items:center; gap:var(--sp-3); flex-wrap:wrap; }
+  .btw{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); flex-wrap:wrap; }
+
+  button{ font-family:inherit; cursor:pointer; }
+  .btn{
+    padding:10px 16px; border-radius:var(--r-sm); border:1px solid var(--line-strong); background:rgba(139,22,43,0.05);
+    color:var(--sand); font-size:14px; font-weight:600; transition:background .12s ease, transform .08s ease, border-color .12s ease;
+  }
+  .btn:hover{ background:rgba(139,22,43,0.09); border-color:var(--line-strong); }
+  .btn:active{ transform:scale(0.97); }
+  .btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .btn.primary{ background:linear-gradient(135deg, var(--torch-light), var(--torch)); border-color:transparent; color:var(--torch-ink); font-weight:800; border-radius:999px; padding:11px 22px; }
+  .btn.primary:hover{ background:linear-gradient(135deg, #FBB27A, var(--torch-light)); }
+  .btn.ghost{ background:none; border-color:var(--line); }
+  .btn.danger{ border-color:rgba(139,22,43,0.45); color:var(--danger-light); }
+  .btn.sm{ padding:6px 11px; font-size:12.5px; border-radius:8px; }
+  .iconbtn{ background:none; border:none; color:var(--sand-faint); font-size:15px; padding:2px 6px; }
+  .iconbtn:hover{ color:var(--danger-light); }
+
+  input[type=text], input[type=number], select, textarea{
+    background:rgba(255,254,246,0.85); border:1px solid var(--line-strong); color:var(--sand);
+    border-radius:var(--r-sm); padding:9px 11px; font-size:14px; font-family:inherit; width:100%;
+  }
+  input:focus, select:focus{ border-color:var(--torch); }
+  input::placeholder{ color:var(--sand-faint); }
+  label.field{ display:block; font-size:12px; color:var(--sand-dim); margin-bottom:5px; }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:7px; padding:6px 11px 6px 8px; border-radius:999px;
+    background:rgba(139,22,43,0.06); border:1px solid var(--line); font-size:13.5px;
+  }
+  .dot{ width:10px; height:10px; border-radius:50%; flex:none; }
+  .chip.eliminated{ opacity:0.5; text-decoration:line-through; }
+
+  .empty{ text-align:center; padding:44px 20px; color:var(--sand-dim); }
+  .empty .big{ font-size:38px; margin-bottom:10px; opacity:0.9; }
+
+  /* Standings */
+  .lb-row{ display:flex; align-items:center; gap:14px; padding:13px 4px; border-bottom:1px solid var(--line); }
+  .lb-row:last-child{ border-bottom:none; }
+  .lb-rank{ font-family:'Staatliches'; font-size:20px; width:30px; color:var(--sand-dim); text-align:center; }
+  .lb-row.first .lb-rank{ font-size:22px; }
+  .lb-avatar{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--torch-ink); flex:none; }
+  .lb-name{ font-weight:600; font-size:15.5px; }
+  .lb-total{ margin-left:auto; font-family:'Staatliches'; font-size:25px; color:var(--torch-text); }
+  details.weekly summary{ cursor:pointer; color:var(--sand-faint); font-size:12.5px; margin-top:3px; list-style:none; }
+  details.weekly summary::-webkit-details-marker{ display:none; }
+  details.weekly[open] summary{ color:var(--sand-dim); }
+
+
+  /* Draft */
+  .order-track{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:var(--sp-4); }
+  .order-chip{ position:relative; padding:8px 14px; border-radius:999px; font-size:13.5px; font-weight:600; border:1px solid var(--line); background:rgba(139,22,43,0.04); display:inline-flex; align-items:center; gap:6px; }
+  .order-chip .qn{ font-size:11px; color:var(--sand-faint); }
+  .order-chip.active{ background:linear-gradient(135deg, var(--torch-light), var(--torch)); color:var(--torch-ink); border-color:transparent; box-shadow:0 0 0 3px rgba(243,117,33,0.20), 0 0 16px rgba(243,117,33,0.40); animation:pulse 1.8s ease-in-out infinite; }
+  .order-chip.active .qn{ color:var(--torch-ink); opacity:0.65; }
+  @keyframes pulse{ 0%,100%{ box-shadow:0 0 0 3px rgba(243,117,33,0.20), 0 0 12px rgba(243,117,33,0.30); } 50%{ box-shadow:0 0 0 5px rgba(243,117,33,0.10), 0 0 20px rgba(243,117,33,0.50); } }
+  .roundline{ font-size:15px; color:var(--sand-dim); margin-bottom:var(--sp-4); }
+  .roundline b{ color:var(--sand); }
+  .feed{ max-height:290px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding-right:4px; margin-bottom:var(--sp-4); }
+  .feed-msg{ display:flex; align-items:flex-start; gap:9px; padding:8px 12px 8px 8px; border-radius:var(--r-md); background:rgba(139,22,43,0.04); font-size:14px; }
+  .feed-msg .fav{ width:24px; height:24px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; color:var(--torch-ink); margin-top:1px; }
+  .feed-msg .txt{ flex:1; }
+  .feed-msg b{ color:var(--sand); }
+  .feed-msg .ts{ float:right; font-size:11px; color:var(--sand-faint); }
+  .feed-empty{ color:var(--sand-faint); font-size:13.5px; padding:10px 2px; }
+  .survivor-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:10px; }
+  .survivor-btn{ padding:12px 10px; border-radius:var(--r-md); border:1px solid var(--line-strong); background:rgba(139,22,43,0.03); font-size:14px; font-weight:600; color:var(--sand); text-align:center; }
+  .survivor-btn:hover:not(:disabled){ border-color:var(--torch); background:rgba(243,117,33,0.10); }
+  .survivor-btn:disabled{ opacity:0.32; cursor:not-allowed; }
+  .team-card{ border-radius:var(--r-md); padding:12px 14px; border:1px solid var(--line); background:rgba(139,22,43,0.03); border-top:3px solid var(--line-strong); }
+  .team-card h4{ margin:0 0 8px; font-size:15px; font-weight:700; font-family:'Work Sans'; display:flex; align-items:center; gap:7px; }
+  .team-card ul{ margin:0; padding-left:18px; font-size:13.5px; color:var(--sand-dim); }
+
+  /* Bonus */
+  .bonus-card{ border:1px solid var(--line); border-radius:var(--r-md); padding:14px 16px; background:rgba(139,22,43,0.025); }
+  .bonus-card + .bonus-card{ margin-top:var(--sp-3); }
+  .bonus-type{ font-size:12px; padding:3px 9px; border-radius:999px; background:rgba(186,210,232,0.75); color:var(--teal-light); }
+  .bonus-day{ font-size:12px; color:var(--sand-dim); }
+  .bonus-title{ font-size:16px; font-weight:700; margin:6px 0 2px; }
+  .bonus-prompt{ font-size:13.5px; color:var(--sand-dim); margin-bottom:10px; }
+  .resp-grid{ display:grid; grid-template-columns:1fr auto; gap:8px 10px; align-items:center; font-size:13.5px; }
+  .resolve-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .correct-badge{ font-size:12px; padding:3px 9px; border-radius:999px; background:rgba(243,117,33,0.20); color:var(--torch-text); }
+
+  /* Setup */
+  .list-wrap{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .stepper{ display:flex; align-items:center; gap:var(--sp-3); }
+  .stepper .num{ font-family:'Staatliches'; font-size:28px; min-width:38px; text-align:center; }
+
+  .banner{ padding:10px 14px; border-radius:var(--r-sm); background:rgba(243,117,33,0.12); border:1px solid rgba(243,117,33,0.3); font-size:13.5px; color:var(--torch-text); margin-bottom:var(--sp-4); }
+  .banner.info{ background:rgba(186,210,232,0.55); border-color:rgba(186,210,232,1); color:var(--teal-light); }
+
+  #toast{ position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translate(-50%, 12px); background:#8B162B; border:1px solid rgba(246,243,207,0.25); color:#F6F3CF; padding:10px 18px; border-radius:999px; font-size:13.5px; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; z-index:50; box-shadow:0 10px 24px rgba(139,22,43,0.35); }
+  #toast.show{ opacity:1; transform:translate(-50%, 0); }
+
+  .bottombar{ display:none; }
+
+  @media (max-width: 860px){
+    .rail{ display:none; }
+    .bottombar{
+      display:flex; position:fixed; left:0; right:0; bottom:0; z-index:40;
+      background:#FFFEF6; border-top:1px solid var(--line);
+      padding:10px 4px calc(10px + env(safe-area-inset-bottom,0px));
+    }
+    .bottombar .navbtn{ flex-direction:column; gap:3px; align-items:center; font-size:10.5px; padding:4px 2px; color:var(--sand-faint); }
+    .bottombar .navbtn.active{ background:none; box-shadow:none; color:var(--torch-text); font-weight:700; }
+    .bottombar .navbtn .ic{ font-size:20px; }
+    .content{ padding:20px 16px 92px; }
+    .shell{ display:block; }
+    .brand{ padding:14px 4px 10px; }
+  }
+
+  .gate{ max-width:560px; margin:24px auto; }
+  .chip-btn{ cursor:pointer; font-family:inherit; color:var(--sand); font-size:14px; padding:9px 14px 9px 10px; }
+  .chip-btn:hover{ border-color:var(--torch); background:rgba(243,117,33,0.12); }
+  .survivor-btn small{ display:block; font-weight:500; font-size:10.5px; color:var(--sand-dim); margin-top:3px; }
+  .surv-row{ cursor:pointer; }
+  .surv-row:hover{ background:rgba(139,22,43,0.03); }
+  .ev-panel{ background:rgba(139,22,43,0.03); border-radius:var(--r-md); padding:4px 12px; margin:2px 0 8px; }
+  .ev-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 0; border-bottom:1px solid var(--line); }
+  .ev-row:last-child{ border-bottom:none; }
+  .ev-ctl{ display:flex; align-items:center; gap:10px; }
+  .ev-ctl .n, .ev-row > .n{ min-width:20px; text-align:center; font-weight:800; }
+
+  .thumb{ border-radius:50%; object-fit:cover; flex:none; display:inline-block; background:linear-gradient(160deg,var(--rope),var(--torch)); }
+  .thumb-txt{ display:inline-flex; align-items:center; justify-content:center; font-family:'Staatliches',sans-serif; color:var(--torch-ink); letter-spacing:0.02em; }
+  .cast-avatar{ overflow:hidden; }
+  .cast-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .survivor-btn{ display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .survivor-btn b{ font-weight:700; }
+  .team-row{ display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13.5px; color:var(--sand-dim); }
+  .whoami{ position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:12px; background:var(--panel); border:2px solid var(--torch); border-radius:var(--r-md); padding:9px 14px; margin-bottom:var(--sp-4); box-shadow:0 6px 16px var(--shadow); }
+  .who-av{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; color:var(--torch-ink); flex:none; }
+  .who-t{ flex:1; min-width:0; }
+  .who-l{ font-size:10px; font-weight:800; letter-spacing:0.07em; color:var(--sand-faint); }
+  .who-n{ font-size:16px; font-weight:800; line-height:1.15; }
+  .hist-pick{ border:1px solid var(--line); border-radius:var(--r-md); padding:10px 12px; margin-top:10px; background:rgba(255,254,246,0.6); }
+  .hist-head{ display:flex; align-items:center; gap:10px; }
+  .hist-head .t{ font-weight:700; font-size:14.5px; }
+  .hist-head .sub{ font-size:12px; color:var(--sand-faint); }
+  .hist-head .v{ font-family:'Staatliches',sans-serif; font-size:22px; }
+  .hist-ev{ display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:5px 0 0 52px; color:var(--sand-dim); }
+  .hist-ev span:last-child{ font-weight:700; color:var(--sand); }
+  .rubric-row{ display:grid; grid-template-columns:1fr 72px 32px; gap:8px; align-items:center; margin-bottom:8px; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="rail" id="rail"></nav>
+  <main class="content" id="content"></main>
+</div>
+<nav class="bottombar" id="bottombar"></nav>
+<div id="toast"></div>
+<input type="file" accept="image/*" id="photo-file" style="display:none">
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, doc, collection, onSnapshot, setDoc, updateDoc, deleteDoc, addDoc, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCk1X9yj6AcBwU3zXblfu5RrxsaNP07MSE",
+  authDomain: "torch-and-tribe.firebaseapp.com",
+  projectId: "torch-and-tribe",
+  storageBucket: "torch-and-tribe.firebasestorage.app",
+  messagingSenderId: "148610415048",
+  appId: "1:148610415048:web:0850a0c823c204057928fd"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const cfgRef = doc(db, "config", "main");
+const weekRef = (n) => doc(db, "weeks", String(n));
+
+/* ---------------- constants ---------------- */
+const TABS = [
+  { id: "standings", label: "Standings", icon: "🏆" },
+  { id: "draft", label: "Draft Room", icon: "🔥" },
+  { id: "bonus", label: "Bonus Challenges", icon: "🎲" },
+  { id: "scoring", label: "Cast & Scoring", icon: "🌴" },
+  { id: "history", label: "History", icon: "📜" },
+  { id: "setup", label: "Setup", icon: "⚙️" }
+];
+const COLORS = ["#F37521", "#F9B6B8", "#BAD2E8", "#C6B63B", "#E8878B", "#8FB4D6", "#F7A267", "#A89A2A"];
+const BONUS_TYPES = {
+  trivia: { label: "Trivia", icon: "🧠" },
+  prediction: { label: "Prediction", icon: "🔮" },
+  dance: { label: "Dance-off", icon: "💃" },
+  other: { label: "Bonus", icon: "🎲" }
+};
+const DEFAULT_CAST = [
+  ["Aaliyah Puglia", 24, "Chef"], ["Alexis Levine", 34, "Criminal defense attorney"], ["Ana Sani", 34, "Voice actress"],
+  ["Angelica \"Jelly\" Loblack", 29, "Sociology professor"], ["Brady Booker", 27, "Pro wrestler"], ["Carter Krull", 24, "Livestock farmer"],
+  ["Cristian Chavez", 26, "Head of HR"], ["Danny \"Kilby\" Kilby", 30, "Game designer"], ["Devin Way", 33, "Actor"],
+  ["Eric Macksoud", 34, "Mental health counselor"], ["Jenna Doore", 30, "Wedding photographer"], ["Kristin Flickinger", 49, "Crisis management"],
+  ["Lewis Kelly", 28, "Farmer"], ["Linnea Capobianco", 25, "Entrepreneur"], ["Maggie Nestor", 40, "Farmer"],
+  ["Mike Pinsky", 32, "Baseball ops executive"], ["Ori Jean-Charles", 27, "Personal trainer"], ["Patt Cannaday", 33, "Federal prosecutor"],
+  ["Rob Antonson", 40, "Airline gate agent"], ["Sharonda Cox", 34, "OBGYN resident"], ["Thien An Nguyen", 24, "Medical student"]
+];
+const DEFAULT_RUBRIC = [
+  ["Won individual reward challenge", 2], ["Won individual immunity challenge", 3], ["Won team/tribe reward challenge", 1],
+  ["Won team/tribe immunity challenge", 2], ["Found a hidden immunity idol", 3], ["Played an idol successfully", 3],
+  ["Won or played an advantage", 2], ["Received zero votes at tribal", 1], ["Correctly read the vote (voted with majority)", 1],
+  ["Made a big move / blindside", 2], ["Voted out", -3], ["Quit or medically evacuated", -5],
+  ["Made final tribal council", 5], ["Won Sole Survivor (finale only)", 10]
+].map((r, i) => ({ id: "r" + (i + 1), label: r[0], points: r[1] }));
+
+/* ---------------- state ---------------- */
+let config = null, members = {}, survivors = {}, weeks = {}, bonus = {};
+const loaded = { config: false, members: false, survivors: false, weeks: false, bonus: false };
+let dbError = "";
+let seeding = false;
+let myId = null;
+try { myId = localStorage.getItem("tt_member"); } catch (e) { myId = null; }
+const ui = {
+  tab: "standings", watching: false, shuffleOnStart: true, scoringWeek: null, bonusWeek: null,
+  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null
+};
+let toastTimer = null;
+
+/* ---------------- helpers ---------------- */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "x";
+const initials = (n) => { const p = String(n || "?").trim().split(/\s+/); return ((p[0] || "")[0] || "").toUpperCase() + ((p[1] || "")[0] || "").toUpperCase(); };
+const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+async function sha(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("tt:" + s));
+  return Array.from(new Uint8Array(buf)).map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+function videoLabel(url) {
+  if (/tiktok\.com/i.test(url)) return "🎵 TikTok";
+  if (/instagram\.com/i.test(url)) return "📸 Instagram";
+  if (/youtu\.?be/i.test(url)) return "▶️ YouTube";
+  if (/drive\.google\.com/i.test(url)) return "📁 Drive";
+  return "🔗 Video";
+}
+function safeUrl(u) { return /^https?:\/\//i.test(u) ? u : "https://" + u; }
+
+const fmt = (n) => (n > 0 ? "+" : "") + n;
+function thumb(s, px) {
+  const st = "width:" + px + "px;height:" + px + "px;";
+  if (s && s.photo) return '<img class="thumb" style="' + st + '" src="' + s.photo + '" alt="' + esc(s.name) + '">';
+  return '<span class="thumb thumb-txt" style="' + st + "font-size:" + Math.round(px * 0.36) + 'px;">' + esc(initials(s ? s.name : "?")) + "</span>";
+}
+const orderedCast = () => survivorList().sort((a, b) => (a.eliminated ? 1 : 0) - (b.eliminated ? 1 : 0) || a.name.localeCompare(b.name));
+const pinHash = (id, pin) => sha(id + ":" + pin);
+const phones = () => { try { return JSON.parse(localStorage.getItem("tt_phones") || "{}"); } catch (e) { return {}; } };
+function setPhone(id) {
+  if (!members[id]) return;
+  const v = prompt("Phone number for " + members[id].name + " (saved on THIS device only, never uploaded):", phones()[id] || "");
+  if (v === null) return;
+  const p = phones(), clean = v.replace(/[^\d+]/g, "");
+  if (clean) p[id] = clean; else delete p[id];
+  try { localStorage.setItem("tt_phones", JSON.stringify(p)); } catch (e) {}
+  render();
+}
+function smsLink(id, body) {
+  const sep = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
+  return "sms:" + phones()[id] + sep + "body=" + encodeURIComponent(body);
+}
+function fileToSquareDataUrl(file, size) {
+  size = size || 240;
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.width, img.height), sx = (img.width - side) / 2, sy = (img.height - side) * 0.2;
+      const c = document.createElement("canvas"); c.width = c.height = size;
+      c.getContext("2d").drawImage(img, sx, sy, side, side, 0, 0, size, size);
+      URL.revokeObjectURL(url); resolve(c.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Couldn't read that image — try a JPG or PNG.")); };
+    img.src = url;
+  });
+}
+
+
+const cfg = () => Object.assign({ leagueName: "Torch & Tribe", currentWeek: 3 }, config || {}, { rubric: (config && config.rubric) || DEFAULT_RUBRIC });
+const memberList = () => Object.keys(members).map((id) => Object.assign({ id }, members[id]));
+const survivorList = () => Object.keys(survivors).map((id) => survivors[id]).sort((a, b) => a.name.localeCompare(b.name));
+const me = () => (myId && members[myId] ? members[myId] : null);
+const isAdmin = () => { try { return !!(config && config.adminHash && localStorage.getItem("tt_admin") === config.adminHash); } catch (e) { return false; } };
+const weekDoc = (n) => weeks[String(n)] || {};
+const draftOf = (n) => weekDoc(n).draft || { status: "not_started", order: [], round: 1, turnIndex: 0, picksPerMember: 5, feed: [] };
+const bonusList = (wk) => Object.keys(bonus).map((id) => bonus[id]).filter((b) => Number(b.week) === Number(wk));
+
+function currentPickerId(d) {
+  if (!d || d.status !== "in_progress" || !d.order || !d.order.length) return null;
+  const order = d.round % 2 === 0 ? d.order.slice().reverse() : d.order;
+  return order[d.turnIndex];
+}
+function advanceDraft(d) {
+  d.turnIndex++;
+  if (d.turnIndex >= d.order.length) { d.turnIndex = 0; d.round++; if (d.round > d.picksPerMember) d.status = "complete"; }
+}
+function survivorWeekScore(wk, sid) {
+  const ev = ((weekDoc(wk).events || {})[sid]) || {};
+  return cfg().rubric.reduce((s, r) => s + (Number(ev[r.id]) || 0) * (Number(r.points) || 0), 0);
+}
+function weekOptions(extra) {
+  const s = {};
+  Object.keys(weeks).forEach((k) => (s[k] = true));
+  Object.keys(bonus).forEach((k) => (s[bonus[k].week] = true));
+  s[cfg().currentWeek] = true;
+  if (extra) s[extra] = true;
+  return Object.keys(s).map(Number).sort((a, b) => a - b);
+}
+function computeStandings() {
+  const rows = {};
+  memberList().forEach((m) => (rows[m.id] = { member: m, total: 0, weekly: {} }));
+  Object.keys(weeks).forEach((wk) => {
+    const d = weeks[wk].draft;
+    if (!d || !d.feed) return;
+    d.feed.forEach((f) => {
+      if (!rows[f.memberId]) return;
+      const pts = survivorWeekScore(wk, f.survivorId);
+      rows[f.memberId].weekly[wk] = (rows[f.memberId].weekly[wk] || 0) + pts;
+      rows[f.memberId].total += pts;
+    });
+  });
+  Object.values(bonus).forEach((b) => {
+    if (!b.resolved) return;
+    Object.keys(b.responses || {}).forEach((mid) => {
+      if (!rows[mid] || b.responses[mid] !== b.correctOption) return;
+      const pv = Number(b.points) || 0;
+      rows[mid].weekly[b.week] = (rows[mid].weekly[b.week] || 0) + pv;
+      rows[mid].total += pv;
+    });
+  });
+  return Object.values(rows).sort((a, b) => b.total - a.total);
+}
+
+/* ---------------- database listeners + first-run seeding ---------------- */
+function onErr(e) {
+  console.error(e);
+  dbError = "Can't reach the database (" + (e && e.code ? e.code : "error") + "). Check your Firestore rules and internet connection.";
+  Object.keys(loaded).forEach((k) => (loaded[k] = true));
+  render(true);
+}
+onSnapshot(cfgRef, (s) => { config = s.exists() ? s.data() : null; loaded.config = true; maybeSeed(); render(true); }, onErr);
+onSnapshot(collection(db, "members"), (qs) => { members = {}; qs.forEach((d) => (members[d.id] = d.data())); loaded.members = true; render(true); }, onErr);
+onSnapshot(collection(db, "survivors"), (qs) => { survivors = {}; qs.forEach((d) => (survivors[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.survivors = true; render(true); }, onErr);
+onSnapshot(collection(db, "weeks"), (qs) => { weeks = {}; qs.forEach((d) => (weeks[d.id] = d.data())); loaded.weeks = true; render(true); }, onErr);
+onSnapshot(collection(db, "bonus"), (qs) => { bonus = {}; qs.forEach((d) => (bonus[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.bonus = true; render(true); }, onErr);
+
+async function maybeSeed() {
+  if (seeding || !loaded.config || config) return;
+  seeding = true;
+  try {
+    const batch = writeBatch(db);
+    batch.set(cfgRef, { leagueName: "Torch & Tribe", currentWeek: 3, rubric: DEFAULT_RUBRIC, seeded: true });
+    DEFAULT_CAST.forEach(([name, age, job]) => batch.set(doc(db, "survivors", slug(name)), { name, age, job, eliminated: false }));
+    await batch.commit();
+  } catch (e) { onErr(e); }
+}
+
+/* ---------------- actions ---------------- */
+async function guard(fn, msg) { try { await fn(); } catch (e) { console.error(e); toast((e && e.message) || msg || "Something went wrong — try again."); } }
+const needAdmin = () => { if (!isAdmin()) { toast("Commissioner only — unlock it in Setup."); return false; } return true; };
+const needMe = () => { if (!me()) { toast("Pick your name first (Setup → Switch person)."); return false; } return true; };
+
+function pickMe(id) { myId = id; try { localStorage.setItem("tt_member", id); } catch (e) {} ui.watching = false; ui.pinFor = null; render(); }
+function signIn(id, pin) {
+  const m = members[id];
+  if (!m) return;
+  pin = (pin || "").trim();
+  if (!/^\d{4}$/.test(pin)) return toast("Enter a 4-digit PIN.");
+  return guard(async () => {
+    const h = await pinHash(id, pin);
+    if (m.pinHash) { if (h !== m.pinHash) return toast("That PIN doesn't match."); }
+    else await updateDoc(doc(db, "members", id), { pinHash: h });
+    pickMe(id); toast("Signed in as " + m.name);
+  }, "Couldn't sign in — try again.");
+}
+function signOut() { myId = null; ui.watching = false; ui.pinFor = null; ui.editingProfile = false; try { localStorage.removeItem("tt_member"); } catch (e) {} render(); }
+function joinAs(name, pin) {
+  name = (name || "").trim(); pin = (pin || "").trim();
+  if (!name) return toast("Type your name to join.");
+  if (!/^\d{4}$/.test(pin)) return toast("Choose a 4-digit PIN — it keeps others from using your account.");
+  if (memberList().some((m) => m.name.toLowerCase() === name.toLowerCase())) return toast("That name is already in the league — tap it above if it's you.");
+  return guard(async () => {
+    const ref = doc(collection(db, "members"));
+    await setDoc(ref, { name, color: COLORS[memberList().length % COLORS.length], joinedAt: Date.now(), pinHash: await pinHash(ref.id, pin) });
+    pickMe(ref.id); toast("Welcome, " + name + "!");
+  }, "Couldn't join — try again.");
+}
+function startDraft() {
+  if (!needAdmin()) return;
+  const n = cfg().currentWeek;
+  const ids = Object.keys(members);
+  if (!ids.length) return toast("No one has joined yet.");
+  if (draftOf(n).status !== "not_started") return toast("This week's draft already started.");
+  return guard(() => setDoc(weekRef(n), { draft: { status: "in_progress", order: ui.shuffleOnStart ? shuffle(ids) : ids, round: 1, turnIndex: 0, picksPerMember: 5, feed: [] } }, { merge: true }));
+}
+function makePick(sid) {
+  const n = cfg().currentWeek;
+  return guard(() => runTransaction(db, async (tx) => {
+    const snap = await tx.get(weekRef(n));
+    const data = snap.exists() ? snap.data() : null;
+    if (!data || !data.draft || data.draft.status !== "in_progress") throw new Error("The draft isn't running.");
+    const d = data.draft, picker = currentPickerId(d);
+    if (picker !== myId && !isAdmin()) throw new Error("It's not your turn yet.");
+    if (d.feed.some((f) => f.survivorId === sid)) throw new Error("Someone already drafted them this week.");
+    const s = survivors[sid];
+    if (!s || s.eliminated) throw new Error("That castaway isn't available.");
+    const nd = Object.assign({}, d, { feed: d.feed.concat([{ memberId: picker, survivorId: sid, ts: Date.now() }]) });
+    advanceDraft(nd);
+    tx.update(weekRef(n), { draft: nd });
+  }), "Couldn't save the pick — try again.");
+}
+function undoPick() {
+  if (!needAdmin()) return;
+  const n = cfg().currentWeek;
+  return guard(() => runTransaction(db, async (tx) => {
+    const snap = await tx.get(weekRef(n));
+    const d = snap.exists() && snap.data().draft;
+    if (!d || !d.feed.length) return;
+    const feed = d.feed.slice(0, -1), per = d.order.length || 1;
+    const round = Math.floor(feed.length / per) + 1;
+    tx.update(weekRef(n), { draft: Object.assign({}, d, { feed, round, turnIndex: feed.length % per, status: round > d.picksPerMember ? "complete" : "in_progress" }) });
+  }));
+}
+const setConfig = (patch) => guard(() => setDoc(cfgRef, patch, { merge: true }));
+function stepWeek(delta) { if (!needAdmin()) return; return setConfig({ currentWeek: Math.max(1, cfg().currentWeek + delta) }); }
+function adjustEvent(sid, rid, delta) {
+  if (!needMe()) return;
+  const wk = ui.scoringWeek || cfg().currentWeek;
+  const cur = Number((((weekDoc(wk).events || {})[sid]) || {})[rid]) || 0;
+  const next = Math.max(0, cur + delta);
+  return guard(() => setDoc(weekRef(wk), { events: { [sid]: { [rid]: next } } }, { merge: true }));
+}
+function addSurvivors(lines) {
+  if (!needAdmin()) return;
+  const existing = new Set(survivorList().map((s) => s.name.toLowerCase()));
+  let added = 0;
+  lines.forEach((line) => {
+    const [name, age, job] = line.split("|").map((x) => x.trim());
+    if (!name || existing.has(name.toLowerCase())) return;
+    existing.add(name.toLowerCase()); added++;
+    setDoc(doc(db, "survivors", slug(name)), { name, age: Number(age) || null, job: job || "", eliminated: false }).catch(console.error);
+  });
+  toast("Added " + added + " to the cast" + (lines.length > added ? " (duplicates skipped)." : "."));
+}
+function saveRubric(list) { return setConfig({ rubric: list }); }
+
+/* ---------------- rendering ---------------- */
+function render(keep) {
+  const saved = {}; let activeId = null, selS = null, selE = null;
+  if (keep) {
+    document.querySelectorAll("#content input[id], #content textarea[id]").forEach((el) => (saved[el.id] = el.value));
+    const a = document.activeElement;
+    if (a && a.id && saved.hasOwnProperty(a.id)) { activeId = a.id; try { selS = a.selectionStart; selE = a.selectionEnd; } catch (e) {} }
+  }
+  renderNav();
+  const ready = Object.values(loaded).every(Boolean);
+  let body = "";
+  if (!ready) body = '<div class="empty" style="padding-top:80px;"><div class="big">🔥</div>Loading the tribe…</div>';
+  else {
+    if (myId && !me()) { myId = null; try { localStorage.removeItem("tt_member"); } catch (e) {} }
+    if (dbError) body += '<div class="banner">' + esc(dbError) + "</div>";
+    if (me()) body += whoamiBar();
+    if (!me() && !ui.watching) body += renderGate();
+    else body += ui.tab === "standings" ? renderStandings() : ui.tab === "draft" ? renderDraft() : ui.tab === "bonus" ? renderBonus() : ui.tab === "scoring" ? renderScoring() : ui.tab === "history" ? renderHistory() : renderSetup();
+  }
+  $("content").innerHTML = body;
+  if (keep) {
+    Object.keys(saved).forEach((id) => { const el = $(id); if (el) el.value = saved[id]; });
+    if (activeId && $(activeId)) { const el = $(activeId); el.focus(); try { el.setSelectionRange(selS, selE); } catch (e) {} }
+  }
+  document.querySelectorAll(".feed").forEach((el) => (el.scrollTop = el.scrollHeight));
+  const dd = draftOf(cfg().currentWeek);
+  document.title = (ready && me() && dd.status === "in_progress" && currentPickerId(dd) === myId) ? "🔥 Your pick! · " + cfg().leagueName : cfg().leagueName;
+}
+
+function renderNav() {
+  const m = me();
+  const sub = "Week " + cfg().currentWeek + (m ? " · " + esc(m.name) : ui.watching ? " · viewing" : "") + (isAdmin() ? " · 👑" : "");
+  $("rail").innerHTML =
+    '<div class="brand"><span class="flame">🔥</span><div><div class="name">' + esc(cfg().leagueName) + '</div><div class="sub">' + sub + "</div></div></div>" +
+    TABS.map((t) => '<button class="navbtn ' + (ui.tab === t.id ? "active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="ic">' + t.icon + "</span>" + esc(t.label) + "</button>").join("") +
+    '<div class="navfoot">' + (m ? "You can draft, answer challenges, and post videos." : "Pick your name to start playing.") + "</div>";
+  $("bottombar").innerHTML = TABS.map((t) => '<button class="navbtn ' + (ui.tab === t.id ? "active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="ic">' + t.icon + "</span>" + esc(t.label.split(" ")[0]) + "</button>").join("");
+}
+
+function head(title, meta) { return '<div class="pagehead"><h2>' + esc(title) + '</h2><div class="meta">' + meta + "</div></div>"; }
+
+function whoamiBar() {
+  const m = me();
+  return '<div class="whoami" style="border-color:' + m.color + '"><span class="who-av" style="background:' + m.color + '">' + esc(initials(m.name)) + '</span><div class="who-t"><div class="who-l">SIGNED IN AS</div><div class="who-n">' + esc(m.name) + (isAdmin() ? " 👑" : "") + '</div></div><button class="btn sm ghost" data-act="signout">Not you? Sign out</button></div>' +
+    (!m.pinHash ? '<div class="banner">🔒 Your account has no PIN yet, so anyone could sign in as you. <a href="#" data-act="go-setup">Set one in Setup</a>.</div>' : "");
+}
+
+function renderGate() {
+  if (ui.pinFor && members[ui.pinFor]) {
+    const m = members[ui.pinFor];
+    return '<div class="card gate"><div class="eyebrow">SIGN IN</div><div class="hero-headline">Hi, ' + esc(m.name) + '!</div><div class="hero-sub">' + (m.pinHash ? "Enter your 4-digit PIN to continue." : "This account doesn't have a PIN yet. Choose a 4-digit PIN so nobody else can use it.") + '</div><div class="row" style="margin-top:14px;"><input type="password" inputmode="numeric" maxlength="4" autocomplete="off" id="pin-input" placeholder="4-digit PIN" style="max-width:150px;"><button class="btn primary" data-act="signin" data-id="' + ui.pinFor + '">' + (m.pinHash ? "Sign in" : "Set PIN &amp; sign in") + '</button><button class="btn ghost sm" data-act="pin-back">← Not me</button></div></div>';
+  }
+  const ml = memberList();
+  return '<div class="card gate"><div class="eyebrow">WELCOME</div><div class="hero-headline">Who are you? 🔥</div>' +
+    '<div class="hero-sub">' + (ml.length ? "Tap your name to sign in with your PIN — or join below if you're new." : "Be the first one in — add your name and a PIN below.") + "</div>" +
+    (ml.length ? '<div class="list-wrap">' + ml.map((m) => '<button class="chip chip-btn" data-act="pick-me" data-id="' + m.id + '"><span class="dot" style="background:' + m.color + '"></span>' + esc(m.name) + "</button>").join("") + "</div>" : "") +
+    '<div class="eyebrow" style="margin-top:18px;">NEW HERE?</div><div class="row" style="margin-top:6px;"><input type="text" id="join-name" placeholder="Your name" style="max-width:190px;"><input type="password" inputmode="numeric" maxlength="4" autocomplete="off" id="join-pin" placeholder="Pick a 4-digit PIN" style="max-width:170px;"><button class="btn primary" data-act="join">Join the league</button></div>' +
+    '<div style="margin-top:14px;"><button class="btn ghost sm" data-act="watch">Just looking</button></div></div>';
+}
+
+function renderStandings() {
+  const m = me();
+  let out = '<div class="greet"><h2>' + (m ? "Hey, " + esc(m.name.split(" ")[0]) + " 👋" : "Welcome to the tribe 🏝️") + '</h2><div class="meta">Season total across drafted survivors and bonus challenges</div></div>';
+  const standings = computeStandings();
+  if (!memberList().length) return out + '<div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the leaderboard starts here.</div></div>';
+  const active = survivorList().filter((s) => !s.eliminated).length;
+  const scored = Object.keys(weeks).filter((k) => (weeks[k].draft && weeks[k].draft.feed && weeks[k].draft.feed.length)).length;
+  out += '<div class="statrow"><div class="col"><div class="n">' + memberList().length + '</div><div class="l">Players</div></div>' +
+    '<div class="col"><div class="n accent">' + active + '</div><div class="l">Torches lit</div></div>' +
+    '<div class="col"><div class="n">' + cfg().currentWeek + '</div><div class="l">Current week</div></div>' +
+    '<div class="col"><div class="n">' + scored + '</div><div class="l">Weeks scored</div></div></div>';
+  const medals = ["🥇", "🥈", "🥉"];
+  out += '<div class="card">';
+  standings.forEach((row, i) => {
+    const mm = row.member;
+    out += '<div class="lb-row ' + (i === 0 && row.total > 0 ? "first" : "") + '"><div class="lb-rank">' + (i === 0 && row.total > 0 ? '<span class="sticker">🥇 #1</span>' : i < 3 && row.total > 0 ? medals[i] : i + 1) + "</div>" +
+      '<div class="lb-avatar" style="background:' + mm.color + '">' + esc(initials(mm.name)) + "</div><div><div class=\"lb-name\">" + esc(mm.name) + (mm.id === myId ? ' <span style="color:var(--sand-faint);font-weight:400;">(you)</span>' : "") + "</div>";
+    const wk = Object.keys(row.weekly).sort((a, b) => a - b);
+    if (wk.length) out += '<details class="weekly"><summary>Weekly breakdown ▾</summary><div class="minirow">' + wk.map((k) => '<div class="minibox"><div class="n">' + row.weekly[k] + '</div><div class="l">Wk ' + k + "</div></div>").join("") + "</div></details>";
+    out += '</div><div class="lb-total">' + row.total + "</div></div>";
+  });
+  out += "</div>";
+  if (survivorList().length) {
+    out += '<div class="card"><div class="btw" style="margin-bottom:2px;"><h3 style="margin:0;font-size:16px;">Still in the tribe</h3><span style="font-size:12.5px;color:var(--sand-faint);">' + active + " of " + survivorList().length + '</span></div><div class="cast-scroll">' +
+      orderedCast().map((s) => '<div class="cast-card"><div class="cast-avatar' + (s.eliminated ? " out" : "") + '">' + (s.photo ? '<img src="' + s.photo + '" alt="">' : esc(initials(s.name))) + '</div><div class="cast-name">' + esc(s.name) + "</div><div class=\"cast-sub\">" + (s.eliminated ? "🕯️ out" : esc((s.age ? s.age + " · " : "") + (s.job || ""))) + "</div></div>").join("") + "</div></div>";
+  }
+  return out;
+}
+
+function renderDraft() {
+  const wk = cfg().currentWeek, d = draftOf(wk), A = isAdmin();
+  let out = "";
+  if (wk < 3) out += '<div class="banner info">Weeks 1–2 are for scouting the tribe — the draft opens at week 3. The commissioner can bump the week forward in Setup.</div>';
+  if (!memberList().length || !survivorList().length) return out + '<div class="card"><div class="empty"><div class="big">🌴</div>Need at least one player and one castaway before drafting.</div></div>';
+  const picker = d.status === "not_started" ? null : currentPickerId(d);
+  const total = (d.order.length || memberList().length) * d.picksPerMember;
+  const pct = total ? Math.min(100, Math.round((d.feed.length / total) * 100)) : 0;
+  const pickerName = picker && members[picker] ? members[picker].name : "—";
+  let headline, sub;
+  if (d.status === "not_started") { headline = "Ready to draft?"; sub = A ? "Start the order once everyone's here." : "Waiting for the commissioner to start the draft."; }
+  else if (d.status === "complete") { headline = "Draft complete! 🏁"; sub = "Every team is set for week " + wk + "."; }
+  else if (picker === myId) { headline = "It's your pick!"; sub = "Round " + d.round + " of " + d.picksPerMember; }
+  else { headline = "Round " + d.round + " of " + d.picksPerMember; sub = "Waiting on " + esc(pickerName); }
+  out += '<div class="card"><div class="eyebrow">WEEK ' + wk + ' · DRAFT</div><div class="hero-headline">' + esc(headline) + '</div><div class="hero-sub">' + sub + "</div>";
+  if (d.status !== "not_started") out += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+  const myLast = me() ? d.feed.filter((f) => f.memberId === myId).slice(-1)[0] : null;
+  if (myLast && survivors[myLast.survivorId]) out += '<div class="check-chip"><span class="tick">✓</span><div><div class="lbl">Your last pick</div><div class="val">' + esc(survivors[myLast.survivorId].name) + "</div></div></div>";
+  if (A && d.status === "in_progress" && picker && picker !== myId && members[picker]) {
+    const ph = phones()[picker];
+    out += '<div class="check-chip" style="background:rgba(186,210,232,0.5);border-color:#BAD2E8;"><div style="flex:1;"><div class="lbl">Next up</div><div class="val">' + esc(pickerName) + "</div></div>" +
+      (ph ? '<a class="btn primary sm" href="' + esc(smsLink(picker, "🔥 " + pickerName + ", you're on the clock in " + cfg().leagueName + "! Round " + d.round + " — make your pick: " + location.origin + location.pathname)) + '">📱 Text ' + esc(pickerName.split(" ")[0]) + "</a>" : '<button class="btn sm" data-act="set-phone" data-id="' + picker + '">Add their number to text them</button>') + "</div>";
+  }
+  out += "</div><div class=\"card\">";
+  if (d.status === "not_started") {
+    if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> Shuffle order</label><button class="btn primary" data-act="start-draft">Start the draft</button></div>';
+    else out += '<div class="feed-empty">The commissioner starts the draft from this screen.</div>';
+  } else {
+    const drafted = new Set(d.feed.map((f) => f.survivorId));
+    out += '<div class="order-track">' + d.order.map((mid) => { const mm = members[mid]; if (!mm) return ""; return '<span class="order-chip ' + (mid === picker ? "active" : "") + '" style="' + (mid === picker ? "" : "border-color:" + mm.color + "55;") + '">' + esc(mm.name) + (mid === myId ? " (you)" : "") + "</span>"; }).join("") + "</div>";
+    out += '<div class="feed">' + (d.feed.length ? "" : '<div class="feed-empty">No picks yet — the first name is up.</div>') + d.feed.map((f) => {
+      const mm = members[f.memberId], s = survivors[f.survivorId];
+      return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(f.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + "</b> drafted <b>" + esc(s ? s.name : "?") + "</b></span></div>";
+    }).join("") + "</div>";
+    if (d.status === "in_progress") {
+      if (picker === myId || A) {
+        const avail = survivorList().filter((s) => !s.eliminated && !drafted.has(s.id));
+        out += '<div class="btw" style="margin-bottom:8px;"><div style="font-size:13px;color:var(--sand-dim);">' + (picker === myId ? "Tap your pick:" : "Picking for " + esc(pickerName) + ":") + "</div>" + (A && d.feed.length ? '<button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button>' : "") + "</div>";
+        out += avail.length ? '<div class="survivor-grid">' + avail.map((s) => '<button class="survivor-btn" data-act="draft-pick" data-survivor="' + s.id + '">' + thumb(s, 54) + "<b>" + esc(s.name) + "</b><small>" + esc((s.age ? s.age + " · " : "") + (s.job || "")) + "</small></button>").join("") + "</div>" : '<div class="feed-empty">No eligible survivors left this week.</div>';
+      } else out += '<div class="feed-empty">Sit tight — you\'ll get a turn.</div>';
+    } else if (A) {
+      out += '<div class="row"><button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button><button class="btn primary" data-act="advance-week">Advance to week ' + (wk + 1) + " →</button></div>";
+    }
+    if (d.feed.length) {
+      out += '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); margin-top:18px;">' + d.order.map((mid) => {
+        const mm = members[mid]; if (!mm) return "";
+        const team = d.feed.filter((f) => f.memberId === mid).map((f) => survivors[f.survivorId]).filter(Boolean);
+        return '<div class="team-card" style="border-top-color:' + mm.color + '"><h4><span class="dot" style="background:' + mm.color + '"></span>' + esc(mm.name) + "</h4>" + (team.length ? team.map((s) => '<div class="team-row">' + thumb(s, 28) + "<span>" + esc(s.name) + (s.eliminated ? " 🕯️" : "") + "</span></div>").join("") : '<div style="color:var(--sand-faint);font-size:13px;">No picks yet</div>') + "</div>";
+      }).join("") + "</div>";
+    }
+  }
+  return out + "</div>";
+}
+
+function renderBonus() {
+  if (!ui.bonusWeek) ui.bonusWeek = cfg().currentWeek;
+  const wkKey = ui.bonusWeek, joined = !!me();
+  let out = head("Bonus Challenges", "Trivia, predictions, dance-offs — everyone answers and posts their own videos");
+  out += '<div class="card"><div class="btw"><label class="field" style="margin:0;">Week<br><select data-act="pick-bonus-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wkKey).map((w) => '<option value="' + w + '" ' + (w === Number(wkKey) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label>" +
+    (joined ? '<button class="btn primary" data-act="toggle-bonus-form">' + (ui.showBonusForm ? "Cancel" : "+ Add challenge") + "</button>" : "") + "</div>";
+  if (joined && ui.showBonusForm) out += '<div class="card" style="margin-top:14px;border-color:var(--torch);">' + bonusForm() + "</div>";
+  out += "</div>";
+  const list = bonusList(wkKey);
+  if (!list.length) return out + '<div class="card"><div class="empty"><div class="big">🎲</div>No bonus challenges for week ' + wkKey + " yet.</div></div>";
+  list.sort((a, b) => (a.day || "").localeCompare(b.day || "")).forEach((b) => {
+    const t = BONUS_TYPES[b.type] || BONUS_TYPES.other, n = Object.keys(b.responses || {}).length;
+    out += '<div class="bonus-card"><div class="row"><span class="bonus-type">' + t.icon + " " + t.label + '</span><span class="bonus-day">' + esc(b.day || "") + "</span>" +
+      (b.resolved ? '<span class="correct-badge">✓ ' + esc(b.correctOption) + " · " + b.points + " pts</span>" : '<span class="bonus-day">' + b.points + " pts · " + n + "/" + memberList().length + " answered</span>") + "</div>";
+    out += '<div class="bonus-title">' + esc(b.title) + "</div>" + (b.prompt ? '<div class="bonus-prompt">' + esc(b.prompt) + "</div>" : "");
+    if ((b.options || []).length) {
+      if (!b.resolved) {
+        if (joined) { const mine = (b.responses || {})[myId]; out += '<div style="font-size:12.5px;color:var(--sand-dim);margin-bottom:6px;">Your answer:</div><div class="row">' + b.options.map((o) => '<button class="btn sm ' + (mine === o ? "primary" : "ghost") + '" data-act="answer-bonus" data-bonus="' + b.id + '" data-option="' + esc(o) + '">' + esc(o) + "</button>").join("") + "</div>"; }
+        else out += '<div class="feed-empty">Pick your name to answer.</div>';
+        if (joined) out += b.correctOption ? '<div class="resolve-row"><button class="btn sm primary" data-act="resolve-bonus" data-bonus="' + b.id + '" data-option="' + esc(b.correctOption) + '">🔓 Reveal &amp; score answers</button></div>' : '<div class="resolve-row">' + b.options.map((o) => '<button class="btn sm ghost" data-act="resolve-bonus" data-bonus="' + b.id + '" data-option="' + esc(o) + '">Mark "' + esc(o) + '" correct</button>').join("") + "</div>";
+      } else {
+        out += '<div class="resp-grid">' + memberList().map((m) => { const v = (b.responses || {})[m.id], ok = v && v === b.correctOption; return "<div>" + esc(m.name) + '</div><div style="font-size:13px;' + (ok ? "color:var(--torch-text);font-weight:700;" : "color:var(--sand-dim);") + '">' + (v ? esc(v) + (ok ? " ✓" : "") : "—") + "</div>"; }).join("") + "</div>";
+        if (joined) out += '<div class="resolve-row"><button class="btn sm ghost" data-act="reopen-bonus" data-bonus="' + b.id + '">Reopen</button>' + (isAdmin() ? '<button class="btn sm danger" data-act="delete-bonus" data-bonus="' + b.id + '">Delete</button>' : "") + "</div>";
+      }
+    }
+    const subs = Object.keys(b.submissions || {}).map((k) => Object.assign({ memberId: k }, b.submissions[k])).sort((a, c) => a.ts - c.ts);
+    out += '<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);"><div style="font-size:12.5px;color:var(--sand-dim);margin-bottom:8px;">🎥 Video submissions' + (subs.length ? " (" + subs.length + ")" : "") + "</div>";
+    out += subs.length ? '<div class="feed" style="max-height:220px;">' + subs.map((s) => { const mm = members[s.memberId]; return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(s.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + '</b> posted <a href="' + esc(safeUrl(s.videoUrl)) + '" target="_blank" rel="noopener">' + videoLabel(s.videoUrl) + "</a>" + (s.caption ? " — " + esc(s.caption) : "") + "</span></div>"; }).join("") + "</div>" : '<div class="feed-empty">No videos posted yet.</div>';
+    if (joined) out += '<div class="row" style="margin-top:8px;"><input type="text" placeholder="Paste a video link" id="vid-url-' + b.id + '" style="max-width:220px;"><input type="text" placeholder="Caption (optional)" id="vid-cap-' + b.id + '" style="max-width:180px;"><button class="btn sm" data-act="post-video" data-bonus="' + b.id + '">Post</button></div>';
+    out += "</div></div>";
+  });
+  return out;
+}
+function bonusForm() {
+  return '<div class="grid" style="grid-template-columns:1fr 1fr;"><div><label class="field">Day</label><input type="text" id="bf-day" placeholder="e.g. Wednesday"></div>' +
+    '<div><label class="field">Type</label><select id="bf-type">' + Object.keys(BONUS_TYPES).map((k) => '<option value="' + k + '">' + BONUS_TYPES[k].icon + " " + BONUS_TYPES[k].label + "</option>").join("") + "</select></div>" +
+    '<div style="grid-column:1/-1;"><label class="field">Title</label><input type="text" id="bf-title" placeholder="e.g. Which tribe wins immunity?"></div>' +
+    '<div style="grid-column:1/-1;"><label class="field">Prompt (optional)</label><input type="text" id="bf-prompt" placeholder="Extra details"></div>' +
+    '<div style="grid-column:1/-1;"><label class="field">Options (comma separated — leave blank for a video-only challenge like a dance-off)</label><input type="text" id="bf-options" placeholder="e.g. Tribe A, Tribe B"></div>' +
+    '<div style="grid-column:1/-1;"><label class="field">Correct answer (optional — must match one option; leave blank to pick it later)</label><input type="text" id="bf-answer" placeholder="e.g. Tribe A"></div>' +
+    '<div><label class="field">Points</label><input type="number" id="bf-points" value="10"></div><div style="align-self:end;"><button class="btn primary" data-act="save-bonus">Save challenge</button></div></div>';
+}
+
+function renderScoring() {
+  if (!ui.scoringWeek) ui.scoringWeek = cfg().currentWeek;
+  const wk = ui.scoringWeek, joined = !!me(), rubric = cfg().rubric, d = draftOf(wk);
+  let out = head("Cast & Scoring", "Mark eliminations, then tap a survivor to log what they did this week");
+  out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Tribe status</h3>';
+  out += survivorList().length ? '<div class="list-wrap">' + orderedCast().map((s) => '<span class="chip ' + (s.eliminated ? "eliminated" : "") + '" ' + (joined ? 'data-act="toggle-eliminated" data-id="' + s.id + '" style="cursor:pointer;"' : "") + ">" + esc(s.name) + (s.eliminated ? " 🕯️" : "") + "</span>").join("") + "</div>" + (joined ? '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">Tap a name to mark them eliminated or bring them back.</div>' : "") : '<div class="empty">The commissioner adds the cast in Setup.</div>';
+  out += "</div>";
+  out += '<div class="card"><div class="btw"><h3 style="margin:0;font-size:18px;">Weekly points</h3><label class="field" style="margin:0;">Week<br><select data-act="pick-scoring-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wk).map((w) => '<option value="' + w + '" ' + (w === Number(wk) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label></div>";
+  const draftedBy = {};
+  (d.feed || []).forEach((f) => (draftedBy[f.survivorId] = members[f.memberId]));
+  const list = survivorList().sort((a, b) => (draftedBy[b.id] ? 1 : 0) - (draftedBy[a.id] ? 1 : 0) || a.name.localeCompare(b.name));
+  out += '<div style="margin-top:10px;">' + list.map((s) => {
+    const tot = survivorWeekScore(wk, s.id), by = draftedBy[s.id], open = ui.openSurv === s.id;
+    let row = '<div class="list-row surv-row" data-act="open-surv" data-id="' + s.id + '"><div style="display:flex;align-items:center;gap:10px;">' + thumb(s, 38) + '<div><div class="t">' + esc(s.name) + (s.eliminated ? " 🕯️" : "") + '</div><div class="sub">' + (by ? "Drafted by " + esc(by.name) : "Not drafted this week") + '</div></div></div><div class="v" style="color:var(--torch-text);">' + (tot > 0 ? "+" : "") + tot + " " + (open ? "▴" : "▾") + "</div></div>";
+    if (open) {
+      row += '<div class="ev-panel">' + rubric.map((r) => {
+        const c = Number((((weekDoc(wk).events || {})[s.id]) || {})[r.id]) || 0;
+        return '<div class="ev-row"><div><div style="font-size:13.5px;">' + esc(r.label) + '</div><div class="sub" style="font-size:11px;color:var(--sand-faint);">' + (r.points > 0 ? "+" : "") + r.points + " each</div></div>" +
+          (joined ? '<div class="ev-ctl"><button class="btn sm" data-act="ev" data-sid="' + s.id + '" data-rid="' + r.id + '" data-delta="-1">−</button><span class="n">' + c + '</span><button class="btn sm" data-act="ev" data-sid="' + s.id + '" data-rid="' + r.id + '" data-delta="1">+</button></div>' : '<div class="n">' + c + "</div>") + "</div>";
+      }).join("") + "</div>";
+    }
+    return row;
+  }).join("") + "</div></div>";
+  return out;
+}
+
+function renderHistory() {
+  const ml = memberList();
+  let out = head("History", "Each player's picks week by week, and exactly what earned the points");
+  if (!ml.length) return out + '<div class="card"><div class="empty"><div class="big">📜</div>Nothing here yet — history builds as the weeks go by.</div></div>';
+  const mid = ui.histMember && members[ui.histMember] ? ui.histMember : me() ? myId : ml[0].id;
+  const rubric = cfg().rubric;
+  out += '<div class="card"><label class="field" style="margin:0;">Player<br><select data-act="pick-hist-member" class="pill-select" style="margin-top:4px;">' + ml.map((x) => '<option value="' + x.id + '" ' + (x.id === mid ? "selected" : "") + ">" + esc(x.name) + (x.id === myId ? " (you)" : "") + "</option>").join("") + "</select></label></div>";
+  const row = computeStandings().find((r) => r.member.id === mid) || { total: 0, weekly: {} };
+  const wkSet = {};
+  Object.keys(weeks).forEach((k) => { if (((weeks[k].draft && weeks[k].draft.feed) || []).some((f) => f.memberId === mid)) wkSet[k] = true; });
+  Object.values(bonus).forEach((b) => { if (b.resolved && (b.responses || {})[mid] != null) wkSet[b.week] = true; });
+  const keys = Object.keys(wkSet).map(Number).sort((a, b) => b - a);
+  if (!keys.length) return out + '<div class="card"><div class="empty"><div class="big">📜</div>No picks yet for ' + esc(members[mid].name) + ". Once a draft happens, each week shows up here.</div></div>";
+  let best = null;
+  keys.forEach((k) => { if (best === null || (row.weekly[k] || 0) > (row.weekly[best] || 0)) best = k; });
+  out += '<div class="statrow"><div class="col"><div class="n accent">' + row.total + '</div><div class="l">Season total</div></div><div class="col"><div class="n">' + keys.length + '</div><div class="l">Weeks played</div></div><div class="col"><div class="n">' + fmt(row.weekly[best] || 0) + '</div><div class="l">Best week (Wk ' + best + ")</div></div></div>";
+  keys.forEach((wk) => {
+    const feed = ((weeks[wk] && weeks[wk].draft && weeks[wk].draft.feed) || []).filter((f) => f.memberId === mid);
+    const bs = bonusList(wk).filter((b) => b.resolved && (b.responses || {})[mid] != null);
+    out += '<div class="card"><div class="btw" style="margin-bottom:8px;"><div><div class="eyebrow">WEEK ' + wk + '</div><div class="hero-sub">' + feed.length + " pick" + (feed.length === 1 ? "" : "s") + (bs.length ? " · " + bs.length + " bonus" : "") + '</div></div><div class="lb-total">' + fmt(row.weekly[wk] || 0) + "</div></div>";
+    feed.forEach((f) => {
+      const s = survivors[f.survivorId]; if (!s) return;
+      const ev = ((weekDoc(wk).events || {})[s.id]) || {};
+      const lines = rubric.filter((r) => (Number(ev[r.id]) || 0) > 0).map((r) => { const n = Number(ev[r.id]); return '<div class="hist-ev"><span>' + esc(r.label) + (n > 1 ? " ×" + n : "") + "</span><span>" + fmt(n * r.points) + "</span></div>"; }).join("");
+      out += '<div class="hist-pick"><div class="hist-head">' + thumb(s, 42) + '<div style="flex:1;min-width:0;"><div class="t">' + esc(s.name) + (s.eliminated ? " 🕯️" : "") + '</div><div class="sub">' + esc((s.age ? s.age + " · " : "") + (s.job || "")) + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(survivorWeekScore(wk, s.id)) + "</div></div>" + (lines || '<div class="hist-ev"><span style="color:var(--sand-faint);">Nothing scored this week</span><span></span></div>') + "</div>";
+    });
+    bs.forEach((b) => {
+      const mine = b.responses[mid], ok = mine === b.correctOption;
+      out += '<div class="hist-pick"><div class="hist-head"><span class="bonus-type">' + (BONUS_TYPES[b.type] || BONUS_TYPES.other).icon + ' Bonus</span><div style="flex:1;min-width:0;"><div class="t">' + esc(b.title) + '</div><div class="sub">Answered "' + esc(mine) + '"' + (ok ? " ✓" : " · correct was \"" + esc(b.correctOption) + '"') + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(ok ? Number(b.points) || 0 : 0) + "</div></div></div>";
+    });
+    out += "</div>";
+  });
+  return out;
+}
+
+function renderSetup() {
+  const m = me(), A = isAdmin(), c = cfg();
+  let out = head("Setup", "Your profile, the league, and the commissioner tools");
+  if (m) {
+    out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">Your profile</h3>';
+    if (ui.editingProfile) {
+      const col = ui.pickColor || m.color;
+      out += '<div class="row"><input type="text" id="my-name" value="' + esc(m.name) + '" style="max-width:200px;">' + COLORS.map((x) => '<button class="iconbtn" data-act="pick-my-color" data-color="' + x + '" style="width:22px;height:22px;border-radius:50%;background:' + x + ";border:2px solid " + (col === x ? "#8B162B" : "transparent") + ';padding:0;"></button>').join("") + '</div><div class="row" style="margin-top:10px;"><button class="btn primary sm" data-act="save-profile">Save</button><button class="btn ghost sm" data-act="cancel-profile">Cancel</button></div>';
+    } else out += '<div class="row"><span class="chip"><span class="dot" style="background:' + m.color + '"></span>' + esc(m.name) + (A ? ' <span style="color:var(--torch-text);font-weight:700;">· commissioner</span>' : "") + '</span><button class="btn sm ghost" data-act="edit-profile">Edit</button><button class="btn sm ghost" data-act="signout">Sign out</button><button class="btn sm danger" data-act="leave">Leave league</button></div>';
+    out += '<div class="row" style="margin-top:14px;"><input type="password" inputmode="numeric" maxlength="4" autocomplete="off" id="my-pin" placeholder="' + (m.pinHash ? "New 4-digit PIN" : "Choose a 4-digit PIN") + '" style="max-width:170px;"><button class="btn sm" data-act="set-my-pin">' + (m.pinHash ? "Change PIN" : "Set PIN") + '</button></div></div>';
+  } else out += '<div class="card"><div class="row"><span>You\'re just looking.</span><button class="btn primary sm" data-act="signout">Sign in</button></div></div>';
+
+  out += '<div class="card"><h3 style="margin:0 0 6px;font-size:18px;">Commissioner access</h3>';
+  if (!c.adminHash) out += '<div class="hero-sub" style="margin-bottom:10px;">No passcode yet. Set one now — it locks the tools below so only you can change them. (Do this first, before sharing the link!)</div><div class="row"><input type="password" id="admin-new" placeholder="Choose a passcode" style="max-width:220px;"><button class="btn primary sm" data-act="set-pass">Set passcode</button></div>';
+  else if (!A) out += '<div class="row"><input type="password" id="admin-try" placeholder="Commissioner passcode" style="max-width:220px;"><button class="btn primary sm" data-act="unlock">Unlock</button></div>';
+  else out += '<div class="row"><span class="correct-badge">👑 Unlocked on this device</span><button class="btn sm ghost" data-act="lock">Lock</button></div><div class="row" style="margin-top:10px;"><input type="password" id="admin-new" placeholder="New passcode" style="max-width:220px;"><button class="btn sm" data-act="set-pass">Change passcode</button></div>';
+  out += "</div>";
+
+  out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">League name &amp; week</h3>' + (A ? '<input type="text" id="league-name" value="' + esc(c.leagueName) + '" style="max-width:300px;"><button class="btn sm" data-act="save-name" style="margin-left:8px;">Save</button>' : "<div>" + esc(c.leagueName) + "</div>") +
+    '<div class="stepper" style="margin-top:14px;">' + (A ? '<button class="btn sm" data-act="week-dec">−</button>' : "") + '<div class="num">' + c.currentWeek + "</div>" + (A ? '<button class="btn sm" data-act="week-inc">+</button>' : "") + '<div style="font-size:12.5px;color:var(--sand-dim);">Current week. Weeks 1–2 are scouting; drafting starts week 3.</div></div></div>';
+
+  out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Scoring rubric</h3><div class="hero-sub" style="margin-bottom:10px;">Every way a survivor can earn or lose points.' + (A ? "" : " (Commissioner can edit.)") + "</div>";
+  out += c.rubric.map((r) => A ? '<div class="rubric-row"><input type="text" data-field="rubric-label" data-id="' + r.id + '" value="' + esc(r.label) + '"><input type="number" data-field="rubric-pts" data-id="' + r.id + '" value="' + r.points + '"><button class="iconbtn" data-act="rubric-del" data-id="' + r.id + '">✕</button></div>' : '<div class="list-row"><div class="t">' + esc(r.label) + '</div><div class="v">' + fmt(r.points) + "</div></div>").join("");
+  if (A) out += '<div class="rubric-row"><input type="text" id="rub-new-label" placeholder="New scoring possibility"><input type="number" id="rub-new-pts" placeholder="pts"><button class="btn sm" data-act="rubric-add">Add</button></div>';
+  out += "</div>";
+
+  out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">League roster</h3>' + (memberList().length ? '<div class="list-wrap">' + memberList().map((x) => '<span class="chip"><span class="dot" style="background:' + x.color + '"></span>' + esc(x.name) + (x.id === myId ? " (you)" : "") + (A ? ' <button class="iconbtn" title="' + (phones()[x.id] ? "Number saved — tap to change" : "Add phone number (this device only)") + '" data-act="set-phone" data-id="' + x.id + '">' + (phones()[x.id] ? "📱" : "☎️") + '</button><button class="iconbtn" title="Reset PIN" data-act="reset-pin" data-id="' + x.id + '">🔑</button><button class="iconbtn" title="Remove" data-act="remove-member" data-id="' + x.id + '">✕</button>' : "") + "</span>").join("") + "</div>" + (A ? '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">☎️ phone numbers are only stored on this device, for the draft text button. 🔑 resets someone\'s PIN if they forget it.</div>' : "") : '<div class="empty">No one yet — share the link!</div>') + "</div>";
+
+  out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">Survivor cast</h3>';
+  if (A) {
+    out += '<div class="hero-sub" style="margin-bottom:6px;">Add a headshot for each castaway — it gets cropped and resized automatically.</div>' + survivorList().map((s) => '<div class="list-row"><div style="display:flex;align-items:center;gap:10px;">' + thumb(s, 40) + '<div><div class="t">' + esc(s.name) + '</div><div class="sub">' + esc((s.age ? s.age + " · " : "") + (s.job || "")) + '</div></div></div><div class="row" style="gap:6px;"><button class="btn sm" data-act="photo-pick" data-id="' + s.id + '">' + (s.photo ? "Change photo" : "Add photo") + "</button>" + (s.photo ? '<button class="btn sm ghost" data-act="photo-remove" data-id="' + s.id + '">Remove</button>' : "") + '<button class="iconbtn" data-act="remove-survivor" data-id="' + s.id + '">✕</button></div></div>').join("");
+    out += '<div class="row" style="margin-top:14px;"><input type="text" id="new-surv-name" placeholder="Name" style="max-width:170px;"><input type="number" id="new-surv-age" placeholder="Age" style="max-width:80px;"><input type="text" id="new-surv-job" placeholder="Job" style="max-width:170px;"><button class="btn" data-act="add-survivor">Add</button><button class="btn ghost sm" data-act="toggle-bulk">' + (ui.showBulk ? "Cancel" : "📋 Paste a list") + "</button></div>";
+    if (ui.showBulk) out += '<div style="margin-top:12px;"><label class="field">One castaway per line. Optional: Name | age | job</label><textarea id="bulk-input" rows="6" placeholder="Cirie Fields | 54 | Nurse&#10;Ozzy Lusth&#10;..."></textarea><div class="row" style="margin-top:8px;"><button class="btn primary sm" data-act="add-bulk">Add all</button><span style="font-size:12px;color:var(--sand-faint);">Duplicates and blank lines are skipped</span></div></div>';
+  } else out += '<div class="list-wrap">' + orderedCast().map((s) => '<span class="chip ' + (s.eliminated ? "eliminated" : "") + '">' + esc(s.name) + "</span>").join("") + "</div>";
+  return out + "</div>";
+}
+
+/* ---------------- events ---------------- */
+const val = (id) => { const el = $(id); return el ? el.value : ""; };
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  if (el.tagName === "A") e.preventDefault();
+  const act = el.getAttribute("data-act"), id = el.getAttribute("data-id");
+  switch (act) {
+    case "set-tab": ui.tab = el.getAttribute("data-tab"); return render();
+    case "go-setup": ui.tab = "setup"; return render();
+    case "pick-me": ui.pinFor = id; return render();
+    case "pin-back": ui.pinFor = null; return render();
+    case "signin": return signIn(id, val("pin-input"));
+    case "join": return joinAs(val("join-name"), val("join-pin"));
+    case "watch": ui.watching = true; return render();
+    case "signout": return signOut();
+    case "set-my-pin": { const p = val("my-pin").trim(); if (!/^\d{4}$/.test(p)) return toast("Use exactly 4 digits."); if (!me()) return; await guard(async () => updateDoc(doc(db, "members", myId), { pinHash: await pinHash(myId, p) })); toast("PIN saved."); return render(); }
+    case "edit-profile": ui.editingProfile = true; ui.pickColor = null; return render();
+    case "cancel-profile": ui.editingProfile = false; return render();
+    case "pick-my-color": ui.pickColor = el.getAttribute("data-color"); return render();
+    case "save-profile": { const n = val("my-name").trim() || me().name; ui.editingProfile = false; await guard(() => updateDoc(doc(db, "members", myId), { name: n, color: ui.pickColor || me().color })); return render(); }
+    case "leave": if (!myId || !confirm("Leave the league? This removes you from the roster and the standings.")) return; { const old = myId; signOut(); await guard(() => deleteDoc(doc(db, "members", old))); } return;
+    case "set-pass": { const p = val("admin-new").trim(); if (p.length < 4) return toast("Use at least 4 characters."); if (config && config.adminHash && !isAdmin()) return toast("Unlock first."); const h = await sha(p); await setConfig({ adminHash: h }); try { localStorage.setItem("tt_admin", h); } catch (x) {} toast("Passcode saved — you're the commissioner."); return render(); }
+    case "unlock": { const h = await sha(val("admin-try")); if (config && h === config.adminHash) { try { localStorage.setItem("tt_admin", h); } catch (x) {} toast("Unlocked 👑"); } else toast("That passcode didn't match."); return render(); }
+    case "lock": try { localStorage.removeItem("tt_admin"); } catch (x) {} return render();
+    case "save-name": if (!needAdmin()) return; return setConfig({ leagueName: val("league-name").trim() || "Torch & Tribe" });
+    case "week-dec": return stepWeek(-1);
+    case "week-inc": return stepWeek(1);
+    case "advance-week": await stepWeek(1); ui.tab = "draft"; return render();
+    case "rubric-del": { if (!needAdmin()) return; return saveRubric(cfg().rubric.filter((r) => r.id !== id)); }
+    case "rubric-add": { if (!needAdmin()) return; const l = val("rub-new-label").trim(); if (!l) return toast("Name the scoring possibility."); return saveRubric(cfg().rubric.concat([{ id: "r" + Date.now().toString(36), label: l, points: Number(val("rub-new-pts")) || 0 }])); }
+    case "set-phone": if (!needAdmin()) return; return setPhone(id);
+    case "reset-pin": if (!needAdmin()) return; if (!confirm("Reset " + (members[id] ? members[id].name : "this person") + "'s PIN? They'll choose a new one next time they sign in.")) return; return guard(() => updateDoc(doc(db, "members", id), { pinHash: "" }));
+    case "remove-member": if (!needAdmin()) return; if (!confirm("Remove " + (members[id] ? members[id].name : "this person") + " from the league?")) return; return guard(() => deleteDoc(doc(db, "members", id)));
+    case "remove-survivor": if (!needAdmin()) return; if (!confirm("Remove " + (survivors[id] ? survivors[id].name : "this castaway") + " from the cast?")) return; return guard(() => deleteDoc(doc(db, "survivors", id)));
+    case "photo-pick": { if (!needAdmin()) return; ui.photoFor = id; const f = $("photo-file"); f.value = ""; return f.click(); }
+    case "photo-remove": if (!needAdmin()) return; return guard(() => updateDoc(doc(db, "survivors", id), { photo: "" }));
+    case "add-survivor": { const n = val("new-surv-name").trim(); if (!n) return; return addSurvivors([n + "|" + val("new-surv-age") + "|" + val("new-surv-job")]); }
+    case "toggle-bulk": ui.showBulk = !ui.showBulk; return render();
+    case "add-bulk": { const lines = val("bulk-input").split("\n").map((x) => x.trim()).filter(Boolean); if (!lines.length) return; addSurvivors(lines); ui.showBulk = false; return render(); }
+    case "toggle-eliminated": { if (!needMe()) return; const s = survivors[id]; return guard(() => updateDoc(doc(db, "survivors", id), { eliminated: !s.eliminated })); }
+    case "open-surv": ui.openSurv = ui.openSurv === id ? null : id; return render();
+    case "ev": return adjustEvent(el.getAttribute("data-sid"), el.getAttribute("data-rid"), Number(el.getAttribute("data-delta")));
+    case "toggle-shuffle": ui.shuffleOnStart = !ui.shuffleOnStart; return;
+    case "start-draft": return startDraft();
+    case "draft-pick": return makePick(el.getAttribute("data-survivor"));
+    case "undo-pick": return undoPick();
+    case "toggle-bonus-form": ui.showBonusForm = !ui.showBonusForm; return render();
+    case "save-bonus": {
+      if (!needMe()) return;
+      const title = val("bf-title").trim(); if (!title) return toast("Give the challenge a title.");
+      const options = val("bf-options").split(",").map((o) => o.trim()).filter(Boolean);
+      const ans = val("bf-answer").trim(); let correct = null;
+      if (ans) { correct = options.find((o) => o.toLowerCase() === ans.toLowerCase()); if (!correct) return toast("The correct answer has to match one of the options."); }
+      ui.showBonusForm = false;
+      await guard(() => addDoc(collection(db, "bonus"), { week: Number(ui.bonusWeek || cfg().currentWeek), day: val("bf-day"), type: val("bf-type") || "trivia", title, prompt: val("bf-prompt"), options, points: Number(val("bf-points")) || 0, correctOption: correct, resolved: false, responses: {}, submissions: {}, createdAt: Date.now() }));
+      return render();
+    }
+    case "answer-bonus": if (!needMe()) return; return guard(() => updateDoc(doc(db, "bonus", el.getAttribute("data-bonus")), { ["responses." + myId]: el.getAttribute("data-option") }));
+    case "resolve-bonus": if (!needMe()) return; return guard(() => updateDoc(doc(db, "bonus", el.getAttribute("data-bonus")), { resolved: true, correctOption: el.getAttribute("data-option") }));
+    case "reopen-bonus": if (!needMe()) return; return guard(() => updateDoc(doc(db, "bonus", el.getAttribute("data-bonus")), { resolved: false }));
+    case "delete-bonus": if (!needAdmin()) return; if (!confirm("Delete this challenge?")) return; return guard(() => deleteDoc(doc(db, "bonus", el.getAttribute("data-bonus"))));
+    case "post-video": {
+      if (!needMe()) return;
+      const bid = el.getAttribute("data-bonus"), url = val("vid-url-" + bid).trim();
+      if (!url) return toast("Paste a video link first.");
+      return guard(() => updateDoc(doc(db, "bonus", bid), { ["submissions." + myId]: { videoUrl: url, caption: val("vid-cap-" + bid).trim(), ts: Date.now() } }));
+    }
+  }
+});
+document.addEventListener("change", async (e) => {
+  const el = e.target, act = el.getAttribute("data-act"), field = el.getAttribute("data-field");
+  if (el.id === "photo-file") {
+    const f = el.files && el.files[0];
+    if (!f || !ui.photoFor || !needAdmin()) return;
+    const sid = ui.photoFor;
+    return guard(async () => { const url = await fileToSquareDataUrl(f); await updateDoc(doc(db, "survivors", sid), { photo: url }); toast("Photo saved ✓"); }, "Couldn't save that photo.");
+  }
+  if (act === "pick-bonus-week") { ui.bonusWeek = Number(el.value); return render(); }
+  if (act === "pick-scoring-week") { ui.scoringWeek = Number(el.value); return render(); }
+  if (act === "pick-hist-member") { ui.histMember = el.value; return render(); }
+  if (field === "rubric-label" || field === "rubric-pts") {
+    if (!needAdmin()) return render();
+    const id = el.getAttribute("data-id");
+    saveRubric(cfg().rubric.map((r) => r.id !== id ? r : field === "rubric-label" ? Object.assign({}, r, { label: el.value.trim() || r.label }) : Object.assign({}, r, { points: Number(el.value) || 0 })));
+  }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const map = { "join-name": "join", "join-pin": "join", "pin-input": "signin", "new-surv-name": "add-survivor", "admin-try": "unlock", "admin-new": "set-pass", "my-pin": "set-my-pin" };
+  const act = map[e.target && e.target.id];
+  if (act) { e.preventDefault(); const b = document.querySelector('[data-act="' + act + '"]'); if (b) b.click(); }
+});
+render();
+
+</script>
+</body>
+</html>
