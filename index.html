@@ -283,6 +283,12 @@
   .hist-ev{ display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:5px 0 0 52px; color:var(--sand-dim); }
   .hist-ev span:last-child{ font-weight:700; color:var(--sand); }
 
+
+  .card.wl-bar{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; font-family:inherit; font-size:14px; color:var(--sand); cursor:pointer; padding:12px 16px; }
+  .card.wl-bar:hover{ border-color:var(--torch); }
+  .wl-bar-t{ font-weight:800; white-space:nowrap; }
+  .wl-bar-s{ flex:1; min-width:0; font-size:13px; color:var(--sand-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wl-bar-c{ color:var(--sand-faint); }
   .wl-row{ display:flex; align-items:center; gap:10px; padding:8px 4px; border-bottom:1px solid var(--line); }
   .wl-row:last-of-type{ border-bottom:none; }
   .wl-n{ width:22px; text-align:center; font-family:'Staatliches',sans-serif; font-size:18px; color:var(--sand-dim); flex:none; }
@@ -366,7 +372,7 @@ let myId = null;
 try { myId = localStorage.getItem("tt_member"); } catch (e) { myId = null; }
 const ui = {
   tab: "standings", watching: false, shuffleOnStart: true, scoringWeek: null, bonusWeek: null,
-  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null, wlAdd: false
+  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null, wlAdd: false, wlOpen: false, tribeOpen: false
 };
 let toastTimer = null;
 
@@ -394,6 +400,7 @@ function videoLabel(url) {
 }
 function safeUrl(u) { return /^https?:\/\//i.test(u) ? u : "https://" + u; }
 
+const MAX_MEMBER_BONUS_POINTS = 5; // challenges added by non-commissioners: 1 per week, worth up to this many points
 const fmt = (n) => (n > 0 ? "+" : "") + n;
 function thumb(s, px) {
   const st = "width:" + px + "px;height:" + px + "px;";
@@ -744,15 +751,18 @@ function renderStandings() {
 function renderWishlist(d) {
   const m = me();
   if (!m) return "";
-  const wl = wishlistOf(myId), taken = takenMap(d);
-  let firstAvail = null;
-  let out = '<div class="card"><div class="btw" style="margin-bottom:6px;"><div><div class="eyebrow">⭐ MY WISHLIST</div><div class="hero-sub">Rank who you want. They go gray as soon as someone drafts them.</div></div><button class="btn sm ' + (ui.wlAdd ? "primary" : "ghost") + '" data-act="wl-toggle-add">' + (ui.wlAdd ? "Done" : "+ Add castaways") + "</button></div>";
+  const wl = wishlistOf(myId).filter((sid) => survivors[sid]), taken = takenMap(d);
+  const firstAvail = wl.find((sid) => !survivors[sid].eliminated && !taken[sid]) || null;
+  if (!ui.wlOpen) {
+    const summary = wl.length ? wl.length + " player" + (wl.length === 1 ? "" : "s") + (firstAvail ? " · next up: " + esc(survivors[firstAvail].name) : d.status === "complete" ? "" : " · all taken") : "tap to build your list";
+    return '<button class="card wl-bar" data-act="wl-toggle"><span class="wl-bar-t">⭐ My wishlist</span><span class="wl-bar-s">' + summary + "</span>" + (m.autopick ? '<span class="correct-badge">⚡ auto-pick on</span>' : "") + '<span class="wl-bar-c">▾</span></button>';
+  }
+  let out = '<div class="card"><div class="btw" style="margin-bottom:6px;"><div><div class="eyebrow">⭐ MY WISHLIST</div><div class="hero-sub">Rank who you want. They go gray as soon as someone drafts them.</div></div><div class="row" style="gap:6px;"><button class="btn sm ' + (ui.wlAdd ? "primary" : "ghost") + '" data-act="wl-toggle-add">' + (ui.wlAdd ? "Done" : "+ Add castaways") + '</button><button class="btn sm ghost" data-act="wl-toggle">Hide ▴</button></div></div>';
   out += '<label class="row" style="margin:8px 0 10px;font-size:13.5px;cursor:pointer;"><input type="checkbox" data-act="wl-autopick" ' + (m.autopick ? "checked" : "") + ' style="width:auto;"> <span><b>⚡ Auto-pick for me</b> — drafts my top available player when it\'s my turn</span></label>';
   if (!wl.length) out += '<div class="feed-empty">Nothing here yet — tap "+ Add castaways" and add your favorites in order of preference.</div>';
   wl.forEach((sid, i) => {
-    const s = survivors[sid]; if (!s) return;
+    const s = survivors[sid];
     const by = taken[sid], gray = !!by || s.eliminated;
-    if (!gray && firstAvail === null) firstAvail = sid;
     const sub = by ? "Drafted by " + (members[by] ? members[by].name : "someone") : s.eliminated ? "Eliminated" : (s.age ? s.age + " · " : "") + (s.job || "");
     out += '<div class="wl-row' + (gray ? " gray" : "") + '"><span class="wl-n">' + (i + 1) + "</span>" + thumb(s, 38) + '<div class="wl-t"><div class="t">' + esc(s.name) + (firstAvail === sid ? ' <span class="correct-badge">next up</span>' : "") + '</div><div class="sub">' + esc(sub) + '</div></div><div class="wl-ctl"><button class="iconbtn" title="Move up" data-act="wl-up" data-id="' + sid + '">▲</button><button class="iconbtn" title="Move down" data-act="wl-down" data-id="' + sid + '">▼</button><button class="iconbtn" title="Remove" data-act="wl-remove" data-id="' + sid + '">✕</button></div></div>';
   });
@@ -825,16 +835,17 @@ function renderDraft() {
 function renderBonus() {
   if (!ui.bonusWeek) ui.bonusWeek = cfg().currentWeek;
   const wkKey = ui.bonusWeek, joined = !!me();
+  const usedSlot = joined && !isAdmin() && bonusList(wkKey).some((b) => b.createdBy === myId);
   let out = head("Bonus Challenges", "Trivia, predictions, dance-offs — everyone answers and posts their own videos");
   out += '<div class="card"><div class="btw"><label class="field" style="margin:0;">Week<br><select data-act="pick-bonus-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wkKey).map((w) => '<option value="' + w + '" ' + (w === Number(wkKey) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label>" +
-    (joined ? '<button class="btn primary" data-act="toggle-bonus-form">' + (ui.showBonusForm ? "Cancel" : "+ Add challenge") + "</button>" : "") + "</div>";
-  if (joined && ui.showBonusForm) out += '<div class="card" style="margin-top:14px;border-color:var(--torch);">' + bonusForm() + "</div>";
+    (joined ? (usedSlot ? '<span class="correct-badge">✓ You\'ve added this week\'s challenge</span>' : '<button class="btn primary" data-act="toggle-bonus-form">' + (ui.showBonusForm ? "Cancel" : "+ Add challenge") + "</button>") : "") + "</div>";
+  if (joined && ui.showBonusForm && !usedSlot) out += '<div class="card" style="margin-top:14px;border-color:var(--torch);">' + bonusForm() + "</div>";
   out += "</div>";
   const list = bonusList(wkKey);
   if (!list.length) return out + '<div class="card"><div class="empty"><div class="big">🎲</div>No bonus challenges for week ' + wkKey + " yet.</div></div>";
   list.sort((a, b) => (a.day || "").localeCompare(b.day || "")).forEach((b) => {
     const t = BONUS_TYPES[b.type] || BONUS_TYPES.other, n = Object.keys(b.responses || {}).length;
-    out += '<div class="bonus-card"><div class="row"><span class="bonus-type">' + t.icon + " " + t.label + '</span><span class="bonus-day">' + esc(b.day || "") + "</span>" +
+    out += '<div class="bonus-card"><div class="row"><span class="bonus-type">' + t.icon + " " + t.label + '</span><span class="bonus-day">' + esc(b.day || "") + "</span>" + (b.createdBy && members[b.createdBy] ? '<span class="bonus-day">· by ' + esc(members[b.createdBy].name) + "</span>" : "") +
       (b.resolved ? '<span class="correct-badge">✓ ' + esc(b.correctOption) + " · " + b.points + " pts</span>" : '<span class="bonus-day">' + b.points + " pts · " + n + "/" + memberList().length + " answered</span>") + "</div>";
     out += '<div class="bonus-title">' + esc(b.title) + "</div>" + (b.prompt ? '<div class="bonus-prompt">' + esc(b.prompt) + "</div>" : "");
     if ((b.options || []).length) {
@@ -856,22 +867,30 @@ function renderBonus() {
   return out;
 }
 function bonusForm() {
-  return '<div class="grid" style="grid-template-columns:1fr 1fr;"><div><label class="field">Day</label><input type="text" id="bf-day" placeholder="e.g. Wednesday"></div>' +
+  const A = isAdmin();
+  return '<div class="grid" style="grid-template-columns:1fr 1fr;">' + (A ? "" : '<div class="hero-sub" style="grid-column:1/-1;">You can add <b>1 challenge per week</b>, worth up to <b>' + MAX_MEMBER_BONUS_POINTS + " points</b>.</div>") + '<div><label class="field">Day</label><input type="text" id="bf-day" placeholder="e.g. Wednesday"></div>' +
     '<div><label class="field">Type</label><select id="bf-type">' + Object.keys(BONUS_TYPES).map((k) => '<option value="' + k + '">' + BONUS_TYPES[k].icon + " " + BONUS_TYPES[k].label + "</option>").join("") + "</select></div>" +
     '<div style="grid-column:1/-1;"><label class="field">Title</label><input type="text" id="bf-title" placeholder="e.g. Which tribe wins immunity?"></div>' +
     '<div style="grid-column:1/-1;"><label class="field">Prompt (optional)</label><input type="text" id="bf-prompt" placeholder="Extra details"></div>' +
     '<div style="grid-column:1/-1;"><label class="field">Options (comma separated — leave blank for a video-only challenge like a dance-off)</label><input type="text" id="bf-options" placeholder="e.g. Tribe A, Tribe B"></div>' +
     '<div style="grid-column:1/-1;"><label class="field">Correct answer (optional — must match one option; leave blank to pick it later)</label><input type="text" id="bf-answer" placeholder="e.g. Tribe A"></div>' +
-    '<div><label class="field">Points</label><input type="number" id="bf-points" value="10"></div><div style="align-self:end;"><button class="btn primary" data-act="save-bonus">Save challenge</button></div></div>';
+    '<div><label class="field">Points' + (A ? "" : " (max " + MAX_MEMBER_BONUS_POINTS + ")") + '</label><input type="number" id="bf-points" min="0" ' + (A ? "" : 'max="' + MAX_MEMBER_BONUS_POINTS + '" ') + 'value="' + (A ? 10 : MAX_MEMBER_BONUS_POINTS) + '"></div><div style="align-self:end;"><button class="btn primary" data-act="save-bonus">Save challenge</button></div></div>';
 }
 
 function renderScoring() {
   if (!ui.scoringWeek) ui.scoringWeek = cfg().currentWeek;
   const wk = ui.scoringWeek, joined = !!me(), rubric = cfg().rubric, d = draftOf(wk);
-  let out = head("Cast & Scoring", "Mark eliminations, then tap a survivor to log what they did this week");
-  out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Tribe status</h3>';
-  out += survivorList().length ? '<div class="list-wrap">' + orderedCast().map((s) => '<span class="chip ' + (s.eliminated ? "eliminated" : "") + '" ' + (joined ? 'data-act="toggle-eliminated" data-id="' + s.id + '" style="cursor:pointer;"' : "") + ">" + esc(s.name) + (s.eliminated ? " 🕯️" : "") + "</span>").join("") + "</div>" + (joined ? '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">Tap a name to mark them eliminated or bring them back.</div>' : "") : '<div class="empty">The commissioner adds the cast in Setup.</div>';
-  out += "</div>";
+  let out = head("Cast & Scoring", "Tap a survivor to log what they did this week");
+  {
+    const all = survivorList(), outN = all.filter((x) => x.eliminated).length, A = isAdmin();
+    if (!ui.tribeOpen) {
+      out += '<button class="card wl-bar" data-act="tribe-toggle"><span class="wl-bar-t">🌴 Tribe status</span><span class="wl-bar-s">' + (all.length ? (all.length - outN) + " of " + all.length + " still in" + (outN ? " · " + outN + " out" : "") : "no cast yet") + '</span><span class="wl-bar-c">▾</span></button>';
+    } else {
+      out += '<div class="card"><div class="btw" style="margin-bottom:6px;"><h3 style="margin:0;font-size:18px;">Tribe status</h3><button class="btn sm ghost" data-act="tribe-toggle">Hide ▴</button></div>';
+      out += all.length ? '<div class="list-wrap">' + orderedCast().map((x) => '<span class="chip ' + (x.eliminated ? "eliminated" : "") + '" ' + (A ? 'data-act="toggle-eliminated" data-id="' + x.id + '" style="cursor:pointer;"' : "") + ">" + esc(x.name) + (x.eliminated ? " 🕯️" : "") + "</span>").join("") + "</div>" + '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">' + (A ? "Tap a name to mark them eliminated or bring them back." : "Only the commissioner can change who's eliminated.") + "</div>" : '<div class="empty">The commissioner adds the cast in Setup.</div>';
+      out += "</div>";
+    }
+  }
   out += '<div class="card"><div class="btw"><h3 style="margin:0;font-size:18px;">Weekly points</h3><label class="field" style="margin:0;">Week<br><select data-act="pick-scoring-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wk).map((w) => '<option value="' + w + '" ' + (w === Number(wk) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label></div>";
   const draftedBy = {};
   (d.feed || []).forEach((f) => (draftedBy[f.survivorId] = members[f.memberId]));
@@ -1000,6 +1019,7 @@ document.addEventListener("click", async (e) => {
     case "remove-member": if (!needAdmin()) return; if (!confirm("Remove " + (members[id] ? members[id].name : "this person") + " from the league?")) return; return guard(() => deleteDoc(doc(db, "members", id)));
     case "remove-survivor": if (!needAdmin()) return; if (!confirm("Remove " + (survivors[id] ? survivors[id].name : "this castaway") + " from the cast?")) return; return guard(() => deleteDoc(doc(db, "survivors", id)));
     case "backup": return downloadBackup();
+    case "wl-toggle": ui.wlOpen = !ui.wlOpen; if (!ui.wlOpen) ui.wlAdd = false; return render();
     case "wl-toggle-add": ui.wlAdd = !ui.wlAdd; return render();
     case "wl-add": { if (!me()) return toast("Sign in first."); const wl = wishlistOf(myId); if (wl.includes(id)) return; return saveWishlist(wl.concat([id])); }
     case "wl-remove": return saveWishlist(wishlistOf(myId).filter((x) => x !== id));
@@ -1012,7 +1032,8 @@ document.addEventListener("click", async (e) => {
     case "add-survivor": { const n = val("new-surv-name").trim(); if (!n) return; return addSurvivors([n + "|" + val("new-surv-age") + "|" + val("new-surv-job")]); }
     case "toggle-bulk": ui.showBulk = !ui.showBulk; return render();
     case "add-bulk": { const lines = val("bulk-input").split("\n").map((x) => x.trim()).filter(Boolean); if (!lines.length) return; addSurvivors(lines); ui.showBulk = false; return render(); }
-    case "toggle-eliminated": { if (!needMe()) return; const s = survivors[id]; return guard(() => updateDoc(doc(db, "survivors", id), { eliminated: !s.eliminated })); }
+    case "tribe-toggle": ui.tribeOpen = !ui.tribeOpen; return render();
+    case "toggle-eliminated": { if (!needAdmin()) return; const s = survivors[id]; return guard(() => updateDoc(doc(db, "survivors", id), { eliminated: !s.eliminated })); }
     case "open-surv": ui.openSurv = ui.openSurv === id ? null : id; return render();
     case "ev": return adjustEvent(el.getAttribute("data-sid"), el.getAttribute("data-rid"), Number(el.getAttribute("data-delta")));
     case "toggle-shuffle": ui.shuffleOnStart = !ui.shuffleOnStart; return;
@@ -1022,12 +1043,25 @@ document.addEventListener("click", async (e) => {
     case "toggle-bonus-form": ui.showBonusForm = !ui.showBonusForm; return render();
     case "save-bonus": {
       if (!needMe()) return;
+      const admin = isAdmin(), wk = Number(ui.bonusWeek || cfg().currentWeek);
       const title = val("bf-title").trim(); if (!title) return toast("Give the challenge a title.");
       const options = val("bf-options").split(",").map((o) => o.trim()).filter(Boolean);
       const ans = val("bf-answer").trim(); let correct = null;
       if (ans) { correct = options.find((o) => o.toLowerCase() === ans.toLowerCase()); if (!correct) return toast("The correct answer has to match one of the options."); }
+      const pts = Number(val("bf-points")) || 0;
+      if (!admin) {
+        if (bonusList(wk).some((b) => b.createdBy === myId)) return toast("You've already added your challenge for week " + wk + ".");
+        if (pts < 0 || pts > MAX_MEMBER_BONUS_POINTS) return toast("Challenges you add can be worth up to " + MAX_MEMBER_BONUS_POINTS + " points.");
+      }
+      const payload = { week: wk, day: val("bf-day"), type: val("bf-type") || "trivia", title, prompt: val("bf-prompt"), options, points: pts, correctOption: correct, resolved: false, responses: {}, submissions: {}, createdBy: myId, createdAt: Date.now() };
       ui.showBonusForm = false;
-      await guard(() => addDoc(collection(db, "bonus"), { week: Number(ui.bonusWeek || cfg().currentWeek), day: val("bf-day"), type: val("bf-type") || "trivia", title, prompt: val("bf-prompt"), options, points: Number(val("bf-points")) || 0, correctOption: correct, resolved: false, responses: {}, submissions: {}, createdAt: Date.now() }));
+      if (admin) await guard(() => addDoc(collection(db, "bonus"), payload));
+      else await guard(() => runTransaction(db, async (tx) => {
+        const ref = doc(db, "bonus", "w" + wk + "-" + myId);   // one fixed slot per person per week, so it can't be double-submitted
+        const snap = await tx.get(ref);
+        if (snap.exists()) throw new Error("You've already added your challenge for week " + wk + ".");
+        tx.set(ref, payload);
+      }));
       return render();
     }
     case "answer-bonus": if (!needMe()) return; return guard(() => updateDoc(doc(db, "bonus", el.getAttribute("data-bonus")), { ["responses." + myId]: el.getAttribute("data-option") }));
