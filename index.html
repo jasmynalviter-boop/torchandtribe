@@ -604,7 +604,6 @@ const COLORS = ["#F37521", "#F9B6B8", "#BAD2E8", "#C6B63B", "#E8878B", "#8FB4D6"
 const BONUS_TYPES = {
   trivia: { label: "Trivia", icon: "🧠" },
   prediction: { label: "Prediction", icon: "🔮" },
-  dance: { label: "Dance-off", icon: "💃" },
   other: { label: "Bonus", icon: "🎲" }
 };
 const CAST_DETAILS = [
@@ -1005,23 +1004,45 @@ function joinAs(name, pin) {
     pickMe(ref.id); toast("Welcome, " + name + "!");
   }, "Couldn't join — try again.");
 }
+/* weekly squads are "up to 3": everyone gets the same number the castaways allow, spares go to whoever is furthest behind */
+function weeklyPlan(wk, order) {
+  const ids = Object.keys(members), sOwn = seasonOwners(), used = {}, kept = {}, needs = {};
+  ids.forEach((m) => {
+    kept[m] = (keptOf(wk)[m] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated && !sOwn[sid] && !used[sid] && (used[sid] = true)).slice(0, WEEKLY_SLOTS);
+  });
+  const keptSet = new Set(); Object.values(kept).forEach((a) => a.forEach((x) => keptSet.add(x)));
+  const pool = survivorList().filter((x) => !x.eliminated && !sOwn[x.id] && !keptSet.has(x.id)).length;
+  const need = (T) => ids.reduce((n, m) => n + Math.max(0, T - kept[m].length), 0);
+  let T = WEEKLY_SLOTS; while (T > 0 && need(T) > pool) T--;
+  ids.forEach((m) => (needs[m] = Math.max(0, T - kept[m].length)));
+  let spare = pool - need(T);
+  if (T < WEEKLY_SLOTS && spare > 0) {
+    const pts = {}; computeStandings().forEach((r) => (pts[r.member.id] = r.total));
+    const pos = (m) => (order ? order.indexOf(m) : ids.indexOf(m));
+    ids.filter((m) => kept[m].length + needs[m] === T).sort((a, b) => (pts[a] || 0) - (pts[b] || 0) || pos(b) - pos(a)).forEach((m) => { if (spare > 0) { needs[m]++; spare--; } });
+  }
+  const totals = {}; ids.forEach((m) => (totals[m] = kept[m].length + needs[m]));
+  const vals = ids.map((m) => totals[m]), lo = vals.length ? Math.min(...vals) : 0, hi = vals.length ? Math.max(...vals) : 0;
+  return { kept, needs, totals, pool, lo, hi, limited: lo < WEEKLY_SLOTS, note: "Only " + pool + " castaway" + (pool === 1 ? " is" : "s are") + " open this week, so weekly squads are " + (lo === hi ? lo : lo + "–" + hi) + " each." };
+}
 function startDraft() {
   if (!needAdmin()) return;
   const ctx = draftCtx(), ids = Object.keys(members);
   if (!ids.length) return toast("No one has joined yet.");
   if (ctx.draft.status !== "not_started") return toast("This draft already started.");
-  const order = ui.shuffleOnStart ? shuffle(ids) : ids, alive = survivorList().filter((x) => !x.eliminated);
-  const needs = {}, kept = {}, sOwn = ctx.kind === "season" ? {} : seasonOwners(), used = {};
-  ids.forEach((m) => {
-    if (ctx.kind === "season") { needs[m] = SEASON_SLOTS; return; }
-    kept[m] = (keptOf(ctx.wk)[m] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated && !sOwn[sid] && !used[sid] && (used[sid] = true)).slice(0, WEEKLY_SLOTS);
-    needs[m] = WEEKLY_SLOTS - kept[m].length;
-  });
-  const keptSet = new Set(); Object.values(kept).forEach((a) => a.forEach((x) => keptSet.add(x)));
-  const pool = alive.filter((x) => !sOwn[x.id] && !keptSet.has(x.id)).length;
-  let total = ids.reduce((n, m) => n + needs[m], 0), capped = false;
-  while (total > pool) { const m = ids.reduce((a, b) => (needs[b] > needs[a] ? b : a), ids[0]); if (needs[m] <= 0) break; needs[m]--; total--; capped = true; }
-  if (capped) toast("Not enough castaways for every slot — some players get fewer picks.");
+  const order = ui.shuffleOnStart ? shuffle(ids) : ids;
+  let needs = {}, kept = {};
+  if (ctx.kind === "season") {
+    const pool = survivorList().filter((x) => !x.eliminated).length;
+    ids.forEach((m) => (needs[m] = SEASON_SLOTS));
+    let total = ids.length * SEASON_SLOTS, capped = false;
+    while (total > pool) { const m = ids.reduce((a, b) => (needs[b] > needs[a] ? b : a), ids[0]); if (needs[m] <= 0) break; needs[m]--; total--; capped = true; }
+    if (capped) toast("Not enough castaways for every slot — some players get fewer picks.");
+  } else {
+    const plan = weeklyPlan(ctx.wk, order);
+    needs = plan.needs; kept = plan.kept;
+    if (plan.limited) toast(plan.note);
+  }
   const seq = buildSeq(order, needs);
   const draft = { status: seq.length ? "in_progress" : "complete", order, seq, picksPerMember: ctx.per, feed: [] };
   return guard(() => setDoc(ctx.ref, ctx.kind === "season" ? { draft, startWeek: cfg().currentWeek } : { draft, kept }, { merge: true }));
@@ -1212,7 +1233,7 @@ function howItWorks() {
   return '<div class="card hiw"><div class="btw" style="margin-bottom:6px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE BASICS</div><h2 class="h2" style="margin-top:6px;">How it works</h2></div><button class="btn sm ghost" data-act="how-toggle">Hide ▴</button></div><ol class="hiw-list">' +
     "<li><b>Join the league.</b> Pick your name and a 4-digit PIN. The PIN keeps anyone else from playing as you.</li>" +
     "<li><b>Draft your season three.</b> One snake draft where everyone picks 3 castaways to keep all season. Each castaway belongs to one player.</li>" +
-    "<li><b>Draft 3 more every week.</b> Keep any of last week's players you like, release the rest, and draft the open spots. You can also offer a trade to another player.</li>" +
+    "<li><b>Draft up to 3 more every week.</b> Keep any of last week's players you like, release the rest, and draft the open spots. You can also offer a trade to another player.</li>" +
     "<li><b>Earn points.</b> Whatever your castaways do — immunity wins, idols, votes, big moves — scores for you. Bonus challenges add extra points.</li>" +
     "<li><b>Watch the leaderboard.</b> The commissioner enters points after each episode, and the standings update live.</li></ol></div>";
 }
@@ -1294,7 +1315,7 @@ function rulesPanel() {
   if (!ui.rulesOpen) return '<div id="rules"><button class="card wl-bar" data-act="rules-toggle"><span class="wl-bar-t">How points work</span><span class="wl-bar-s">' + c.rubric.length + ' ways to score</span><span class="wl-bar-c">▾</span></button></div>';
   const rows = c.rubric.map((r) => '<div class="rule"><span>' + esc(r.label) + '</span><b class="' + (r.points < 0 ? "neg" : "pos") + '">' + fmt(r.points) + "</b></div>").join("");
   const rulings = (c.houseRules || "").split("\n").map((x) => x.trim()).filter(Boolean);
-  return '<div id="rules" class="card"><div class="btw" style="margin-bottom:8px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE RULES</div><h2 class="h2" style="margin-top:6px;">How points work</h2></div><button class="btn sm ghost" data-act="rules-toggle">Hide ▴</button></div><div class="fmt"><div class="eyebrow" style="margin-bottom:8px;">THE FORMAT</div><p><b>3 season picks</b> — drafted once, they score for you every week all season.</p><p><b>3 weekly picks</b> — drafted each week. Keep them for next week, or offer a trade to another player.</p></div><div class="rules">' + rows + "</div>" +
+  return '<div id="rules" class="card"><div class="btw" style="margin-bottom:8px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE RULES</div><h2 class="h2" style="margin-top:6px;">How points work</h2></div><button class="btn sm ghost" data-act="rules-toggle">Hide ▴</button></div><div class="fmt"><div class="eyebrow" style="margin-bottom:8px;">THE FORMAT</div><p><b>3 season picks</b> — drafted once, they score for you every week all season.</p><p><b>Up to 3 weekly picks</b> — drafted each week. If there aren\'t enough castaways left for everyone to get 3, squads shrink evenly and any spares go to whoever is furthest behind. Keep them for next week, or offer a trade to another player.</p></div><div class="rules">' + rows + "</div>" +
     (rulings.length ? '<div class="rulings"><div class="eyebrow" style="margin-bottom:8px;">HOUSE RULES</div>' + rulings.map((x) => "<p>" + esc(x) + "</p>").join("") + "</div>" : "") + "</div>";
 }
 
@@ -1402,8 +1423,8 @@ function renderKeep(ctx) {
     const sv = survivors[sid], k = kept.has(sid), gone = sv.eliminated;
     out += '<div class="keep-row' + (k && !gone ? " kept" : "") + (gone ? " gray" : "") + '"><span class="wl-info" data-act="info" data-id="' + sid + '">' + thumb(sv, 40) + '</span><div class="wl-t" data-act="info" data-id="' + sid + '"><div class="t">' + esc(sv.name) + '</div><div class="sub">' + (gone ? "Eliminated — can't be kept" : "") + "</div></div>" + (gone ? "" : '<button class="btn sm ' + (k ? "primary" : "ghost") + '" data-act="keep-toggle" data-id="' + sid + '">' + (k ? "✓ Keeping" : "Keep") + "</button>") + "</div>";
   });
-  const need = WEEKLY_SLOTS - keepCount;
-  out += '<div class="hero-sub" style="margin-top:12px;">You\'ll draft <b>' + need + "</b> new player" + (need === 1 ? "" : "s") + " this week." + (others.length ? " Others keeping: " + others.join(", ") + "." : "") + "</div>";
+  const plan = weeklyPlan(ctx.wk), need = plan.needs[myId] != null ? plan.needs[myId] : WEEKLY_SLOTS - keepCount;
+  out += '<div class="hero-sub" style="margin-top:12px;">You\'ll draft ' + (plan.limited ? "up to " : "") + "<b>" + need + "</b> new player" + (need === 1 ? "" : "s") + " this week." + (others.length ? " Others keeping: " + others.join(", ") + "." : "") + "</div>" + (plan.limited ? '<div class="hero-sub" style="margin-top:6px;">' + esc(plan.note) + " Any spare castaways go to whoever is furthest behind.</div>" : "");
   return out + "</div>";
 }
 
@@ -1443,7 +1464,7 @@ function renderDraft() {
   let headline, sub;
   if (d.status === "not_started") {
     headline = isSeason ? "Pick your season three" : "Ready to draft?";
-    sub = isSeason ? "Everyone drafts 3 castaways to keep all season. " + (A ? "Start the order once everyone's here." : "Waiting for the commissioner to start.") : (A ? "Members choose who to keep first, then start the weekly draft." : "Keep or release last week's players below — the commissioner starts the draft.");
+    sub = isSeason ? "Everyone drafts 3 castaways to keep all season. " + (A ? "Start the order once everyone's here." : "Waiting for the commissioner to start.") : (A ? "Members choose who to keep first, then start the weekly draft." : "Keep or release last week's players below — the commissioner starts the draft.") + (weeklyPlan(wk).limited ? " " + weeklyPlan(wk).note : "");
   } else if (d.status === "complete") { headline = isSeason ? "Season squads set! 🔥" : "Draft complete! 🏁"; sub = isSeason ? "Everyone has 3 castaways for the whole season." : "Every squad is set for week " + wk + "."; }
   else if (picker === myId) { headline = "It's your pick!"; sub = "Round " + round + " of " + rounds + (isSeason ? " · season pick" : ""); }
   else { headline = "Round " + round + " of " + rounds; sub = "Waiting on " + esc(pickerName) + (isSeason ? " · season pick" : ""); }
@@ -1489,7 +1510,7 @@ function renderBonus() {
   if (!ui.bonusWeek) ui.bonusWeek = cfg().currentWeek;
   const wkKey = ui.bonusWeek, joined = !!me();
   const usedSlot = joined && !isAdmin() && bonusList(wkKey).some((b) => b.createdBy === myId);
-  let out = head("Bonus challenges", "Trivia, predictions, dance-offs — everyone answers and posts their own videos", "EXTRA POINTS");
+  let out = head("Bonus challenges", "Trivia, predictions and more — everyone answers, and you can post videos too", "EXTRA POINTS");
   out += '<div class="card"><div class="btw"><label class="field" style="margin:0;">Week<br><select data-act="pick-bonus-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wkKey).map((w) => '<option value="' + w + '" ' + (w === Number(wkKey) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label>" +
     (joined ? (usedSlot ? '<span class="correct-badge">✓ You\'ve added this week\'s challenge</span>' : '<button class="btn primary" data-act="toggle-bonus-form">' + (ui.showBonusForm ? "Cancel" : "+ Add challenge") + "</button>") : "") + "</div>";
   if (joined && ui.showBonusForm && !usedSlot) out += '<div class="card" style="margin-top:14px;border-color:var(--torch);">' + bonusForm() + "</div>";
@@ -1525,7 +1546,7 @@ function bonusForm() {
     '<div><label class="field">Type</label><select id="bf-type">' + Object.keys(BONUS_TYPES).map((k) => '<option value="' + k + '">' + BONUS_TYPES[k].icon + " " + BONUS_TYPES[k].label + "</option>").join("") + "</select></div>" +
     '<div style="grid-column:1/-1;"><label class="field">Title</label><input type="text" id="bf-title" placeholder="e.g. Which tribe wins immunity?"></div>' +
     '<div style="grid-column:1/-1;"><label class="field">Prompt (optional)</label><input type="text" id="bf-prompt" placeholder="Extra details"></div>' +
-    '<div style="grid-column:1/-1;"><label class="field">Options (comma separated — leave blank for a video-only challenge like a dance-off)</label><input type="text" id="bf-options" placeholder="e.g. Tribe A, Tribe B"></div>' +
+    '<div style="grid-column:1/-1;"><label class="field">Options (comma separated — leave blank for a video-only challenge)</label><input type="text" id="bf-options" placeholder="e.g. Tribe A, Tribe B"></div>' +
     '<div style="grid-column:1/-1;"><label class="field">Correct answer (optional — must match one option; leave blank to pick it later)</label><input type="text" id="bf-answer" placeholder="e.g. Tribe A"></div>' +
     '<div><label class="field">Points' + (A ? "" : " (max " + MAX_MEMBER_BONUS_POINTS + ")") + '</label><input type="number" id="bf-points" min="0" ' + (A ? "" : 'max="' + MAX_MEMBER_BONUS_POINTS + '" ') + 'value="' + (A ? 10 : MAX_MEMBER_BONUS_POINTS) + '"></div><div style="align-self:end;"><button class="btn primary" data-act="save-bonus">Save challenge</button></div></div>';
 }
