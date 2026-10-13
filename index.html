@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Torch &amp; Tribe">
+<meta name="apple-mobile-web-app-title" content="Torches Up">
 <meta name="theme-color" content="#F6F3CF">
-<title>Torch &amp; Tribe</title>
+<title>Torches Up</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,35 +59,9 @@
   a{ color:var(--torch-text); }
   :focus-visible{ outline:2px solid var(--torch-text); outline-offset:2px; border-radius:6px; }
 
-  .shell{ display:flex; min-height:100%; max-width:1180px; margin:0 auto; }
-  .rail{
-    width:222px; flex:none; padding:var(--sp-5) var(--sp-3); display:flex; flex-direction:column; gap:2px;
-    border-right:1px solid var(--line);
-    position:sticky; top:0; height:100vh;
-  }
-  .brand{ display:flex; align-items:center; gap:10px; padding:6px 10px var(--sp-5); }
-  .brand .flame{ font-size:25px; filter:drop-shadow(0 0 9px rgba(243,117,33,0.55)); }
-  .brand .name{ font-size:21px; line-height:1.1; }
-  .brand .sub{ font-size:11px; color:var(--sand-dim); margin-top:3px; }
 
-  .navbtn{
-    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:var(--r-sm);
-    color:var(--sand-dim); cursor:pointer; border:1px solid transparent; background:none;
-    font-size:14.5px; text-align:left; width:100%; font-family:inherit; transition:background .12s ease, color .12s ease;
-  }
-  .navbtn .ic{ font-size:16px; width:20px; text-align:center; }
-  .navbtn:hover{ background:rgba(139,22,43,0.05); color:var(--sand); }
-  .navbtn.active{ background:var(--panel-3); border-color:var(--line-strong); color:var(--sand); font-weight:600; box-shadow:inset 3px 0 0 var(--torch); }
-  .navfoot{ margin-top:auto; padding:var(--sp-3); font-size:11px; color:var(--sand-faint); line-height:1.5; border-top:1px solid var(--line); }
 
-  .content{ flex:1; min-width:0; padding:var(--sp-6) 30px 90px; }
-  .pagehead{ margin-bottom:var(--sp-5); }
-  .pagehead h2{ font-size:32px; margin:0 0 3px; }
-  .pagehead .meta{ color:var(--sand-dim); font-size:14px; }
 
-  .greet{ margin-bottom:var(--sp-4); }
-  .greet h2{ font-size:30px; margin:0 0 2px; }
-  .greet .meta{ color:var(--sand-dim); font-size:14px; }
 
   select.pill-select{ border-radius:999px; padding:10px 18px; font-weight:600; }
 
@@ -103,24 +77,8 @@
   .check-chip .lbl{ font-size:10.5px; font-weight:800; letter-spacing:0.05em; color:var(--sand-faint); text-transform:uppercase; }
   .check-chip .val{ font-size:15.5px; font-weight:700; }
 
-  .statrow{ display:flex; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); padding:18px 8px; box-shadow:0 8px 22px var(--shadow); margin-bottom:var(--sp-4); }
-  .statrow .col{ flex:1; text-align:center; padding:0 4px; }
-  .statrow .col + .col{ border-left:1px solid var(--line); }
-  .statrow .n{ font-family:'Staatliches'; font-size:28px; line-height:1; }
-  .statrow .n.accent{ color:var(--teal-light); }
-  .statrow .l{ font-size:11px; color:var(--sand-dim); margin-top:4px; font-weight:600; }
 
-  .minirow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-  .minibox{ background:rgba(139,22,43,0.04); border:1px solid var(--line); border-radius:var(--r-sm); padding:7px 13px; text-align:center; min-width:58px; }
-  .minibox .n{ font-family:'Staatliches'; font-size:17px; }
-  .minibox .l{ font-size:10px; color:var(--sand-faint); margin-top:1px; }
 
-  .cast-scroll{ display:flex; gap:12px; overflow-x:auto; padding:2px 2px 6px; }
-  .cast-card{ flex:none; width:82px; text-align:center; }
-  .cast-avatar{ width:82px; height:82px; border-radius:var(--r-md); background:linear-gradient(160deg,#F9B6B8,#F37521); display:flex; align-items:center; justify-content:center; font-family:'Staatliches'; font-size:22px; color:#4A0A17; margin-bottom:6px; }
-  .cast-avatar.out{ opacity:0.4; filter:grayscale(65%); }
-  .cast-name{ font-size:12px; font-weight:700; line-height:1.2; }
-  .cast-sub{ font-size:10px; color:var(--sand-faint); }
 
   .list-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:13px 2px; border-bottom:1px solid var(--line); }
   .list-row:last-child{ border-bottom:none; }
@@ -157,11 +115,11 @@
   .iconbtn{ background:none; border:none; color:var(--sand-faint); font-size:15px; padding:2px 6px; }
   .iconbtn:hover{ color:var(--danger-light); }
 
-  input[type=text], input[type=number], select, textarea{
+  input[type=text], input[type=number], input[type=password], input[type=datetime-local], select, textarea{
     background:rgba(255,254,246,0.85); border:1px solid var(--line-strong); color:var(--sand);
     border-radius:var(--r-sm); padding:9px 11px; font-size:14px; font-family:inherit; width:100%;
   }
-  input:focus, select:focus{ border-color:var(--torch); }
+  input:focus, select:focus, textarea:focus{ border-color:var(--torch); }
   input::placeholder{ color:var(--sand-faint); }
   label.field{ display:block; font-size:12px; color:var(--sand-dim); margin-bottom:5px; }
 
@@ -176,16 +134,6 @@
   .empty .big{ font-size:38px; margin-bottom:10px; opacity:0.9; }
 
   /* Standings */
-  .lb-row{ display:flex; align-items:center; gap:14px; padding:13px 4px; border-bottom:1px solid var(--line); }
-  .lb-row:last-child{ border-bottom:none; }
-  .lb-rank{ font-family:'Staatliches'; font-size:20px; width:30px; color:var(--sand-dim); text-align:center; }
-  .lb-row.first .lb-rank{ font-size:22px; }
-  .lb-avatar{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:var(--torch-ink); flex:none; }
-  .lb-name{ font-weight:600; font-size:15.5px; }
-  .lb-total{ margin-left:auto; font-family:'Staatliches'; font-size:25px; color:var(--torch-text); }
-  details.weekly summary{ cursor:pointer; color:var(--sand-faint); font-size:12.5px; margin-top:3px; list-style:none; }
-  details.weekly summary::-webkit-details-marker{ display:none; }
-  details.weekly[open] summary{ color:var(--sand-dim); }
 
 
   /* Draft */
@@ -234,22 +182,7 @@
   #toast{ position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translate(-50%, 12px); background:#8B162B; border:1px solid rgba(246,243,207,0.25); color:#F6F3CF; padding:10px 18px; border-radius:999px; font-size:13.5px; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; z-index:50; box-shadow:0 10px 24px rgba(139,22,43,0.35); }
   #toast.show{ opacity:1; transform:translate(-50%, 0); }
 
-  .bottombar{ display:none; }
 
-  @media (max-width: 860px){
-    .rail{ display:none; }
-    .bottombar{
-      display:flex; position:fixed; left:0; right:0; bottom:0; z-index:40;
-      background:#FFFEF6; border-top:1px solid var(--line);
-      padding:10px 4px calc(10px + env(safe-area-inset-bottom,0px));
-    }
-    .bottombar .navbtn{ flex-direction:column; gap:3px; align-items:center; font-size:10.5px; padding:4px 2px; color:var(--sand-faint); }
-    .bottombar .navbtn.active{ background:none; box-shadow:none; color:var(--torch-text); font-weight:700; }
-    .bottombar .navbtn .ic{ font-size:20px; }
-    .content{ padding:20px 16px 92px; }
-    .shell{ display:block; }
-    .brand{ padding:14px 4px 10px; }
-  }
 
   .gate{ max-width:560px; margin:24px auto; }
   .chip-btn{ cursor:pointer; font-family:inherit; color:var(--sand); font-size:14px; padding:9px 14px 9px 10px; }
@@ -265,16 +198,9 @@
 
   .thumb{ border-radius:50%; object-fit:cover; flex:none; display:inline-block; background:linear-gradient(160deg,var(--rope),var(--torch)); }
   .thumb-txt{ display:inline-flex; align-items:center; justify-content:center; font-family:'Staatliches',sans-serif; color:var(--torch-ink); letter-spacing:0.02em; }
-  .cast-avatar{ overflow:hidden; }
-  .cast-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
   .survivor-btn{ display:flex; flex-direction:column; align-items:center; gap:4px; }
   .survivor-btn b{ font-weight:700; }
   .team-row{ display:flex; align-items:center; gap:8px; padding:4px 0; font-size:13.5px; color:var(--sand-dim); }
-  .whoami{ position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:12px; background:var(--panel); border:2px solid var(--torch); border-radius:var(--r-md); padding:9px 14px; margin-bottom:var(--sp-4); box-shadow:0 6px 16px var(--shadow); }
-  .who-av{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; color:var(--torch-ink); flex:none; }
-  .who-t{ flex:1; min-width:0; }
-  .who-l{ font-size:10px; font-weight:800; letter-spacing:0.07em; color:var(--sand-faint); }
-  .who-n{ font-size:16px; font-weight:800; line-height:1.15; }
   .hist-pick{ border:1px solid var(--line); border-radius:var(--r-md); padding:10px 12px; margin-top:10px; background:rgba(255,254,246,0.6); }
   .hist-head{ display:flex; align-items:center; gap:10px; }
   .hist-head .t{ font-weight:700; font-size:14.5px; }
@@ -301,20 +227,345 @@
   .wl-row.gray .thumb{ filter:grayscale(1); }
   .wl-row.gray .t{ text-decoration:line-through; }
   .rubric-row{ display:grid; grid-template-columns:1fr 72px 32px; gap:8px; align-items:center; margin-bottom:8px; }
+
+  /* ================= v2 frame: sidebar (desktop) + tab bar (phone), colour-blocked tiles, podium ================= */
+  :root{ --maxw:1040px; --pad:20px; --r-lg:22px; --r-md:14px; --r-sm:10px;
+         --crimson:#8B162B; --rose:#F9B6B8; --arctic:#BAD2E8; --pear:#C6B63B; --latte:#F6F3CF; --sienna:#F37521; }
+  @media (min-width:720px){ :root{ --pad:36px; } }
+  html,body{ height:auto; }
+  body{ min-height:100vh; }
+  .app{ min-height:100vh; }
+  .main{ min-width:0; display:flex; flex-direction:column; min-height:100vh; padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)); }
+  .page{ flex:1; width:100%; max-width:var(--maxw); margin:0 auto; padding:0 var(--pad) 24px; }
+  .page > .card:first-child, .page > .gate:first-child{ margin-top:22px; }
+  .page > .banner:first-child{ margin-top:18px; }
+  .side{ display:none; }
+
+  /* brand */
+  .s-brand{ display:flex; align-items:center; gap:11px; min-width:0; }
+  .brand-tile{ width:38px; height:38px; border-radius:12px; background:linear-gradient(145deg,var(--torch-light),var(--torch)); display:flex; align-items:center; justify-content:center; color:var(--crimson); box-shadow:0 6px 14px rgba(243,117,33,0.32); flex:none; }
+  .brand-tile .ic{ stroke-width:2; }
+  .brand-w{ font-family:'Staatliches','Work Sans',sans-serif; font-size:27px; line-height:1; letter-spacing:0.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* phone top bar */
+  .mbar{ position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:calc(10px + env(safe-area-inset-top,0px)) var(--pad) 10px; background:rgba(246,243,207,0.92); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+  .mbar .brand-w{ font-size:24px; }
+
+  /* identity chip (always visible, in the member's own colour) */
+  .id-chip{ display:flex; align-items:center; gap:10px; min-width:0; background:var(--panel); border:2px solid var(--torch); border-radius:999px; padding:3px 14px 3px 3px; }
+  .who-av{ width:34px; height:34px; border-radius:50%; border:none; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; color:var(--torch-ink); flex:none; cursor:pointer; font-family:inherit; }
+  .who-t{ min-width:0; line-height:1.15; text-align:left; }
+  .who-l{ font-size:9px; font-weight:800; letter-spacing:0.14em; color:var(--sand-faint); }
+  .who-n{ font-weight:800; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:110px; }
+  .chip-out{ display:block; background:none; border:none; padding:0; font:inherit; font-size:11px; color:var(--sand-dim); text-decoration:underline; cursor:pointer; }
+  .mbar .who-l{ display:none; }
+
+  /* phone tab bar */
+  .tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:45; display:flex; gap:2px; padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px)); background:rgba(255,254,246,0.96); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-top:1px solid var(--line); }
+  .tab-i{ flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:3px; padding:4px 2px; background:none; border:none; font:inherit; font-size:10.5px; font-weight:700; color:var(--sand-faint); cursor:pointer; }
+  .tab-pill{ display:flex; align-items:center; justify-content:center; width:50px; height:30px; border-radius:999px; transition:background .15s ease; }
+  .tab-i.active{ color:var(--crimson); }
+  .tab-i.active .tab-pill{ background:var(--rose); }
+
+  /* compact page title */
+  .pagebar{ padding:30px 0 16px; }
+  .pg-dash{ display:block; width:34px; height:6px; border-radius:999px; background:var(--torch); margin-bottom:12px; }
+  .pg{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:clamp(36px,7vw,48px); line-height:1; margin:0; letter-spacing:0.01em; }
+  .pg-s{ margin:10px 0 0; color:var(--sand-dim); font-size:15.5px; line-height:1.5; max-width:560px; }
+  .h1{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; }
+  .h2, .sec-h{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:28px; line-height:1; margin:0 0 12px; letter-spacing:0.01em; }
+  .sec-s{ margin:-4px 0 16px; color:var(--sand-dim); font-size:15px; }
+  .section{ margin-top:44px; }
+  .hero-headline{ font-size:clamp(32px,7vw,46px); }
+
+  /* bento tiles (palette colour blocks) */
+  .bento{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; padding-top:24px; }
+  .tile{ position:relative; overflow:hidden; border-radius:var(--r-lg); padding:22px; min-width:0; }
+  .t-hero{ grid-column:1 / -1; background:var(--rose); color:var(--crimson); }
+  .t-torch{ grid-column:1 / -1; background:var(--crimson); color:var(--latte); }
+  .t-draft{ background:var(--arctic); color:var(--crimson); }
+  .t-lead{ background:var(--pear); color:var(--crimson); }
+  .t-k{ font-size:11px; font-weight:800; letter-spacing:0.14em; opacity:0.78; }
+  .t-h{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:clamp(48px,10vw,72px); line-height:0.95; margin:10px 0 10px; }
+  .t-p{ font-size:16.5px; line-height:1.5; margin:0 0 20px; }
+  .t-p b{ font-weight:800; }
+  .t-cta{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .btn.dark{ background:var(--crimson); color:var(--latte); border:none; border-radius:999px; padding:12px 22px; font-weight:800; }
+  .btn.dark:hover{ background:#a31c34; }
+  .linkbtn{ background:none; border:none; font:inherit; font-weight:700; font-size:14.5px; color:var(--crimson); cursor:pointer; padding:10px 2px; text-decoration:underline; text-underline-offset:4px; }
+  .tc-l{ font-size:11px; font-weight:800; letter-spacing:0.16em; color:rgba(246,243,207,0.75); }
+  .tc-n{ font-family:'Staatliches','Work Sans',sans-serif; font-size:58px; line-height:1; color:var(--latte); margin:6px 0 18px; }
+  .tc-n small{ font-size:26px; color:rgba(246,243,207,0.6); }
+  .torches{ display:grid; grid-template-columns:repeat(7,1fr); gap:12px 4px; justify-items:center; }
+  .tch{ display:inline-flex; align-items:center; justify-content:center; width:30px; height:34px; }
+  .tch.lit{ color:#FFC27A; }
+  .tch.lit svg{ fill:rgba(255,194,122,0.6); filter:drop-shadow(0 0 6px rgba(255,150,60,0.7)); }
+  .tch.out{ color:var(--rose); opacity:0.32; }
+  .torch-cap{ margin-top:18px; font-size:13.5px; color:rgba(246,243,207,0.82); }
+  .tk-ic{ width:38px; height:38px; border-radius:50%; background:rgba(255,254,246,0.62); display:flex; align-items:center; justify-content:center; color:var(--crimson); margin-bottom:14px; }
+  .tk-l{ font-size:10.5px; font-weight:800; letter-spacing:0.14em; opacity:0.78; }
+  .tk-d{ font-weight:800; font-size:16px; line-height:1.3; margin-top:6px; }
+  .tk-c{ display:inline-block; margin-top:14px; padding:5px 12px; border-radius:999px; background:var(--crimson); color:var(--latte); font-size:12px; font-weight:800; }
+  .tk-c.live{ background:var(--torch); color:var(--torch-ink); }
+  .t-draft.dashed{ background:transparent; border:2px dashed rgba(139,22,43,0.4); text-align:left; font:inherit; color:var(--crimson); cursor:pointer; }
+  .ld-row{ display:flex; align-items:center; gap:10px; margin-top:14px; }
+  .ld-n{ font-family:'Staatliches','Work Sans',sans-serif; font-size:30px; line-height:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ld-s{ margin-top:12px; font-size:14px; }
+  .ld-s b{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:36px; vertical-align:-3px; margin-right:2px; }
+  @media (min-width:900px){
+    .bento{ grid-template-columns:repeat(12,minmax(0,1fr)); gap:16px; padding-top:26px; }
+    .t-hero{ grid-column:1 / span 7; }
+    .t-torch{ grid-column:8 / span 5; grid-row:1 / span 2; }
+    .t-draft{ grid-column:1 / span 4; }
+    .t-lead{ grid-column:5 / span 3; }
+    .t-hero, .t-torch{ padding:28px; }
+  }
+
+  /* podium */
+  .podium{ display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:12px; align-items:end; max-width:520px; margin:6px auto 0; }
+  .pod{ text-align:center; min-width:0; position:relative; }
+  .pod-fl{ display:block; color:var(--torch); margin-bottom:2px; }
+  .pod-fl svg{ fill:rgba(249,161,94,0.55); filter:drop-shadow(0 0 6px rgba(243,117,33,0.5)); }
+  .pod-av{ width:56px; height:56px; border-radius:50%; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px; color:var(--torch-ink); border:3px solid var(--panel); box-shadow:0 6px 14px var(--shadow); }
+  .pod-1 .pod-av{ width:68px; height:68px; font-size:21px; }
+  .pod-n{ font-weight:800; font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 4px; }
+  .pod-p{ font-family:'Staatliches','Work Sans',sans-serif; font-size:26px; line-height:1.1; color:var(--torch-text); }
+  .pod-b{ margin-top:10px; border-radius:18px 18px 0 0; display:flex; align-items:flex-start; justify-content:center; padding-top:10px; font-family:'Staatliches','Work Sans',sans-serif; font-size:36px; line-height:1; color:var(--crimson); }
+  .pod-1 .pod-b{ height:122px; background:linear-gradient(180deg,var(--torch-light),var(--torch)); color:var(--torch-ink); }
+  .pod-2 .pod-b{ height:90px; background:var(--rose); }
+  .pod-3 .pod-b{ height:68px; background:var(--arctic); }
+
+  /* full standings list */
+  .lb{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--panel); overflow:hidden; box-shadow:0 8px 22px var(--shadow); }
+  .lb-r{ display:grid; grid-template-columns:30px 38px 1fr auto auto 16px; align-items:center; gap:12px; width:100%; padding:15px 18px; border:none; border-top:1px solid var(--line); background:none; text-align:left; font:inherit; color:var(--sand); cursor:pointer; }
+  .lb > .lb-r:first-child{ border-top:none; }
+  .lb-r:hover{ background:rgba(139,22,43,0.035); }
+  .lb-r.first{ background:linear-gradient(90deg, rgba(243,117,33,0.16), rgba(243,117,33,0) 72%); }
+  .lb-rk{ font-family:'Staatliches','Work Sans',sans-serif; font-size:24px; color:var(--sand-dim); text-align:center; }
+  .lb-r.first .lb-rk{ color:var(--torch-text); }
+  .lb-av{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; color:var(--torch-ink); flex:none; }
+  .lb-nm{ font-weight:800; font-size:16px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lb-nm .you{ color:var(--sand-faint); font-weight:500; font-size:13px; }
+  .lb-nm .lb-bar{ display:block; height:5px; border-radius:999px; background:rgba(139,22,43,0.08); margin-top:8px; overflow:hidden; }
+  .lb-bar i{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--torch-light),var(--torch)); }
+  .lb-wk, .lb-pt{ text-align:right; line-height:1; }
+  .lb-wk i, .lb-pt i{ display:block; font-style:normal; font-size:9.5px; font-weight:800; letter-spacing:0.12em; color:var(--sand-faint); }
+  .lb-wk b{ display:block; font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:24px; margin-top:4px; }
+  .lb-pt b{ display:block; font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:34px; color:var(--torch-text); }
+  .lb-pt i{ margin-top:2px; }
+  .lb-chev{ color:var(--sand-faint); transition:transform .2s ease; font-size:14px; }
+  .lb-r.open .lb-chev{ transform:rotate(180deg); }
+  .lb-detail{ padding:6px 18px 24px; border-top:1px solid var(--line); background:rgba(139,22,43,0.025); }
+  .pd-sum{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; padding:16px 0 4px; }
+  .pd-sum b{ display:block; font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:30px; color:var(--torch-text); line-height:1; }
+  .pd-sum i{ display:block; font-style:normal; font-size:10px; font-weight:800; letter-spacing:0.1em; line-height:1.35; color:var(--sand-dim); margin-top:6px; }
+  .pd-week{ margin-top:22px; }
+  .pd-wh{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .pd-ws{ font-size:13px; color:var(--sand-dim); margin-top:2px; }
+  .pd-wp{ font-family:'Staatliches','Work Sans',sans-serif; font-size:30px; color:var(--torch-text); line-height:1; }
+
+  /* rules */
+  .rules{ display:grid; grid-template-columns:1fr; gap:0 40px; }
+  .rule{ display:flex; justify-content:space-between; gap:16px; padding:13px 2px; border-bottom:1px solid var(--line); font-size:14.5px; }
+  .rule b{ font-weight:800; white-space:nowrap; }
+  .rule b.pos{ color:var(--torch-text); }
+  .rule b.neg{ color:var(--danger-light); }
+  .rulings{ background:var(--panel-3); border-radius:var(--r-md); padding:16px 18px 8px; margin-top:22px; }
+  .rulings p{ position:relative; padding-left:18px; margin:0 0 10px; font-size:14px; line-height:1.55; color:var(--sand-dim); }
+  .rulings p::before{ content:""; position:absolute; left:2px; top:0.6em; width:7px; height:7px; border-radius:50%; background:var(--torch); }
+  @media (min-width:720px){ .rules{ grid-template-columns:1fr 1fr; } }
+
+  /* the tribe (poster grid) */
+  .cast-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  @media (min-width:720px){ .cast-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; } }
+  @media (min-width:1100px){ .cast-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  .cast-it{ display:flex; flex-direction:column; padding:0; overflow:hidden; background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); }
+  .cast-ph{ position:relative; width:100%; aspect-ratio:4/5; overflow:hidden; background:linear-gradient(160deg,var(--rope),var(--torch)); display:flex; align-items:center; justify-content:center; font-family:'Staatliches','Work Sans',sans-serif; font-size:50px; color:var(--torch-ink); }
+  .cast-ph img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .cast-tx{ display:flex; flex-direction:column; padding:12px 14px 16px; min-width:0; }
+  .cast-tx h3{ font-family:'Work Sans',sans-serif; font-size:16.5px; font-weight:700; letter-spacing:0; margin:0; line-height:1.2; }
+  .cast-j{ order:1; margin-top:5px; font-size:13.5px; font-weight:800; }
+  .cast-m{ order:2; margin-top:3px; font-size:12.5px; color:var(--sand-dim); }
+  .cast-q{ order:3; margin-top:8px; font-size:12.5px; font-style:italic; color:var(--sand-dim); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .cast-o{ order:4; margin-top:8px; font-size:12px; font-weight:700; color:var(--sand-dim); }
+  .cast-it.out .cast-ph{ filter:grayscale(1); opacity:0.62; }
+  .cast-it.out .cast-tx{ opacity:0.58; }
+  .snuff{ position:absolute; left:10px; top:10px; padding:4px 9px; border-radius:999px; background:rgba(74,10,23,0.82); color:#F6F3CF; font-family:'Work Sans',sans-serif; font-size:10px; font-weight:800; letter-spacing:0.1em; }
+  .credit{ font-size:12.5px; color:var(--sand-faint); margin:18px 2px 0; }
+
+  /* draft hero card tinted by state */
+  .card.dh{ border:none; box-shadow:none; }
+  .dh-idle{ background:var(--arctic); }
+  .dh-wait{ background:var(--rose); }
+  .dh-your{ background:linear-gradient(135deg,var(--torch-light),var(--torch)); color:var(--torch-ink); }
+  .dh-done{ background:var(--pear); }
+  .dh .eyebrow, .dh .hero-sub, .dh .hero-headline{ color:inherit; }
+  .dh .eyebrow, .dh .hero-sub{ opacity:0.82; }
+  .dh .progress-track{ background:rgba(139,22,43,0.16); }
+  .dh .progress-fill{ background:var(--crimson); }
+  .dh .check-chip{ background:rgba(255,254,246,0.6); border-color:rgba(139,22,43,0.18); }
+
+  /* footer + misc */
+  .foot{ margin-top:48px; padding:22px 0 24px; border-top:1px solid var(--line); }
+  .foot-in{ max-width:var(--maxw); margin:0 auto; padding:0 var(--pad); font-size:13px; color:var(--sand-dim); }
+  .card + .card{ margin-top:18px; }
+  .gate{ max-width:520px; margin:36px auto; padding:30px 28px; }
+  .gate .hero-headline{ margin:8px 0 0; }
+  .gate .hero-sub{ margin:10px 0 22px; line-height:1.5; }
+  .gate .list-wrap{ margin:0 0 6px; gap:10px; }
+  .gate .eyebrow + .row{ margin-top:12px !important; }
+  @media (max-width:719px){
+    .gate .row > input{ max-width:none !important; flex:1 1 100%; }
+    .gate .row > .btn.primary{ width:100%; }
+    .lb-r{ grid-template-columns:26px 34px 1fr auto auto 14px; gap:10px; padding:14px 14px; }
+    .lb-av{ width:34px; height:34px; }
+    .lb-nm{ font-size:15.5px; }
+    .lb-pt b{ font-size:30px; }
+    .lb-wk b{ font-size:21px; }
+    .lb-detail{ padding:4px 14px 20px; }
+    .card{ padding:20px; }
+  }
+
+  /* desktop: sidebar frame */
+  @media (min-width:900px){
+    .app{ display:grid; grid-template-columns:248px minmax(0,1fr); }
+    .main{ padding-bottom:0; }
+    .mbar, .tabbar{ display:none; }
+    .side{ display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh; padding:26px 16px 22px; border-right:1px solid var(--line); background:rgba(255,254,246,0.55); }
+    .side .s-brand{ padding:0 8px 16px; }
+    .s-week{ align-self:flex-start; margin:0 8px 16px; padding:5px 12px; border-radius:999px; background:var(--pear); color:var(--crimson); font-size:11px; font-weight:800; letter-spacing:0.1em; }
+    .s-nav{ display:flex; flex-direction:column; gap:4px; }
+    .nav-i{ display:flex; align-items:center; gap:12px; width:100%; padding:12px 14px; border-radius:14px; border:none; background:none; font:inherit; font-size:15px; font-weight:700; color:var(--sand-dim); text-align:left; cursor:pointer; }
+    .nav-i .ic{ color:var(--torch-text); flex:none; }
+    .nav-i:hover{ background:rgba(139,22,43,0.06); color:var(--sand); }
+    .nav-i.active{ background:var(--crimson); color:var(--latte); }
+    .nav-i.active .ic{ color:var(--torch-light); }
+    .s-user{ margin-top:auto; }
+    .s-user .id-chip{ border-radius:20px; padding:10px 14px 10px 10px; width:100%; }
+    .s-user .who-av{ width:40px; height:40px; }
+    .s-user .who-n{ max-width:120px; }
+    .foot{ margin-top:56px; }
+  }
+
+  /* torch tile fills its (taller) desktop cell */
+  .t-torch{ display:flex; flex-direction:column; }
+  .t-torch .torch-cap{ margin-top:auto; padding-top:18px; }
+  @media (min-width:900px){
+    .t-torch .torches{ flex:1; align-content:space-evenly; gap:10px 4px; }
+    .t-torch .tch{ width:34px; height:40px; }
+    .t-torch .tch svg{ width:30px; height:30px; }
+  }
+
+  /* ================= castaway pop-up + tappable names ================= */
+  body.modal-open{ overflow:hidden; }
+  .sheet-bg{ position:fixed; inset:0; z-index:90; background:rgba(74,10,23,0.5); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); display:flex; align-items:flex-end; justify-content:center; animation:sbg .18s ease; }
+  .sheet{ position:relative; width:100%; max-width:460px; max-height:90vh; overflow:auto; background:var(--panel); border-radius:28px 28px 0 0; box-shadow:0 -12px 40px rgba(74,10,23,0.3); padding-bottom:env(safe-area-inset-bottom,0px); animation:sup .22s ease; overscroll-behavior:contain; }
+  @keyframes sbg{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes sup{ from{ transform:translateY(40px); opacity:0; } to{ transform:none; opacity:1; } }
+  @media (min-width:720px){ .sheet-bg{ align-items:center; padding:24px; } .sheet{ border-radius:28px; max-height:86vh; } }
+  .sheet-x{ position:absolute; top:12px; right:12px; z-index:2; width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,254,246,0.92); color:var(--crimson); font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 4px 12px rgba(74,10,23,0.25); }
+  .sheet-ph{ position:relative; aspect-ratio:4/3.4; background:linear-gradient(160deg,var(--rope),var(--torch)); display:flex; align-items:center; justify-content:center; font-family:'Staatliches','Work Sans',sans-serif; font-size:84px; color:var(--torch-ink); overflow:hidden; border-radius:28px 28px 0 0; }
+  .sheet-ph img{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .sheet-ph.out{ filter:grayscale(1); }
+  .sheet-b{ padding:18px 22px 24px; }
+  .sheet-n{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:36px; line-height:1; margin:0; }
+  .sheet-j{ font-weight:800; font-size:16px; margin-top:8px; }
+  .sheet-m{ color:var(--sand-dim); font-size:14px; margin-top:4px; }
+  .sheet-q{ font-style:italic; color:var(--sand-dim); font-size:14.5px; margin-top:10px; }
+  .sheet-stats{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); }
+  .sheet-stats b{ display:block; font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:28px; line-height:1; color:var(--torch-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sheet-stats i{ display:block; font-style:normal; font-size:10px; font-weight:800; letter-spacing:0.1em; color:var(--sand-dim); margin-top:6px; }
+  .sheet-credit{ margin-top:14px; font-size:12px; color:var(--sand-faint); }
+  .sheet-edit{ margin-top:14px; }
+
+  .nm{ cursor:pointer; text-decoration:underline; text-decoration-color:rgba(139,22,43,0.3); text-underline-offset:3px; }
+  .team-row[data-act], .wl-t[data-act], .wl-info, .surv-ph, .hist-head > div[data-act]{ cursor:pointer; }
+  .surv-ph, .wl-info{ display:inline-flex; flex:none; }
+  .sv-wrap{ position:relative; }
+  .sv-wrap .survivor-btn{ width:100%; height:100%; }
+  .sv-i{ position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; border:1px solid var(--line-strong); background:var(--panel); font:inherit; font-size:12px; font-weight:800; font-style:italic; font-family:Georgia,serif; color:var(--sand-dim); cursor:pointer; padding:0; line-height:1; }
+  .sv-i:hover{ background:var(--panel-3); color:var(--crimson); }
+  button.tch{ border:none; background:none; padding:0; cursor:pointer; font:inherit; transition:transform .15s ease; }
+  button.tch:hover{ transform:scale(1.18); }
+  .torch-hint{ font-size:12px; color:rgba(246,243,207,0.6); margin-top:4px; }
+
+  /* ================= season picks / keep / trades ================= */
+  .team-label{ margin:12px 0 4px; font-size:10px; font-weight:800; letter-spacing:0.14em; color:var(--sand-faint); }
+  .team-label:first-of-type{ margin-top:6px; }
+  .team-row .tag{ margin-left:auto; font-style:normal; font-size:10px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; padding:2px 8px; border-radius:999px; background:var(--panel-3); color:var(--torch-text); }
+  .keep-row{ display:flex; align-items:center; gap:12px; padding:10px 4px; border-bottom:1px solid var(--line); }
+  .keep-row:last-of-type{ border-bottom:none; }
+  .keep-row.kept{ background:linear-gradient(90deg, rgba(198,182,59,0.18), rgba(198,182,59,0) 70%); border-radius:12px; padding-left:10px; }
+  .keep-row.gray{ opacity:0.5; }
+  .keep-row .wl-t{ flex:1; min-width:0; }
+  .trade-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; margin-top:8px; background:var(--panel-3); border-radius:14px; flex-wrap:wrap; }
+  .tr-t{ flex:1 1 220px; font-size:14px; line-height:1.45; }
+  .tr-b{ display:flex; gap:8px; }
+  .trade-form{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) auto; gap:8px; align-items:center; margin-top:8px; }
+  .trade-form select{ width:100%; min-width:0; padding:11px 12px; border-radius:12px; border:1px solid var(--line-strong); background:var(--panel); font:inherit; font-size:14px; color:var(--sand); }
+  .trade-done{ font-size:13px; color:var(--sand-dim); padding:5px 2px; }
+  .trade-done b{ text-transform:capitalize; color:var(--sand); }
+  .nav-badge{ display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px; background:var(--torch); color:var(--torch-ink); font-size:11px; font-weight:800; line-height:1; }
+  .nav-i .nav-badge{ margin-left:auto; }
+  .tab-pill{ position:relative; }
+  .tab-pill .nav-badge{ position:absolute; top:-4px; right:-2px; min-width:18px; height:18px; font-size:10px; border:2px solid var(--panel); box-sizing:content-box; }
+  .pd-grp{ margin:14px 0 2px; font-size:10px; font-weight:800; letter-spacing:0.14em; color:var(--sand-faint); }
+  .fmt{ background:var(--panel-3); border-radius:var(--r-md); padding:14px 18px 6px; margin-bottom:6px; }
+  .fmt p{ margin:0 0 10px; font-size:14px; line-height:1.5; color:var(--sand-dim); }
+  .fmt b{ color:var(--sand); }
+  @media (max-width:719px){
+    .trade-form{ grid-template-columns:1fr; }
+    .trade-form .btn{ width:100%; }
+  }
+
+  /* how it works (signed-out visitors) */
+  .hiw-bar{ margin-top:16px; }
+  .hiw-wrap{ margin-top:22px; }
+  .hiw-wrap + .bento{ padding-top:16px; }
+  .hiw-list{ margin:10px 0 4px; padding-left:22px; }
+  .hiw-list li{ margin:0 0 12px; font-size:14.5px; line-height:1.55; color:var(--sand-dim); }
+  .hiw-list li::marker{ font-weight:800; color:var(--torch-text); }
+  .hiw-list b{ color:var(--sand); }
+
+  /* ================= cast details + head-focused photos ================= */
+  .thumb-ph, .cp{ position:relative; overflow:hidden; background:var(--panel-3); }
+  /* zoom by sizing the picture itself (not a CSS transform) so it is drawn at full sharpness */
+  .zimg, .sheet-ph img.zimg, .cp img.zimg{ position:absolute; display:block; max-width:none; object-fit:cover; object-position:center top;
+    width:calc(var(--pz,1.5) * 100%); height:calc(var(--pz,1.5) * 100%);
+    left:calc((1 - var(--pz,1.5)) * 50%); top:calc((1 - var(--pz,1.5)) * var(--pf,0%)); transform:none; }
+  .sheet-r{ color:var(--sand-dim); font-size:13.5px; margin-top:3px; }
+  .frame-prev{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px; min-height:64px; }
+  input[type="range"]{ width:100%; accent-color:var(--torch); padding:0; }
+  .card label.field b{ color:var(--torch-text); margin-left:6px; }
+
+  .sheet-ph.compact{ aspect-ratio:auto; display:block; padding:30px 0 10px; background:var(--panel-3); }
+  .sheet-ph.compact .cp{ width:min(58%,240px); aspect-ratio:1/1; margin:0 auto; border-radius:26px; box-shadow:0 8px 22px rgba(74,10,23,0.2); }
+  .sheet-ph.compact .snuff{ left:14px; top:14px; }
+  .sheet-note{ margin-top:10px; font-size:12px; color:var(--sand-faint); }
+
+  /* older small photos: half the zoom, so the head isn't clipped and it isn't stretched as far */
+  .cp{ --zc: calc(1 + (var(--pz,1.5) - 1) * 0.5); }
+  .cp img.zimg{ width:calc(var(--zc) * 100%); height:calc(var(--zc) * 100%); left:calc((1 - var(--zc)) * 50%); top:calc((1 - var(--zc)) * var(--pf,0%)); }
 </style>
 </head>
 <body>
-<div class="shell">
-  <nav class="rail" id="rail"></nav>
-  <main class="content" id="content"></main>
+<div class="app">
+<aside class="side" id="side"></aside>
+<div class="main">
+<header class="mbar" id="topbar"></header>
+<main class="page" id="content"></main>
+<footer class="foot" id="foot"></footer>
 </div>
-<nav class="bottombar" id="bottombar"></nav>
+</div>
+<nav class="tabbar" id="tabbar"></nav>
+<div id="modal"></div>
 <div id="toast"></div>
 <input type="file" accept="image/*" id="photo-file" style="display:none">
+<input type="file" accept="image/*" multiple id="photo-bulk" style="display:none">
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, doc, collection, onSnapshot, setDoc, updateDoc, deleteDoc, addDoc, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, doc, collection, onSnapshot, getDoc, setDoc, updateDoc, deleteDoc, addDoc, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCk1X9yj6AcBwU3zXblfu5RrxsaNP07MSE",
@@ -328,17 +579,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const cfgRef = doc(db, "config", "main");
+const seasonRef = doc(db, "config", "season");
 const weekRef = (n) => doc(db, "weeks", String(n));
 
 /* ---------------- constants ---------------- */
 const TABS = [
-  { id: "standings", label: "Standings", icon: "🏆" },
-  { id: "draft", label: "Draft Room", icon: "🔥" },
-  { id: "bonus", label: "Bonus Challenges", icon: "🎲" },
-  { id: "scoring", label: "Cast & Scoring", icon: "🌴" },
-  { id: "history", label: "History", icon: "📜" },
-  { id: "setup", label: "Setup", icon: "⚙️" }
+  { id: "standings", label: "Board", icon: "standings" },
+  { id: "draft", label: "Draft", icon: "draft" },
+  { id: "bonus", label: "Bonus", icon: "bonus" },
+  { id: "scoring", label: "Points", icon: "scoring" },
+  { id: "setup", label: "Setup", icon: "setup" }
 ];
+const ICON_PATHS = {
+  standings: '<path d="M6 4h12v5a6 6 0 0 1-12 0V4z"/><path d="M6 6H3v2a3 3 0 0 0 3 3M18 6h3v2a3 3 0 0 1-3 3"/><path d="M12 15v4M8 20h8"/>',
+  draft: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  bonus: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1" fill="currentColor"/>',
+  cast: '<path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="8" r="3.5"/><path d="M20 20v-1.5a3.5 3.5 0 0 0-2.5-3.35M15.5 4.65a3.5 3.5 0 0 1 0 6.7"/>',
+  scoring: '<path d="M12 3l7.5 2.8v5.7c0 4.6-3.2 7.9-7.5 9.5-4.3-1.6-7.5-4.9-7.5-9.5V5.8L12 3z"/><path d="M9 12l2 2 4-4"/>',
+  setup: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+  cal: '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>'
+};
+const icon = (n, px) => '<svg class="ic" width="' + (px || 18) + '" height="' + (px || 18) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON_PATHS[n] + "</svg>";
 const COLORS = ["#F37521", "#F9B6B8", "#BAD2E8", "#C6B63B", "#E8878B", "#8FB4D6", "#F7A267", "#A89A2A"];
 const BONUS_TYPES = {
   trivia: { label: "Trivia", icon: "🧠" },
@@ -346,14 +607,28 @@ const BONUS_TYPES = {
   dance: { label: "Dance-off", icon: "💃" },
   other: { label: "Bonus", icon: "🎲" }
 };
-const DEFAULT_CAST = [
-  ["Aaliyah Puglia", 24, "Chef"], ["Alexis Levine", 34, "Criminal defense attorney"], ["Ana Sani", 34, "Voice actress"],
-  ["Angelica \"Jelly\" Loblack", 29, "Sociology professor"], ["Brady Booker", 27, "Pro wrestler"], ["Carter Krull", 24, "Livestock farmer"],
-  ["Cristian Chavez", 26, "Head of HR"], ["Danny \"Kilby\" Kilby", 30, "Game designer"], ["Devin Way", 33, "Actor"],
-  ["Eric Macksoud", 34, "Mental health counselor"], ["Jenna Doore", 30, "Wedding photographer"], ["Kristin Flickinger", 49, "Crisis management"],
-  ["Lewis Kelly", 28, "Farmer"], ["Linnea Capobianco", 25, "Entrepreneur"], ["Maggie Nestor", 40, "Farmer"],
-  ["Mike Pinsky", 32, "Baseball ops executive"], ["Ori Jean-Charles", 27, "Personal trainer"], ["Patt Cannaday", 33, "Federal prosecutor"],
-  ["Rob Antonson", 40, "Airline gate agent"], ["Sharonda Cox", 34, "OBGYN resident"], ["Thien An Nguyen", 24, "Medical student"]
+const CAST_DETAILS = [
+  { id: "aaliyah-puglia", key: "puglia", name: "Aaliyah Puglia", age: 24, job: "Chef", hometown: "Gloucester City, NJ", residence: "Providence, RI", tagline: "Confident, wise, sporadic" },
+  { id: "alexis-levine", key: "levine", name: "Alexis Levine", age: 34, job: "Criminal Defense Attorney", hometown: "Atlanta, GA", residence: "Atlanta, GA", tagline: "Outgoing, thoughtful, determined" },
+  { id: "ana-sani", key: "sani", name: "Ana Sani", age: 34, job: "Voice Actress", hometown: "Richmond Hill, Ontario", residence: "Toronto, Ontario", tagline: "Goofy, ambitious, chaotic" },
+  { id: "angelica-jelly-loblack", key: "loblack", name: 'Angelica "Jelly" Loblack', age: 29, job: "Sociology Professor", hometown: "Garland, TX & Midwest City, OK", residence: "Bloomington, IN", tagline: "Curious, multifaceted, passionate" },
+  { id: "brady-booker", key: "booker", name: "Brady Booker", age: 27, job: "Pro Wrestler", hometown: "La Salle, IL", residence: "Knoxville, TN", tagline: "Enthusiastic, intense, fun" },
+  { id: "carter-krull", key: "krull", name: "Carter Krull", age: 24, job: "Livestock Farmer", hometown: "Rock Rapids, IA", residence: "Sioux Falls, SD", tagline: "Adventurous, competitive, determined" },
+  { id: "cristian-chavez", key: "chavez", name: "Cristian Chavez", age: 26, job: "Head of HR", hometown: "Salt Lake City, UT", residence: "Salt Lake City, UT", tagline: "Fun, chaotic, loud" },
+  { id: "danny-kilby-kilby", key: "kilby", name: 'Danny "Kilby" Kilby', age: 30, job: "Game Designer", hometown: "Mount Forest, Ontario", residence: "London, Ontario", tagline: "Wacky, chaotic, playful" },
+  { id: "devin-way", key: "devinway", name: "Devin Way", age: 33, job: "Actor", hometown: "Lufkin, TX", residence: "Los Angeles, CA", tagline: "Charming, playful, loyal" },
+  { id: "eric-macksoud", key: "macksoud", name: "Eric Macksoud", age: 34, job: "Mental Health Counselor", hometown: "Lincoln, RI", residence: "Windsor Locks, CT", tagline: "Animated, charismatic, empathic" },
+  { id: "jenna-doore", key: "doore", name: "Jenna Doore", age: 30, job: "Wedding Photographer", hometown: "Perrysburg, OH", residence: "Toledo, OH", tagline: "Empathetic, determined, energetic" },
+  { id: "kristin-flickinger", key: "flickinger", name: "Kristin Flickinger", age: 49, job: "Crisis Management", hometown: "Ketchum, ID", residence: "Santa Barbara, CA", tagline: "Determined, joyful" },
+  { id: "lewis-kelly", key: "lewiskelly", name: "Lewis Kelly", age: 28, job: "Farmer", hometown: "Dublin, Ireland", residence: "Puerto Rico", tagline: "Cheeky, devilish, charming" },
+  { id: "linnea-capobianco", key: "capobianco", name: "Linnea Capobianco", age: 25, job: "Entrepreneur", hometown: "Kearny, NJ", residence: "Jersey City, NJ", tagline: "Rational, outgoing, optimistic" },
+  { id: "maggie-nestor", key: "nestor", name: "Maggie Nestor", age: 40, job: "Farmer", hometown: "Middleway, WV", residence: "Charlestown, WV", tagline: "Joyful, intentional, redneck" },
+  { id: "mike-pinsky", key: "pinsky", name: "Mike Pinsky", age: 32, job: "Baseball Executive", hometown: "New York City, NY", residence: "New York City, NY", tagline: "Enthusiastic, strategic, driven" },
+  { id: "ori-jean-charles", key: "jeancharles", name: "Ori Jean-Charles", age: 27, job: "Personal Trainer", hometown: "Spring Valley, NY", residence: "Spring Valley, NY", tagline: "Consistent, anomaly, hustler" },
+  { id: "patt-cannaday", key: "cannaday", name: "Patt Cannaday", age: 33, job: "Federal Prosecutor", hometown: "Tampa, FL", residence: "Washington, DC", tagline: "Goofy, loyal, intense" },
+  { id: "rob-antonson", key: "antonson", name: "Rob Antonson", age: 40, job: "Airline Gate Agent", hometown: "Johnston, RI", residence: "Cumberland, RI", tagline: "Competitive, funny, loving" },
+  { id: "sharonda-cox", key: "sharondacox", name: "Sharonda Cox", age: 34, job: "OBGYN Resident", hometown: "Pompano Beach, FL", residence: "Richmond, KY", tagline: "Charismatic, resilient, reliable" },
+  { id: "thien-an-nguyen", key: "nguyen", name: "Thien An Nguyen", age: 24, job: "Medical Student", hometown: "Fort Worth, TX", residence: "Fort Worth, TX", tagline: "Quick-witted, empathetic, outgoing" }
 ];
 const DEFAULT_RUBRIC = [
   ["Won individual reward challenge", 2], ["Won individual immunity challenge", 3], ["Won team/tribe reward challenge", 1],
@@ -364,15 +639,15 @@ const DEFAULT_RUBRIC = [
 ].map((r, i) => ({ id: "r" + (i + 1), label: r[0], points: r[1] }));
 
 /* ---------------- state ---------------- */
-let config = null, members = {}, survivors = {}, weeks = {}, bonus = {};
-const loaded = { config: false, members: false, survivors: false, weeks: false, bonus: false };
+let config = null, season = null, members = {}, survivors = {}, weeks = {}, bonus = {};
+const loaded = { config: false, members: false, survivors: false, weeks: false, bonus: false , season: false };
 let dbError = "";
 let seeding = false;
 let myId = null;
 try { myId = localStorage.getItem("tt_member"); } catch (e) { myId = null; }
 const ui = {
   tab: "standings", watching: false, shuffleOnStart: true, scoringWeek: null, bonusWeek: null,
-  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null, wlAdd: false, wlOpen: false, tribeOpen: false
+  showBonusForm: false, showBulk: false, editingProfile: false, openSurv: null, pickColor: null, pinFor: null, histMember: null, photoFor: null, wlAdd: false, sheet: null, howOpen: false, trade: {}, wlOpen: false, tribeOpen: false, openPlayer: null, rulesOpen: false, editSurv: null
 };
 let toastTimer = null;
 
@@ -404,7 +679,7 @@ const MAX_MEMBER_BONUS_POINTS = 5; // challenges added by non-commissioners: 1 p
 const fmt = (n) => (n > 0 ? "+" : "") + n;
 function thumb(s, px) {
   const st = "width:" + px + "px;height:" + px + "px;";
-  if (s && s.photo) return '<img class="thumb" style="' + st + '" src="' + s.photo + '" alt="' + esc(s.name) + '">';
+  if (s && s.photo) return '<span class="thumb thumb-ph" style="' + st + '"><img class="zimg" src="' + s.photo + '" alt="' + esc(s.name) + '"></span>';
   return '<span class="thumb thumb-txt" style="' + st + "font-size:" + Math.round(px * 0.36) + 'px;">' + esc(initials(s ? s.name : "?")) + "</span>";
 }
 const orderedCast = () => survivorList().sort((a, b) => (a.eliminated ? 1 : 0) - (b.eliminated ? 1 : 0) || a.name.localeCompare(b.name));
@@ -424,38 +699,155 @@ function smsLink(id, body) {
   return "sms:" + phones()[id] + sep + "body=" + encodeURIComponent(body);
 }
 function fileToSquareDataUrl(file, size) {
-  size = size || 240;
+  size = size || 400;
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file), img = new Image();
     img.onload = () => {
-      const side = Math.min(img.width, img.height), sx = (img.width - side) / 2, sy = (img.height - side) * 0.2;
-      const c = document.createElement("canvas"); c.width = c.height = size;
-      c.getContext("2d").drawImage(img, sx, sy, side, side, 0, 0, size, size);
-      URL.revokeObjectURL(url); resolve(c.toDataURL("image/jpeg", 0.8));
+      const side = Math.min(img.width, img.height), sx = (img.width - side) / 2, sy = 0;   // top-aligned: heads sit near the top of full-length photos
+      const out = Math.max(64, Math.min(size, side)), first = Math.min(side, 2400);
+      const mk = (n) => { const c = document.createElement("canvas"); c.width = c.height = n; const g = c.getContext("2d"); g.imageSmoothingEnabled = true; g.imageSmoothingQuality = "high"; return [c, g]; };
+      let [cur, g] = mk(first); g.drawImage(img, sx, sy, side, side, 0, 0, first, first);
+      while (cur.width >= out * 2) { const [n, ng] = mk(Math.round(cur.width / 2)); ng.drawImage(cur, 0, 0, n.width, n.height); cur = n; }   // halve step by step = sharper than one big jump
+      const [c, cg] = mk(out); cg.drawImage(cur, 0, 0, out, out);
+      URL.revokeObjectURL(url); resolve(c.toDataURL("image/jpeg", size >= 800 ? 0.85 : 0.82));
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Couldn't read that image — try a JPG or PNG.")); };
     img.src = url;
   });
 }
+/* Each photo is saved twice: a small copy on the castaway (fast lists) and a big, sharp copy that is only loaded when the pop-up opens. */
+const bigPhotos = {}, bigLoading = {};
+async function savePhotoPair(sid, file) {
+  const small = await fileToSquareDataUrl(file, 400), v = Date.now();
+  let big = await fileToSquareDataUrl(file, 1200);
+  for (const px of [1000, 800, 640]) { if (big.length <= 900000) break; big = await fileToSquareDataUrl(file, px); }   // stay under Firestore's 1 MB document limit
+  await setDoc(doc(db, "config", "photo-" + sid), { url: big, v });
+  await updateDoc(doc(db, "survivors", sid), { photo: small, hd: v });
+  bigPhotos[sid] = { v, url: big };
+}
+function ensureBig(id) {
+  const sv = survivors[id];
+  if (!sv || !sv.hd) return;
+  if (bigPhotos[id] && bigPhotos[id].v === sv.hd) return;
+  const key = id + ":" + sv.hd;
+  if (bigLoading[key]) return;
+  bigLoading[key] = true;
+  getDoc(doc(db, "config", "photo-" + id)).then((snap) => {
+    const d = snap.exists() ? snap.data() : null;
+    if (d && d.url && d.v === sv.hd) { bigPhotos[id] = { v: d.v, url: d.url }; renderModal(); }
+  }).catch(() => {}).then(() => { delete bigLoading[key]; });
+}
+function matchFileToSurvivor(fileName) {
+  // Works with "aaliyah.avif", "Devin Way.png", "ORI JEAN-CHARLES (1).JPG" or CBS's "3197255_SRVR_S51_Ana-Sani_00648b.jpg".
+  // Each word in the file name is compared with each castaway's first name, last name and nickname.
+  const letters = (t) => String(t).toLowerCase().replace(/[^a-z]/g, "");
+  const words = String(fileName).replace(/\.[a-z0-9]+$/i, "").toLowerCase().split(/[^a-z]+/).filter((w) => w.length >= 2);
+  const joined = words.join("");
+  let best = null, bestScore = 0, tie = false;
+  survivorList().forEach((sv) => {
+    const toks = new Set(), nm = String(sv.name);
+    nm.replace(/"([^"]+)"/g, (_, nick) => { toks.add(letters(nick)); return ""; });
+    nm.replace(/"[^"]*"/g, " ").split(/[\s-]+/).forEach((p) => { const l = letters(p); if (l.length >= 2) toks.add(l); });
+    let score = 0;
+    toks.forEach((t) => { if (words.includes(t)) score += t.length > 3 ? 2 : 1; });
+    const full = letters(nm.replace(/"[^"]*"/g, " "));
+    if (full.length > 5 && joined.includes(full)) score += 5;   // whole name written out
+    if (score > bestScore) { best = sv; bestScore = score; tie = false; } else if (score === bestScore && score > 0) tie = true;
+  });
+  return bestScore > 0 && !tie ? best : null;   // ambiguous or unknown -> left for you to place by hand
+}
+async function bulkUploadPhotos(files) {
+  const list = Array.from(files || []), missed = [], saved = {};
+  for (let i = 0; i < list.length; i++) {
+    const f = list[i], sv = matchFileToSurvivor(f.name || "");
+    if (!sv) { missed.push(f.name || "(unnamed file)"); continue; }
+    toast("Saving photo " + (i + 1) + " of " + list.length + "…");
+    try { await savePhotoPair(sv.id, f); saved[sv.id] = true; } catch (e) { console.error(e); missed.push((f.name || "photo") + " (couldn't read it)"); }
+  }
+  const n = Object.keys(saved).length;
+  ui.bulkReport = { files: list.length, saved: n, missed };
+  toast(n + " photo" + (n === 1 ? "" : "s") + " saved ✓");
+  render();
+}
 
 
-const cfg = () => Object.assign({ leagueName: "Torch & Tribe", currentWeek: 3 }, config || {}, { rubric: (config && config.rubric) || DEFAULT_RUBRIC });
+const DEFAULT_NAME = "Torches Up", OLD_DEFAULT_NAME = "Torch & Tribe";
+const cfg = () => {
+  const c = Object.assign({ leagueName: DEFAULT_NAME, currentWeek: 3, photoCredit: "CBS / Paramount+", photoZoom: 1.5, photoFocus: 0 }, config || {}, { rubric: (config && config.rubric) || DEFAULT_RUBRIC });
+  if (c.leagueName === OLD_DEFAULT_NAME) c.leagueName = DEFAULT_NAME;   // the previous default name now shows as the new one
+  return c;
+};
 const memberList = () => Object.keys(members).map((id) => Object.assign({ id }, members[id]));
 const survivorList = () => Object.keys(survivors).map((id) => survivors[id]).sort((a, b) => a.name.localeCompare(b.name));
 const me = () => (myId && members[myId] ? members[myId] : null);
 const isAdmin = () => { try { return !!(config && config.adminHash && localStorage.getItem("tt_admin") === config.adminHash); } catch (e) { return false; } };
 const weekDoc = (n) => weeks[String(n)] || {};
-const draftOf = (n) => weekDoc(n).draft || { status: "not_started", order: [], round: 1, turnIndex: 0, picksPerMember: 5, feed: [] };
+const WEEKLY_SLOTS = 3, SEASON_SLOTS = 3;
+const emptyDraft = () => ({ status: "not_started", order: [], seq: [], picksPerMember: 3, feed: [] });
+const draftOf = (n) => weekDoc(n).draft || emptyDraft();
+const seasonDraft = () => (season && season.draft) || emptyDraft();
+const seasonDone = () => seasonDraft().status === "complete";
+const seasonStart = () => (season && Number(season.startWeek)) || 0;
+const keptOf = (wk) => weekDoc(wk).kept || {};
+
 const bonusList = (wk) => Object.keys(bonus).map((id) => bonus[id]).filter((b) => Number(b.week) === Number(wk));
 
-function currentPickerId(d) {
-  if (!d || d.status !== "in_progress" || !d.order || !d.order.length) return null;
-  const order = d.round % 2 === 0 ? d.order.slice().reverse() : d.order;
-  return order[d.turnIndex];
+function seqOf(d) {
+  if (!d) return [];
+  if (Array.isArray(d.seq)) return d.seq;
+  const out = [], order = d.order || [];                      // drafts made before season picks existed
+  for (let r = 1; r <= (d.picksPerMember || 0); r++) (r % 2 ? order : order.slice().reverse()).forEach((m) => out.push(m));
+  return out;
 }
-function advanceDraft(d) {
-  d.turnIndex++;
-  if (d.turnIndex >= d.order.length) { d.turnIndex = 0; d.round++; if (d.round > d.picksPerMember) d.status = "complete"; }
+function buildSeq(order, needs) {
+  const max = Math.max(0, ...Object.values(needs)), seq = [];
+  for (let r = 1; r <= max; r++) (r % 2 ? order : order.slice().reverse()).forEach((m) => { if ((needs[m] || 0) >= r) seq.push(m); });
+  return seq;
+}
+function currentPickerId(d) {
+  if (!d || d.status !== "in_progress") return null;
+  return seqOf(d)[(d.feed || []).length] || null;
+}
+function roundOfPick(d, i) { const q = seqOf(d); let n = 0; for (let k = 0; k <= i && k < q.length; k++) if (q[k] === q[i]) n++; return n; }
+function roundsOf(d) { const c = {}; seqOf(d).forEach((m) => (c[m] = (c[m] || 0) + 1)); return Math.max(0, ...Object.values(c)); }
+function advanceDraft(d) { if ((d.feed || []).length >= seqOf(d).length) d.status = "complete"; }
+
+/* who owns whom: season picks (all season), weekly picks (kept + drafted, then trades applied) */
+function seasonOwners() { const o = {}; (seasonDraft().feed || []).forEach((f) => (o[f.survivorId] = f.memberId)); return o; }
+function weeklyOwners(wk, docOverride) {
+  const w = docOverride || weekDoc(wk), o = {}, kept = w.kept || {};
+  Object.keys(kept).forEach((mid) => (kept[mid] || []).forEach((sid) => (o[sid] = mid)));
+  ((w.draft && w.draft.feed) || []).forEach((f) => (o[f.survivorId] = f.memberId));
+  Object.keys(w.trades || {}).map((id) => w.trades[id]).filter((t) => t.status === "accepted").sort((a, b) => (a.decidedAt || 0) - (b.decidedAt || 0)).forEach((t) => {
+    if (o[t.give] === t.from && o[t.get] === t.to) { o[t.give] = t.to; o[t.get] = t.from; }
+  });
+  return o;
+}
+const rosterOf = (owner) => { const r = {}; Object.keys(owner).forEach((sid) => (r[owner[sid]] = r[owner[sid]] || []).push(sid)); return r; };
+function prevWeekWithRoster(wk) {
+  const ks = Object.keys(weeks).map(Number).filter((k) => k < Number(wk) && weeks[k].draft && weeks[k].draft.status === "complete").sort((a, b) => b - a);
+  return ks.length ? ks[0] : null;
+}
+function draftCtx() {
+  const wk = cfg().currentWeek;
+  if (!seasonDone()) return { kind: "season", ref: seasonRef, draft: seasonDraft(), wk, per: SEASON_SLOTS };
+  return { kind: "week", ref: weekRef(wk), draft: draftOf(wk), wk, per: WEEKLY_SLOTS };
+}
+function takenInfo(ctx) {
+  const t = {}, add = (d, kind) => ((d && d.feed) || []).forEach((f) => (t[f.survivorId] = { mid: f.memberId, kind }));
+  if (ctx.kind === "season") { add(ctx.draft, "season"); return t; }
+  add(seasonDraft(), "season");
+  const kept = keptOf(ctx.wk);
+  Object.keys(kept).forEach((mid) => (kept[mid] || []).forEach((sid) => (t[sid] = { mid, kind: "kept" })));
+  add(ctx.draft, "draft");
+  return t;
+}
+const tradesOf = (wk, w) => { const t = (w || weekDoc(wk)).trades || {}; return Object.keys(t).map((id) => Object.assign({ id }, t[id])).sort((a, b) => a.ts - b.ts); };
+function weekScored(wk, w) { const ev = (w || weekDoc(wk)).events || {}; return Object.keys(ev).some((sid) => Object.values(ev[sid] || {}).some((v) => Number(v) > 0)); }
+function incomingTradeCount() {
+  if (!me() || !seasonDone()) return 0;
+  const wk = cfg().currentWeek, own = weeklyOwners(wk);
+  return tradesOf(wk).filter((t) => t.status === "pending" && t.to === myId && own[t.give] === t.from && own[t.get] === t.to).length;
 }
 function survivorWeekScore(wk, sid) {
   const ev = ((weekDoc(wk).events || {})[sid]) || {};
@@ -471,24 +863,23 @@ function weekOptions(extra) {
 }
 function computeStandings() {
   const rows = {};
-  memberList().forEach((m) => (rows[m.id] = { member: m, total: 0, weekly: {} }));
+  memberList().forEach((m) => (rows[m.id] = { member: m, total: 0, weekly: {}, parts: {} }));
+  const add = (mid, wk, pts, kind) => {
+    const r = rows[mid]; if (!r) return;
+    r.weekly[wk] = (r.weekly[wk] || 0) + pts; r.total += pts;
+    r.parts[wk] = r.parts[wk] || { season: 0, weekly: 0, bonus: 0 }; r.parts[wk][kind] += pts;
+  };
+  const sOwn = seasonOwners(), sStart = seasonStart();
   Object.keys(weeks).forEach((wk) => {
-    const d = weeks[wk].draft;
-    if (!d || !d.feed) return;
-    d.feed.forEach((f) => {
-      if (!rows[f.memberId]) return;
-      const pts = survivorWeekScore(wk, f.survivorId);
-      rows[f.memberId].weekly[wk] = (rows[f.memberId].weekly[wk] || 0) + pts;
-      rows[f.memberId].total += pts;
-    });
+    const own = weeklyOwners(wk);
+    Object.keys(own).forEach((sid) => add(own[sid], wk, survivorWeekScore(wk, sid), "weekly"));
+    if (sStart && Number(wk) >= sStart) Object.keys(sOwn).forEach((sid) => add(sOwn[sid], wk, survivorWeekScore(wk, sid), "season"));
   });
   Object.values(bonus).forEach((b) => {
     if (!b.resolved) return;
     Object.keys(b.responses || {}).forEach((mid) => {
       if (!rows[mid] || b.responses[mid] !== b.correctOption) return;
-      const pv = Number(b.points) || 0;
-      rows[mid].weekly[b.week] = (rows[mid].weekly[b.week] || 0) + pv;
-      rows[mid].total += pv;
+      add(mid, b.week, Number(b.points) || 0, "bonus");
     });
   });
   return Object.values(rows).sort((a, b) => b.total - a.total);
@@ -502,6 +893,7 @@ function onErr(e) {
   render(true);
 }
 onSnapshot(cfgRef, (s) => { config = s.exists() ? s.data() : null; loaded.config = true; maybeSeed(); render(true); }, onErr);
+onSnapshot(seasonRef, (sn) => { season = sn.exists() ? sn.data() : null; loaded.season = true; render(true); }, onErr);
 onSnapshot(collection(db, "members"), (qs) => { members = {}; qs.forEach((d) => (members[d.id] = d.data())); loaded.members = true; render(true); }, onErr);
 onSnapshot(collection(db, "survivors"), (qs) => { survivors = {}; qs.forEach((d) => (survivors[d.id] = Object.assign({ id: d.id }, d.data()))); loaded.survivors = true; maybeSeed(); render(true); }, onErr);
 onSnapshot(collection(db, "weeks"), (qs) => { weeks = {}; qs.forEach((d) => (weeks[d.id] = d.data())); loaded.weeks = true; render(true); }, onErr);
@@ -513,40 +905,58 @@ async function maybeSeed() {
   seeding = true;
   try {
     const batch = writeBatch(db);
-    batch.set(cfgRef, { leagueName: "Torch & Tribe", currentWeek: 3, rubric: DEFAULT_RUBRIC, seeded: true });
-    if (!Object.keys(survivors).length) DEFAULT_CAST.forEach(([name, age, job]) => batch.set(doc(db, "survivors", slug(name)), { name, age, job, eliminated: false }));
+    batch.set(cfgRef, { leagueName: DEFAULT_NAME, currentWeek: 3, rubric: DEFAULT_RUBRIC, seeded: true });
+    if (!Object.keys(survivors).length) CAST_DETAILS.forEach((c) => batch.set(doc(db, "survivors", c.id), { name: c.name, age: c.age, job: c.job, hometown: c.hometown, residence: c.residence, tagline: c.tagline, eliminated: false }));
     await batch.commit();
   } catch (e) { onErr(e); }
 }
 
 
+/* ---------------- cast details (CBS list) ---------------- */
+let castAutoFilled = false;
+function castMatch(c) {
+  if (survivors[c.id]) return survivors[c.id];
+  const norm = (t) => String(t).toLowerCase().replace(/[^a-z]/g, "");
+  return survivorList().find((x) => norm(x.name).includes(c.key)) || null;
+}
+async function applyCastDetails(onlyBlank) {
+  const batch = writeBatch(db); let n = 0;
+  CAST_DETAILS.forEach((c) => {
+    const sv = castMatch(c); if (!sv) return;
+    const patch = {};
+    ["age", "job", "hometown", "residence", "tagline"].forEach((f) => { if (!onlyBlank || sv[f] === undefined || sv[f] === null || sv[f] === "") patch[f] = c[f]; });
+    if (Object.keys(patch).length) { batch.set(doc(db, "survivors", sv.id), patch, { merge: true }); n++; }
+  });
+  if (n) await batch.commit();
+  return n;
+}
+
 /* ---------------- wishlist + auto-pick ---------------- */
 const wishlistOf = (id) => (members[id] && Array.isArray(members[id].wishlist) ? members[id].wishlist : []);
-const takenMap = (d) => { const t = {}; (d.feed || []).forEach((f) => (t[f.survivorId] = f.memberId)); return t; };
-function topAvailable(memberId, d) {
-  const taken = takenMap(d);
-  return wishlistOf(memberId).find((sid) => survivors[sid] && !survivors[sid].eliminated && !taken[sid]) || null;
+function topAvailable(memberId, ctx) {
+  const t = takenInfo(ctx);
+  return wishlistOf(memberId).find((sid) => survivors[sid] && !survivors[sid].eliminated && !t[sid]) || null;
 }
 const autoTried = new Set();
 function maybeAutoPick() {
   if (!Object.values(loaded).every(Boolean)) return;
-  const wk = cfg().currentWeek, d = draftOf(wk);
+  const ctx = draftCtx(), d = ctx.draft;
   if (d.status !== "in_progress") return;
   const picker = currentPickerId(d);
   if (!picker || !members[picker] || !members[picker].autopick) return;
   const own = picker === myId, byAdmin = isAdmin();
   if (!own && !byAdmin) return;
-  const key = wk + ":" + d.feed.length + ":" + picker;
+  const key = ctx.kind + ctx.wk + ":" + d.feed.length + ":" + picker;
   if (autoTried.has(key)) return;
   autoTried.add(key);
   setTimeout(() => {
-    const d2 = draftOf(cfg().currentWeek);
-    if (d2.status !== "in_progress" || d2.feed.length !== d.feed.length) return;
+    const c2 = draftCtx();
+    if (c2.kind !== ctx.kind || c2.draft.status !== "in_progress" || c2.draft.feed.length !== d.feed.length) return;
     pickFromWishlist(picker, true);
   }, own ? 1500 : 2600);
 }
 function pickFromWishlist(memberId, silent) {
-  const sid = topAvailable(memberId, draftOf(cfg().currentWeek));
+  const sid = topAvailable(memberId, draftCtx());
   if (!sid) { if (!silent) toast("Nobody left on that wishlist — pick manually."); return; }
   return makePick(sid, { expect: memberId, silent });
 }
@@ -556,7 +966,7 @@ function saveWishlist(list) {
 }
 function downloadBackup() {
   if (!needAdmin()) return;
-  const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), config, members, survivors, weeks, bonus }, null, 1)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), config, season, members, survivors, weeks, bonus }, null, 1)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "torch-and-tribe-backup-" + new Date().toISOString().slice(0, 10) + ".json";
@@ -597,43 +1007,95 @@ function joinAs(name, pin) {
 }
 function startDraft() {
   if (!needAdmin()) return;
-  const n = cfg().currentWeek;
-  const ids = Object.keys(members);
+  const ctx = draftCtx(), ids = Object.keys(members);
   if (!ids.length) return toast("No one has joined yet.");
-  if (draftOf(n).status !== "not_started") return toast("This week's draft already started.");
-  return guard(() => setDoc(weekRef(n), { draft: { status: "in_progress", order: ui.shuffleOnStart ? shuffle(ids) : ids, round: 1, turnIndex: 0, picksPerMember: 5, feed: [] } }, { merge: true }));
+  if (ctx.draft.status !== "not_started") return toast("This draft already started.");
+  const order = ui.shuffleOnStart ? shuffle(ids) : ids, alive = survivorList().filter((x) => !x.eliminated);
+  const needs = {}, kept = {}, sOwn = ctx.kind === "season" ? {} : seasonOwners(), used = {};
+  ids.forEach((m) => {
+    if (ctx.kind === "season") { needs[m] = SEASON_SLOTS; return; }
+    kept[m] = (keptOf(ctx.wk)[m] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated && !sOwn[sid] && !used[sid] && (used[sid] = true)).slice(0, WEEKLY_SLOTS);
+    needs[m] = WEEKLY_SLOTS - kept[m].length;
+  });
+  const keptSet = new Set(); Object.values(kept).forEach((a) => a.forEach((x) => keptSet.add(x)));
+  const pool = alive.filter((x) => !sOwn[x.id] && !keptSet.has(x.id)).length;
+  let total = ids.reduce((n, m) => n + needs[m], 0), capped = false;
+  while (total > pool) { const m = ids.reduce((a, b) => (needs[b] > needs[a] ? b : a), ids[0]); if (needs[m] <= 0) break; needs[m]--; total--; capped = true; }
+  if (capped) toast("Not enough castaways for every slot — some players get fewer picks.");
+  const seq = buildSeq(order, needs);
+  const draft = { status: seq.length ? "in_progress" : "complete", order, seq, picksPerMember: ctx.per, feed: [] };
+  return guard(() => setDoc(ctx.ref, ctx.kind === "season" ? { draft, startWeek: cfg().currentWeek } : { draft, kept }, { merge: true }));
 }
 function makePick(sid, opts) {
   opts = opts || {};
-  const n = cfg().currentWeek;
+  const ctx = draftCtx();
   const run = () => runTransaction(db, async (tx) => {
-    const snap = await tx.get(weekRef(n));
+    const snap = await tx.get(ctx.ref);
     const data = snap.exists() ? snap.data() : null;
     if (!data || !data.draft || data.draft.status !== "in_progress") throw new Error("The draft isn't running.");
     const d = data.draft, picker = currentPickerId(d);
     if (opts.expect && picker !== opts.expect) { if (opts.silent) return; throw new Error("The turn already moved on."); }
     if (picker !== myId && !isAdmin()) throw new Error("It's not your turn yet.");
-    if (d.feed.some((f) => f.survivorId === sid)) throw new Error("Someone already drafted them this week.");
-    const s = survivors[sid];
-    if (!s || s.eliminated) throw new Error("That castaway isn't available.");
+    if (takenInfo({ kind: ctx.kind, wk: ctx.wk, draft: d })[sid]) throw new Error("Someone already has them.");
+    const sv = survivors[sid];
+    if (!sv || sv.eliminated) throw new Error("That castaway isn't available.");
     const nd = Object.assign({}, d, { feed: d.feed.concat([{ memberId: picker, survivorId: sid, ts: Date.now() }]) });
     advanceDraft(nd);
-    tx.update(weekRef(n), { draft: nd });
+    tx.update(ctx.ref, { draft: nd });
   });
   if (opts.silent) return run().catch((e) => console.warn("auto-pick skipped:", e && e.message));
   return guard(run, "Couldn't save the pick — try again.");
 }
-function undoPick() {
+function undoPick(forSeason) {
   if (!needAdmin()) return;
-  const n = cfg().currentWeek;
+  const ref = forSeason ? seasonRef : draftCtx().ref;
   return guard(() => runTransaction(db, async (tx) => {
-    const snap = await tx.get(weekRef(n));
+    const snap = await tx.get(ref);
     const d = snap.exists() && snap.data().draft;
     if (!d || !d.feed.length) return;
-    const feed = d.feed.slice(0, -1), per = d.order.length || 1;
-    const round = Math.floor(feed.length / per) + 1;
-    tx.update(weekRef(n), { draft: Object.assign({}, d, { feed, round, turnIndex: feed.length % per, status: round > d.picksPerMember ? "complete" : "in_progress" }) });
+    tx.update(ref, { draft: Object.assign({}, d, { feed: d.feed.slice(0, -1), status: "in_progress" }) });
   }));
+}
+function toggleKeep(sid) {
+  if (!needMe()) return;
+  const ctx = draftCtx();
+  if (ctx.kind !== "week" || ctx.draft.status !== "not_started") return toast("Keeping is only open before the weekly draft starts.");
+  const pw = prevWeekWithRoster(ctx.wk), mine = pw ? (rosterOf(weeklyOwners(pw))[myId] || []) : [];
+  if (!mine.includes(sid)) return toast("You can only keep players from your last weekly squad.");
+  if (survivors[sid] && survivors[sid].eliminated) return toast("They're out of the game — you can't keep them.");
+  const cur = keptOf(ctx.wk)[myId] || [], next = cur.includes(sid) ? cur.filter((x) => x !== sid) : cur.concat([sid]);
+  return guard(() => setDoc(ctx.ref, { kept: { [myId]: next } }, { merge: true }));
+}
+function sendTrade() {
+  if (!needMe()) return;
+  const ctx = draftCtx(), t = ui.trade || {};
+  if (ctx.kind !== "week" || ctx.draft.status !== "complete") return toast("Trades open once this week's draft is done.");
+  if (weekScored(ctx.wk)) return toast("This week is already scored — trades are closed.");
+  if (!t.give || !t.to || !t.get) return toast("Choose who you give, who you're trading with, and who you want.");
+  const own = weeklyOwners(ctx.wk);
+  if (own[t.give] !== myId) return toast("They aren't on your weekly squad.");
+  if (own[t.get] !== t.to) return toast("They don't have that player any more.");
+  if (survivors[t.give].eliminated || survivors[t.get].eliminated) return toast("Eliminated players can't be traded.");
+  if (tradesOf(ctx.wk).some((x) => x.status === "pending" && [x.give, x.get].some((sid) => sid === t.give || sid === t.get))) return toast("There's already an open offer involving one of those players.");
+  const id = "t" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  ui.trade = {};
+  return guard(() => setDoc(ctx.ref, { trades: { [id]: { from: myId, to: t.to, give: t.give, get: t.get, status: "pending", ts: Date.now() } } }, { merge: true }));
+}
+function respondTrade(id, action) {
+  if (!needMe()) return;
+  const ctx = draftCtx();
+  return guard(() => runTransaction(db, async (tx) => {
+    const snap = await tx.get(ctx.ref), data = snap.exists() ? snap.data() : {};
+    const t = (data.trades || {})[id];
+    if (!t || t.status !== "pending") throw new Error("That offer isn't open any more.");
+    if ((action === "cancel" ? t.from !== myId : t.to !== myId) && !isAdmin()) throw new Error("That's not your offer to answer.");
+    if (action === "accept") {
+      if (weekScored(ctx.wk, data)) throw new Error("This week is already scored — trades are closed.");
+      const own = weeklyOwners(ctx.wk, data);
+      if (own[t.give] !== t.from || own[t.get] !== t.to) throw new Error("Squads changed — this trade can't go through.");
+    }
+    tx.update(ctx.ref, { ["trades." + id + ".status"]: action === "accept" ? "accepted" : action === "decline" ? "declined" : "cancelled", ["trades." + id + ".decidedAt"]: Date.now() });
+  }), "Couldn't update that offer.");
 }
 const setConfig = (patch) => guard(() => setDoc(cfgRef, patch, { merge: true }));
 function stepWeek(delta) { if (!needAdmin()) return; return setConfig({ currentWeek: Math.max(1, cfg().currentWeek + delta) }); }
@@ -649,16 +1111,20 @@ function addSurvivors(lines) {
   const existing = new Set(survivorList().map((s) => s.name.toLowerCase()));
   let added = 0;
   lines.forEach((line) => {
-    const [name, age, job] = line.split("|").map((x) => x.trim());
+    const [name, age, job, hometown] = line.split("|").map((x) => x.trim());
     if (!name || existing.has(name.toLowerCase())) return;
     existing.add(name.toLowerCase()); added++;
-    setDoc(doc(db, "survivors", slug(name)), { name, age: Number(age) || null, job: job || "", eliminated: false }).catch(console.error);
+    setDoc(doc(db, "survivors", slug(name)), { name, age: Number(age) || null, job: job || "", hometown: hometown || "", eliminated: false }).catch(console.error);
   });
   toast("Added " + added + " to the cast" + (lines.length > added ? " (duplicates skipped)." : "."));
 }
 function saveRubric(list) { return setConfig({ rubric: list }); }
 
 /* ---------------- rendering ---------------- */
+function applyPhotoVars(z, f) {
+  const root = document.documentElement.style;
+  root.setProperty("--pz", String(z)); root.setProperty("--pf", f + "%");
+}
 function render(keep) {
   const saved = {}; let activeId = null, selS = null, selE = null;
   if (keep) {
@@ -667,43 +1133,88 @@ function render(keep) {
     if (a && a.id && saved.hasOwnProperty(a.id)) { activeId = a.id; try { selS = a.selectionStart; selE = a.selectionEnd; } catch (e) {} }
   }
   renderNav();
+  applyPhotoVars(Number(cfg().photoZoom) || 1.5, cfg().photoFocus != null ? Number(cfg().photoFocus) : 0);
   const ready = Object.values(loaded).every(Boolean);
   let body = "";
   if (!ready) body = '<div class="empty" style="padding-top:80px;"><div class="big">🔥</div>Loading the tribe…</div>';
   else {
     if (myId && !me()) { myId = null; try { localStorage.removeItem("tt_member"); } catch (e) {} }
     if (dbError) body += '<div class="banner">' + esc(dbError) + "</div>";
-    if (me()) body += whoamiBar();
+    if (me() && !me().pinHash) body += pinBanner();
     if (!me() && !ui.watching) body += renderGate();
-    else body += ui.tab === "standings" ? renderStandings() : ui.tab === "draft" ? renderDraft() : ui.tab === "bonus" ? renderBonus() : ui.tab === "scoring" ? renderScoring() : ui.tab === "history" ? renderHistory() : renderSetup();
+    else body += ui.tab === "standings" ? renderStandings() : ui.tab === "draft" ? renderDraft() : ui.tab === "bonus" ? renderBonus() : ui.tab === "scoring" ? renderScoring() : renderSetup();
   }
   $("content").innerHTML = body;
+    const fcredit = (cfg().photoCredit || "").trim();
+  $("foot").innerHTML = ready ? '<div class="foot-in">' + esc(cfg().leagueName) + " · a Survivor 51 fantasy league" + (fcredit && survivorList().some((x) => x.photo) ? " · Cast photos: " + esc(fcredit) : "") + "</div>" : "";
+  renderModal();
   if (keep) {
     Object.keys(saved).forEach((id) => { const el = $(id); if (el) el.value = saved[id]; });
     if (activeId && $(activeId)) { const el = $(activeId); el.focus(); try { el.setSelectionRange(selS, selE); } catch (e) {} }
   }
   document.querySelectorAll(".feed").forEach((el) => (el.scrollTop = el.scrollHeight));
-  const dd = draftOf(cfg().currentWeek);
+  const dd = draftCtx().draft;
+  if (ready && isAdmin() && !castAutoFilled && Object.keys(survivors).length) { castAutoFilled = true; applyCastDetails(true).catch((e) => console.warn("cast auto-fill skipped:", e && e.message)); }
   if (ready) maybeAutoPick();
   document.title = (ready && me() && dd.status === "in_progress" && currentPickerId(dd) === myId) ? "🔥 Your pick! · " + cfg().leagueName : cfg().leagueName;
 }
 
-function renderNav() {
-  const m = me();
-  const sub = "Week " + cfg().currentWeek + (m ? " · " + esc(m.name) : ui.watching ? " · viewing" : "") + (isAdmin() ? " · 👑" : "");
-  $("rail").innerHTML =
-    '<div class="brand"><span class="flame">🔥</span><div><div class="name">' + esc(cfg().leagueName) + '</div><div class="sub">' + sub + "</div></div></div>" +
-    TABS.map((t) => '<button class="navbtn ' + (ui.tab === t.id ? "active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="ic">' + t.icon + "</span>" + esc(t.label) + "</button>").join("") +
-    '<div class="navfoot">' + (m ? "You can draft, answer challenges, and post videos." : "Pick your name to start playing.") + "</div>";
-  $("bottombar").innerHTML = TABS.map((t) => '<button class="navbtn ' + (ui.tab === t.id ? "active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="ic">' + t.icon + "</span>" + esc(t.label.split(" ")[0]) + "</button>").join("");
+function sheetHtml(id) {
+  const sv = survivors[id];
+  if (!sv) return "";
+  const c = cfg(), wk = c.currentWeek, sO = seasonOwners(), wO = weeklyOwners(wk), ownerId = sO[id] || wO[id];
+  let seasonPts = 0; Object.keys(weeks).forEach((k) => (seasonPts += survivorWeekScore(k, id)));
+  const credit = (c.photoCredit || "").trim(), meta = [sv.age, sv.hometown].filter(Boolean).join(" • ");
+  const big = bigPhotos[id] && bigPhotos[id].v === sv.hd ? bigPhotos[id].url : null, legacy = !!sv.photo && !sv.hd;
+  const imgTag = (src) => '<img class="zimg" src="' + src + '" alt="' + esc(sv.name) + '">';
+  const phHtml = !sv.photo ? "<span>" + esc(initials(sv.name)) + "</span>" : legacy ? '<div class="cp">' + imgTag(sv.photo) + "</div>" : imgTag(big || sv.photo);
+  const byName = ownerId && members[ownerId] ? members[ownerId].name : null, byLabel = sO[id] ? "SEASON PICK OF" : wO[id] ? "WEEKLY PICK OF" : "NOT OWNED";
+  return '<div class="sheet-bg" data-act="sheet-close"><div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(sv.name) + '">' +
+    '<button class="sheet-x" data-act="sheet-close" aria-label="Close">✕</button>' +
+    '<div class="sheet-ph' + (sv.eliminated ? " out" : "") + (legacy ? " compact" : "") + '">' + phHtml + (sv.eliminated ? '<span class="snuff">SNUFFED</span>' : "") + "</div>" +
+    '<div class="sheet-b"><h2 class="sheet-n">' + esc(sv.name) + "</h2>" + (sv.job ? '<div class="sheet-j">' + esc(sv.job) + "</div>" : "") + (meta ? '<div class="sheet-m">' + esc(meta) + "</div>" : "") + (sv.residence && sv.residence !== sv.hometown ? '<div class="sheet-r">Now lives in ' + esc(sv.residence) + "</div>" : "") + (sv.tagline ? '<div class="sheet-q">“' + esc(sv.tagline) + "”</div>" : "") +
+    '<div class="sheet-stats"><div><b>' + fmt(survivorWeekScore(wk, id)) + "</b><i>WEEK " + wk + "</i></div><div><b>" + fmt(seasonPts) + "</b><i>SEASON</i></div><div><b>" + (byName ? esc(byName) : "—") + "</b><i>" + byLabel + "</i></div></div>" +
+    (sv.photo && credit ? '<div class="sheet-credit">Photo: ' + esc(credit) + "</div>" : "") + (isAdmin() && legacy ? '<div class="sheet-note">Small photo from an earlier upload. Re-upload it in Setup for a sharper pop-up.</div>' : "") +
+    (isAdmin() ? '<button class="btn sm ghost sheet-edit" data-act="sheet-edit" data-id="' + id + '">Edit details</button>' : "") + "</div></div></div>";
+}
+function renderModal() {
+  const h = ui.sheet ? sheetHtml(ui.sheet) : "";
+  if (!h) ui.sheet = null;
+  $("modal").innerHTML = h;
+  document.body.classList.toggle("modal-open", !!h);
+  if (ui.sheet) ensureBig(ui.sheet);
 }
 
-function head(title, meta) { return '<div class="pagehead"><h2>' + esc(title) + '</h2><div class="meta">' + meta + "</div></div>"; }
+function idChip(mem) {
+  return '<div class="id-chip" style="border-color:' + mem.color + '"><button class="who-av" style="background:' + mem.color + '" data-act="set-tab" data-tab="setup" title="Account &amp; setup">' + esc(initials(mem.name)) + '</button><div class="who-t"><div class="who-l">SIGNED IN AS</div><div class="who-n">' + esc(mem.name) + (isAdmin() ? " 👑" : "") + '</div><button class="chip-out" data-act="signout">Sign out</button></div></div>';
+}
+function renderNav() {
+  const m = me(), c = cfg(), nb = incomingTradeCount();
+  const badge = (t) => (t.id === "draft" && nb ? '<span class="nav-badge" title="Trade offers waiting">' + nb + "</span>" : "");
+  const brand = '<div class="s-brand"><span class="brand-tile">' + icon("draft", 22) + '</span><div class="brand-w">' + esc(c.leagueName) + "</div></div>";
+  const signIn = '<button class="btn primary sm" data-act="signout">' + (memberList().length ? "Sign in" : "Join the game") + "</button>";
+  $("side").innerHTML = brand + '<div class="s-week">WEEK ' + c.currentWeek + " · SURVIVOR 51</div><nav class=\"s-nav\">" +
+    TABS.map((t) => '<button class="nav-i' + (ui.tab === t.id ? " active" : "") + '" data-act="set-tab" data-tab="' + t.id + '">' + icon(t.icon, 20) + "<span>" + esc(t.label) + "</span>" + badge(t) + "</button>").join("") + '</nav><div class="s-user">' + (m ? idChip(m) : signIn) + "</div>";
+  $("topbar").innerHTML = brand + (m ? idChip(m) : signIn);
+  $("tabbar").innerHTML = TABS.filter((t) => t.id !== "setup").map((t) => '<button class="tab-i' + (ui.tab === t.id ? " active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="tab-pill">' + icon(t.icon, 22) + badge(t) + "</span><span>" + esc(t.label) + "</span></button>").join("");
+}
 
-function whoamiBar() {
-  const m = me();
-  return '<div class="whoami" style="border-color:' + m.color + '"><span class="who-av" style="background:' + m.color + '">' + esc(initials(m.name)) + '</span><div class="who-t"><div class="who-l">SIGNED IN AS</div><div class="who-n">' + esc(m.name) + (isAdmin() ? " 👑" : "") + '</div></div><button class="btn sm ghost" data-act="signout">Not you? Sign out</button></div>' +
-    (!m.pinHash ? '<div class="banner">🔒 Your account has no PIN yet, so anyone could sign in as you. <a href="#" data-act="go-setup">Set one in Setup</a>.</div>' : "");
+function head(title, meta) {
+  return '<section class="pagebar"><span class="pg-dash"></span><h1 class="pg">' + esc(title) + "</h1>" + (meta ? '<p class="pg-s">' + meta + "</p>" : "") + "</section>";
+}
+
+function pinBanner() {
+  return '<div class="banner">🔒 Your account has no PIN yet, so anyone could sign in as you. <a href="#" data-act="go-setup">Set one in Setup</a>.</div>';
+}
+
+function howItWorks() {
+  if (!ui.howOpen) return '<button class="card wl-bar hiw-bar" data-act="how-toggle"><span class="wl-bar-t">How it works</span><span class="wl-bar-s">5 quick steps</span><span class="wl-bar-c">▾</span></button>';
+  return '<div class="card hiw"><div class="btw" style="margin-bottom:6px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE BASICS</div><h2 class="h2" style="margin-top:6px;">How it works</h2></div><button class="btn sm ghost" data-act="how-toggle">Hide ▴</button></div><ol class="hiw-list">' +
+    "<li><b>Join the league.</b> Pick your name and a 4-digit PIN. The PIN keeps anyone else from playing as you.</li>" +
+    "<li><b>Draft your season three.</b> One snake draft where everyone picks 3 castaways to keep all season. Each castaway belongs to one player.</li>" +
+    "<li><b>Draft 3 more every week.</b> Keep any of last week's players you like, release the rest, and draft the open spots. You can also offer a trade to another player.</li>" +
+    "<li><b>Earn points.</b> Whatever your castaways do — immunity wins, idols, votes, big moves — scores for you. Bonus challenges add extra points.</li>" +
+    "<li><b>Watch the leaderboard.</b> The commissioner enters points after each episode, and the standings update live.</li></ol></div>";
 }
 
 function renderGate() {
@@ -716,127 +1227,269 @@ function renderGate() {
     '<div class="hero-sub">' + (ml.length ? "Tap your name to sign in with your PIN — or join below if you're new." : "Be the first one in — add your name and a PIN below.") + "</div>" +
     (ml.length ? '<div class="list-wrap">' + ml.map((m) => '<button class="chip chip-btn" data-act="pick-me" data-id="' + m.id + '"><span class="dot" style="background:' + m.color + '"></span>' + esc(m.name) + "</button>").join("") + "</div>" : "") +
     '<div class="eyebrow" style="margin-top:18px;">NEW HERE?</div><div class="row" style="margin-top:6px;"><input type="text" id="join-name" placeholder="Your name" style="max-width:190px;"><input type="password" inputmode="numeric" maxlength="4" autocomplete="off" id="join-pin" placeholder="Pick a 4-digit PIN" style="max-width:170px;"><button class="btn primary" data-act="join">Join the league</button></div>' +
-    '<div style="margin-top:14px;"><button class="btn ghost sm" data-act="watch">Just looking</button></div></div>';
+    '<div style="margin-top:14px;"><button class="btn ghost sm" data-act="watch">Just looking</button></div></div>' + howItWorks();
+}
+
+const toLocalInput = (iso) => {
+  const d = new Date(iso); if (isNaN(d)) return "";
+  const p = (n) => String(n).padStart(2, "0");
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + "T" + p(d.getHours()) + ":" + p(d.getMinutes());
+};
+
+const ordinal = (n) => { const x = ["th", "st", "nd", "rd"], v = n % 100; return n + (x[(v - 20) % 10] || x[v] || x[0]); };
+function standingLine(standings) {
+  if (!me()) return "Sign in to see where you stand.";
+  if (!standings.some((r) => r.total !== 0)) return "Nobody is on the board yet — the first points land after the next episode.";
+  const idx = standings.findIndex((r) => r.member.id === myId);
+  if (idx < 0) return "";
+  const mine = standings[idx];
+  if (idx === 0) {
+    const nxt = standings[1];
+    if (!nxt) return "You're in <b>1st</b> with <b>" + mine.total + " pts</b>.";
+    const gap = mine.total - nxt.total;
+    return "You're in <b>1st</b> with <b>" + mine.total + " pts</b> — " + (gap > 0 ? gap + " ahead of " : "tied with ") + esc(nxt.member.name) + ".";
+  }
+  const lead = standings[0], gap = lead.total - mine.total;
+  return "You're in <b>" + ordinal(idx + 1) + "</b> with <b>" + mine.total + " pts</b> — " + (gap > 0 ? gap + " behind " : "tied with ") + esc(lead.member.name) + ".";
+}
+function torchTile() {
+  const list = orderedCast(), lit = list.filter((x) => !x.eliminated).length, out = list.length - lit;
+  if (!list.length) return '<div class="tile t-torch"><div class="tc-l">TORCHES LIT</div><div class="torch-cap">The commissioner adds the cast in Setup.</div></div>';
+  return '<div class="tile t-torch"><div class="tc-l">TORCHES LIT</div><div class="tc-n">' + lit + "<small> / " + list.length + '</small></div><div class="torches" role="img" aria-label="' + lit + " of " + list.length + ' torches still lit">' +
+    list.map((x) => '<button class="tch ' + (x.eliminated ? "out" : "lit") + '" data-act="info" data-id="' + x.id + '" title="' + esc(x.name) + (x.eliminated ? " — snuffed" : "") + '" aria-label="' + esc(x.name) + (x.eliminated ? ", snuffed" : "") + '">' + icon("draft", 24) + "</button>").join("") +
+    '</div><div class="torch-cap">' + (out ? out + " snuffed so far" : "Every torch is still burning") + '</div><div class="torch-hint">Tap a flame to meet a castaway</div></div>';
+}
+function relTime(t) {
+  const ms = t - Date.now();
+  if (ms <= 0) return "";
+  const m = Math.floor(ms / 60000), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
+  return d ? "in " + d + "d " + h + "h" : h ? "in " + h + "h " + mm + "m" : "in " + Math.max(1, mm) + "m";
+}
+function draftTile() {
+  const c = cfg(), t = c.draftAt ? new Date(c.draftAt) : null;
+  if (t && !isNaN(t)) {
+    const when = t.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + " · " + t.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+    const rel = relTime(t), dctx = draftCtx(), live = dctx.draft.status === "in_progress";
+    return '<div class="tile t-draft"><span class="tk-ic">' + icon("cal", 20) + '</span><div class="tk-l">' + (dctx.kind === "season" ? "SEASON DRAFT NIGHT" : "WEEK " + c.currentWeek + " DRAFT NIGHT") + '</div><div class="tk-d">' + esc(when) + "</div>" + (live ? '<span class="tk-c live">LIVE NOW</span>' : rel ? '<span class="tk-c">' + rel + "</span>" : "") + "</div>";
+  }
+  if (isAdmin()) return '<button class="tile t-draft dashed" data-act="go-setup"><span class="tk-ic">' + icon("cal", 20) + '</span><div class="tk-l">DRAFT NIGHT</div><div class="tk-d">+ Set the date</div></button>';
+  return '<div class="tile t-draft"><span class="tk-ic">' + icon("cal", 20) + '</span><div class="tk-l">DRAFT NIGHT</div><div class="tk-d">Date to be announced</div></div>';
+}
+function leadTile(lead) {
+  if (!lead) return '<div class="tile t-lead"><div class="t-k">LEADING</div><div class="ld-row"><div class="ld-n">—</div></div><div class="ld-s">No points yet</div></div>';
+  const mm = lead.member;
+  return '<div class="tile t-lead"><div class="t-k">LEADING</div><div class="ld-row"><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><div class="ld-n">' + esc(mm.name) + '</div></div><div class="ld-s"><b>' + lead.total + "</b> pts</div></div>";
+}
+function podium(standings) {
+  if (!standings.some((r) => r.total > 0)) return "";
+  const top = standings.slice(0, 3), slots = top.length >= 3 ? [1, 0, 2] : top.length === 2 ? [1, 0] : [0];
+  return '<div class="podium">' + slots.map((i) => {
+    const r = top[i], mm = r.member, rank = i + 1;
+    return '<div class="pod pod-' + rank + '">' + (rank === 1 ? '<span class="pod-fl">' + icon("draft", 24) + "</span>" : "") + '<div class="pod-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</div><div class="pod-n">' + esc(mm.name) + '</div><div class="pod-p">' + r.total + ' pts</div><div class="pod-b">' + rank + "</div></div>";
+  }).join("") + "</div>";
+}
+
+function rulesPanel() {
+  const c = cfg();
+  if (!ui.rulesOpen) return '<div id="rules"><button class="card wl-bar" data-act="rules-toggle"><span class="wl-bar-t">How points work</span><span class="wl-bar-s">' + c.rubric.length + ' ways to score</span><span class="wl-bar-c">▾</span></button></div>';
+  const rows = c.rubric.map((r) => '<div class="rule"><span>' + esc(r.label) + '</span><b class="' + (r.points < 0 ? "neg" : "pos") + '">' + fmt(r.points) + "</b></div>").join("");
+  const rulings = (c.houseRules || "").split("\n").map((x) => x.trim()).filter(Boolean);
+  return '<div id="rules" class="card"><div class="btw" style="margin-bottom:8px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE RULES</div><h2 class="h2" style="margin-top:6px;">How points work</h2></div><button class="btn sm ghost" data-act="rules-toggle">Hide ▴</button></div><div class="fmt"><div class="eyebrow" style="margin-bottom:8px;">THE FORMAT</div><p><b>3 season picks</b> — drafted once, they score for you every week all season.</p><p><b>3 weekly picks</b> — drafted each week. Keep them for next week, or offer a trade to another player.</p></div><div class="rules">' + rows + "</div>" +
+    (rulings.length ? '<div class="rulings"><div class="eyebrow" style="margin-bottom:8px;">HOUSE RULES</div>' + rulings.map((x) => "<p>" + esc(x) + "</p>").join("") + "</div>" : "") + "</div>";
+}
+
+function playerDetail(mid) {
+  const row = computeStandings().find((r) => r.member.id === mid) || { total: 0, weekly: {}, parts: {} }, rubric = cfg().rubric;
+  const sOwn = seasonOwners(), sStart = seasonStart(), mySeason = Object.keys(sOwn).filter((sid) => sOwn[sid] === mid);
+  const wkSet = {}, weeklyBy = {};
+  Object.keys(weeks).forEach((k) => {
+    const own = weeklyOwners(k), mine = Object.keys(own).filter((sid) => own[sid] === mid);
+    weeklyBy[k] = mine;
+    if (mine.length || (sStart && Number(k) >= sStart && mySeason.length)) wkSet[k] = true;
+  });
+  Object.values(bonus).forEach((b) => { if (b.resolved && (b.responses || {})[mid] != null) wkSet[b.week] = true; });
+  const keys = Object.keys(wkSet).map(Number).sort((a, b) => b - a);
+  if (!keys.length) return '<div class="lb-detail"><div class="feed-empty">No picks yet — once the season draft happens, every week shows up here.</div></div>';
+  let best = null;
+  keys.forEach((k) => { if (best === null || (row.weekly[k] || 0) > (row.weekly[best] || 0)) best = k; });
+  const pickRow = (wk, sv) => {
+    if (!sv) return "";
+    const ev = ((weekDoc(wk).events || {})[sv.id]) || {};
+    const lines = rubric.filter((r) => (Number(ev[r.id]) || 0) > 0).map((r) => { const n = Number(ev[r.id]); return '<div class="hist-ev"><span>' + esc(r.label) + (n > 1 ? " ×" + n : "") + "</span><span>" + fmt(n * r.points) + "</span></div>"; }).join("");
+    return '<div class="hist-pick"><div class="hist-head"><span class="surv-ph" data-act="info" data-id="' + sv.id + '">' + thumb(sv, 42) + '</span><div style="flex:1;min-width:0;" data-act="info" data-id="' + sv.id + '"><div class="t">' + esc(sv.name) + (sv.eliminated ? " 🕯️" : "") + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(survivorWeekScore(wk, sv.id)) + "</div></div>" + (lines || '<div class="hist-ev"><span style="color:var(--sand-faint);">Nothing scored this week</span><span></span></div>') + "</div>";
+  };
+  let out = '<div class="lb-detail"><div class="pd-sum"><div><b>' + row.total + "</b><i>SEASON TOTAL</i></div><div><b>" + keys.length + "</b><i>WEEKS PLAYED</i></div><div><b>" + fmt(row.weekly[best] || 0) + "</b><i>BEST WEEK · WK " + best + "</i></div></div>";
+  keys.forEach((wk) => {
+    const sids = sStart && wk >= sStart ? mySeason : [], wsids = weeklyBy[wk] || [];
+    const bs = bonusList(wk).filter((b) => b.resolved && (b.responses || {})[mid] != null);
+    out += '<div class="pd-week"><div class="pd-wh"><div><div class="eyebrow">WEEK ' + wk + '</div><div class="pd-ws">' + sids.length + " season · " + wsids.length + " weekly" + (bs.length ? " · " + bs.length + " bonus" : "") + '</div></div><div class="pd-wp">' + fmt(row.weekly[wk] || 0) + "</div></div>";
+    if (sids.length) out += '<div class="pd-grp">SEASON PICKS</div>' + sids.map((sid) => pickRow(wk, survivors[sid])).join("");
+    if (wsids.length) out += '<div class="pd-grp">WEEKLY PICKS</div>' + wsids.map((sid) => pickRow(wk, survivors[sid])).join("");
+    bs.forEach((b) => {
+      const mine = b.responses[mid], ok = mine === b.correctOption;
+      out += '<div class="hist-pick"><div class="hist-head"><span class="bonus-type">' + (BONUS_TYPES[b.type] || BONUS_TYPES.other).icon + ' Bonus</span><div style="flex:1;min-width:0;"><div class="t">' + esc(b.title) + '</div><div class="sub">Answered "' + esc(mine) + '"' + (ok ? " ✓" : " · correct was \"" + esc(b.correctOption) + '"') + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(ok ? Number(b.points) || 0 : 0) + "</div></div></div>";
+    });
+    out += "</div>";
+  });
+  return out + "</div>";
 }
 
 function renderStandings() {
-  const m = me();
-  let out = '<div class="greet"><h2>' + (m ? "Hey, " + esc(m.name.split(" ")[0]) + " 👋" : "Welcome to the tribe 🏝️") + '</h2><div class="meta">Season total across drafted survivors and bonus challenges</div></div>';
-  const standings = computeStandings();
-  if (!memberList().length) return out + '<div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the leaderboard starts here.</div></div>';
-  const active = survivorList().filter((s) => !s.eliminated).length;
-  const scored = Object.keys(weeks).filter((k) => (weeks[k].draft && weeks[k].draft.feed && weeks[k].draft.feed.length)).length;
-  out += '<div class="statrow"><div class="col"><div class="n">' + memberList().length + '</div><div class="l">Players</div></div>' +
-    '<div class="col"><div class="n accent">' + active + '</div><div class="l">Torches lit</div></div>' +
-    '<div class="col"><div class="n">' + cfg().currentWeek + '</div><div class="l">Current week</div></div>' +
-    '<div class="col"><div class="n">' + scored + '</div><div class="l">Weeks scored</div></div></div>';
-  const medals = ["🥇", "🥈", "🥉"];
-  out += '<div class="card">';
-  standings.forEach((row, i) => {
-    const mm = row.member;
-    out += '<div class="lb-row ' + (i === 0 && row.total > 0 ? "first" : "") + '"><div class="lb-rank">' + (i === 0 && row.total > 0 ? '<span class="sticker">🥇 #1</span>' : i < 3 && row.total > 0 ? medals[i] : i + 1) + "</div>" +
-      '<div class="lb-avatar" style="background:' + mm.color + '">' + esc(initials(mm.name)) + "</div><div><div class=\"lb-name\">" + esc(mm.name) + (mm.id === myId ? ' <span style="color:var(--sand-faint);font-weight:400;">(you)</span>' : "") + "</div>";
-    const wk = Object.keys(row.weekly).sort((a, b) => a - b);
-    if (wk.length) out += '<details class="weekly"><summary>Weekly breakdown ▾</summary><div class="minirow">' + wk.map((k) => '<div class="minibox"><div class="n">' + row.weekly[k] + '</div><div class="l">Wk ' + k + "</div></div>").join("") + "</div></details>";
-    out += '</div><div class="lb-total">' + row.total + "</div></div>";
-  });
-  out += "</div>";
-  if (survivorList().length) {
-    out += '<div class="card"><div class="btw" style="margin-bottom:2px;"><h3 style="margin:0;font-size:16px;">Still in the tribe</h3><span style="font-size:12.5px;color:var(--sand-faint);">' + active + " of " + survivorList().length + '</span></div><div class="cast-scroll">' +
-      orderedCast().map((s) => '<div class="cast-card"><div class="cast-avatar' + (s.eliminated ? " out" : "") + '">' + (s.photo ? '<img src="' + s.photo + '" alt="">' : esc(initials(s.name))) + '</div><div class="cast-name">' + esc(s.name) + "</div><div class=\"cast-sub\">" + (s.eliminated ? "🕯️ out" : esc((s.age ? s.age + " · " : "") + (s.job || ""))) + "</div></div>").join("") + "</div></div>";
-  }
-  return out;
+  const m = me(), c = cfg(), standings = computeStandings();
+  const lead = standings[0] && standings[0].total > 0 ? standings[0] : null;
+  const topPts = standings[0] ? Math.max(0, standings[0].total) : 0;
+  const n = memberList().length;
+  let out = (m ? "" : '<div class="hiw-wrap">' + howItWorks() + "</div>") + '<section class="bento"><div class="tile t-hero"><div class="t-k">WEEK ' + c.currentWeek + " · " + n + " PLAYER" + (n === 1 ? "" : "S") + '</div><h1 class="t-h">' + (m ? "Hey, " + esc(m.name.split(" ")[0]) : "Welcome, castaway") + '</h1><p class="t-p">' + standingLine(standings) + '</p><div class="t-cta"><button class="btn dark" data-act="set-tab" data-tab="draft">Go to the draft</button><button class="linkbtn" data-act="rules-go">How points work →</button></div></div>' +
+    torchTile() + draftTile() + leadTile(lead) + "</section>";
+  const pod = podium(standings);
+  if (pod) out += '<section class="section"><h2 class="sec-h">The podium</h2>' + pod + "</section>";
+  if (!n) out += '<section class="section"><div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the standings start here.</div></div></section>';
+  else out += '<section class="section"><h2 class="sec-h">Full standings</h2><p class="sec-s">Tap a player for the full receipts.</p><div class="lb">' + standings.map((row, i) => {
+    const mm = row.member, open = ui.openPlayer === mm.id, first = i === 0 && row.total > 0;
+    return '<button class="lb-r' + (first ? " first" : "") + (open ? " open" : "") + '" data-act="open-player" data-id="' + mm.id + '"><span class="lb-rk">' + (i + 1) + '</span><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><span class="lb-nm">' + esc(mm.name) + (mm.id === myId ? ' <span class="you">(you)</span>' : "") + '<span class="lb-bar"><i style="width:' + (topPts ? Math.round(Math.max(0, row.total) / topPts * 100) : 0) + '%"></i></span></span><span class="lb-wk"><i>WK ' + c.currentWeek + "</i><b>" + (row.weekly[c.currentWeek] || 0) + '</b></span><span class="lb-pt"><b>' + row.total + "</b><i>PTS</i></span>" + '<span class="lb-chev">▾</span></button>' + (open ? playerDetail(mm.id) : "");
+  }).join("") + "</div></section>";
+  return out + '<section class="section">' + rulesPanel() + "</section>";
 }
 
-function renderWishlist(d) {
-  const m = me();
+function renderWishlist(ctx) {
+  const m = me(), d = ctx.draft;
   if (!m) return "";
-  const wl = wishlistOf(myId).filter((sid) => survivors[sid]), taken = takenMap(d);
+  const wl = wishlistOf(myId).filter((sid) => survivors[sid]), taken = takenInfo(ctx);
   const firstAvail = wl.find((sid) => !survivors[sid].eliminated && !taken[sid]) || null;
   if (!ui.wlOpen) {
     const summary = wl.length ? wl.length + " player" + (wl.length === 1 ? "" : "s") + (firstAvail ? " · next up: " + esc(survivors[firstAvail].name) : d.status === "complete" ? "" : " · all taken") : "tap to build your list";
     return '<button class="card wl-bar" data-act="wl-toggle"><span class="wl-bar-t">⭐ My wishlist</span><span class="wl-bar-s">' + summary + "</span>" + (m.autopick ? '<span class="correct-badge">⚡ auto-pick on</span>' : "") + '<span class="wl-bar-c">▾</span></button>';
   }
-  let out = '<div class="card"><div class="btw" style="margin-bottom:6px;"><div><div class="eyebrow">⭐ MY WISHLIST</div><div class="hero-sub">Rank who you want. They go gray as soon as someone drafts them.</div></div><div class="row" style="gap:6px;"><button class="btn sm ' + (ui.wlAdd ? "primary" : "ghost") + '" data-act="wl-toggle-add">' + (ui.wlAdd ? "Done" : "+ Add castaways") + '</button><button class="btn sm ghost" data-act="wl-toggle">Hide ▴</button></div></div>';
+  let out = '<div class="card"><div class="btw" style="margin-bottom:6px;"><div><div class="eyebrow">⭐ MY WISHLIST</div><div class="hero-sub">Rank who you want. They go gray as soon as someone has them.</div></div><div class="row" style="gap:6px;"><button class="btn sm ' + (ui.wlAdd ? "primary" : "ghost") + '" data-act="wl-toggle-add">' + (ui.wlAdd ? "Done" : "+ Add castaways") + '</button><button class="btn sm ghost" data-act="wl-toggle">Hide ▴</button></div></div>';
   out += '<label class="row" style="margin:8px 0 10px;font-size:13.5px;cursor:pointer;"><input type="checkbox" data-act="wl-autopick" ' + (m.autopick ? "checked" : "") + ' style="width:auto;"> <span><b>⚡ Auto-pick for me</b> — drafts my top available player when it\'s my turn</span></label>';
   if (!wl.length) out += '<div class="feed-empty">Nothing here yet — tap "+ Add castaways" and add your favorites in order of preference.</div>';
   wl.forEach((sid, i) => {
-    const s = survivors[sid];
-    const by = taken[sid], gray = !!by || s.eliminated;
-    const sub = by ? "Drafted by " + (members[by] ? members[by].name : "someone") : s.eliminated ? "Eliminated" : (s.age ? s.age + " · " : "") + (s.job || "");
-    out += '<div class="wl-row' + (gray ? " gray" : "") + '"><span class="wl-n">' + (i + 1) + "</span>" + thumb(s, 38) + '<div class="wl-t"><div class="t">' + esc(s.name) + (firstAvail === sid ? ' <span class="correct-badge">next up</span>' : "") + '</div><div class="sub">' + esc(sub) + '</div></div><div class="wl-ctl"><button class="iconbtn" title="Move up" data-act="wl-up" data-id="' + sid + '">▲</button><button class="iconbtn" title="Move down" data-act="wl-down" data-id="' + sid + '">▼</button><button class="iconbtn" title="Remove" data-act="wl-remove" data-id="' + sid + '">✕</button></div></div>';
+    const s = survivors[sid], by = taken[sid], gray = !!by || s.eliminated;
+    const who = by && members[by.mid] ? members[by.mid].name : "someone";
+    const sub = by ? (by.kind === "season" ? "Season pick of " : by.kind === "kept" ? "Kept by " : "Drafted by ") + who : s.eliminated ? "Eliminated" : "";
+    out += '<div class="wl-row' + (gray ? " gray" : "") + '"><span class="wl-n">' + (i + 1) + "</span>" + '<span class="wl-info" data-act="info" data-id="' + sid + '">' + thumb(s, 38) + '</span><div class="wl-t" data-act="info" data-id="' + sid + '"><div class="t">' + esc(s.name) + (firstAvail === sid ? ' <span class="correct-badge">next up</span>' : "") + '</div>' + (sub ? '<div class="sub">' + esc(sub) + "</div>" : "") + '</div><div class="wl-ctl"><button class="iconbtn" title="Move up" data-act="wl-up" data-id="' + sid + '">▲</button><button class="iconbtn" title="Move down" data-act="wl-down" data-id="' + sid + '">▼</button><button class="iconbtn" title="Remove" data-act="wl-remove" data-id="' + sid + '">✕</button></div></div>';
   });
   if (wl.length && firstAvail === null && d.status !== "complete") out += '<div class="banner" style="margin-top:10px;">Everyone on your wishlist is taken or out — add a few more so auto-pick has someone to grab.</div>';
   if (ui.wlAdd) {
-    const inList = new Set(wl);
-    const pool = orderedCast().filter((s) => !s.eliminated && !inList.has(s.id));
-    out += '<div style="margin-top:12px;"><div class="field">Tap to add to the bottom of your list:</div>' + (pool.length ? '<div class="survivor-grid">' + pool.map((s) => '<button class="survivor-btn" data-act="wl-add" data-id="' + s.id + '">' + thumb(s, 40) + "<b>" + esc(s.name) + "</b>" + (taken[s.id] ? "<small>taken this week</small>" : "") + "</button>").join("") + "</div>" : '<div class="feed-empty">Everyone is already on your list.</div>') + "</div>";
+    const inList = new Set(wl), pool = orderedCast().filter((x) => !x.eliminated && !inList.has(x.id));
+    out += '<div style="margin-top:12px;"><div class="field">Tap to add to the bottom of your list:</div>' + (pool.length ? '<div class="survivor-grid">' + pool.map((x) => '<div class="sv-wrap"><button class="survivor-btn" data-act="wl-add" data-id="' + x.id + '">' + thumb(x, 40) + "<b>" + esc(x.name) + "</b>" + (taken[x.id] ? "<small>taken</small>" : "") + '</button><button class="sv-i" data-act="info" data-id="' + x.id + '" aria-label="About ' + esc(x.name) + '">i</button></div>').join("") + "</div>" : '<div class="feed-empty">Everyone is already on your list.</div>') + "</div>";
   }
   return out + "</div>";
 }
 
+function squadCards(ctx) {
+  const sO = seasonOwners(), wO = ctx.kind === "week" ? weeklyOwners(ctx.wk) : {};
+  if (!Object.keys(sO).length && !Object.keys(wO).length) return "";
+  const sR = rosterOf(sO), wR = rosterOf(wO), kept = ctx.kind === "week" ? keptOf(ctx.wk) : {};
+  const line = (sid, tag) => (survivors[sid] ? '<div class="team-row" data-act="info" data-id="' + sid + '">' + thumb(survivors[sid], 28) + "<span>" + esc(survivors[sid].name) + (survivors[sid].eliminated ? " 🕯️" : "") + "</span>" + (tag ? '<em class="tag">' + tag + "</em>" : "") + "</div>" : "");
+  const none = '<div style="color:var(--sand-faint);font-size:13px;">Nobody yet</div>';
+  return '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin-top:18px;">' + memberList().map((mm) => {
+    const sl = (sR[mm.id] || []).map((sid) => line(sid)).join(""), wl = (wR[mm.id] || []).map((sid) => line(sid, (kept[mm.id] || []).includes(sid) ? "kept" : "")).join("");
+    return '<div class="team-card" style="border-top-color:' + mm.color + '"><h4><span class="dot" style="background:' + mm.color + '"></span>' + esc(mm.name) + "</h4>" +
+      '<div class="team-label">SEASON</div>' + (sl || none) + (ctx.kind === "week" ? '<div class="team-label">THIS WEEK</div>' + (wl || none) : "") + "</div>";
+  }).join("") + "</div>";
+}
+
+function renderKeep(ctx) {
+  if (!me() || ctx.kind !== "week" || ctx.draft.status !== "not_started") return "";
+  const pw = prevWeekWithRoster(ctx.wk);
+  const mine = pw ? (rosterOf(weeklyOwners(pw))[myId] || []).filter((sid) => survivors[sid]) : [];
+  const kept = new Set(keptOf(ctx.wk)[myId] || []), all = keptOf(ctx.wk);
+  const others = memberList().filter((x) => x.id !== myId && (all[x.id] || []).length).map((x) => esc(x.name) + " (" + all[x.id].length + ")");
+  const keepCount = mine.filter((sid) => kept.has(sid) && !survivors[sid].eliminated).length;
+  let out = '<div class="card"><div class="eyebrow">KEEP OR RELEASE</div><div class="hero-sub" style="margin:4px 0 12px;">' + (mine.length ? "Tap <b>Keep</b> on anyone from last week's weekly squad you want again. Kept players skip the draft; released ones go back in the pool." : "No weekly squad from last week to keep — this is the first weekly draft.") + "</div>";
+  mine.forEach((sid) => {
+    const sv = survivors[sid], k = kept.has(sid), gone = sv.eliminated;
+    out += '<div class="keep-row' + (k && !gone ? " kept" : "") + (gone ? " gray" : "") + '"><span class="wl-info" data-act="info" data-id="' + sid + '">' + thumb(sv, 40) + '</span><div class="wl-t" data-act="info" data-id="' + sid + '"><div class="t">' + esc(sv.name) + '</div><div class="sub">' + (gone ? "Eliminated — can't be kept" : "") + "</div></div>" + (gone ? "" : '<button class="btn sm ' + (k ? "primary" : "ghost") + '" data-act="keep-toggle" data-id="' + sid + '">' + (k ? "✓ Keeping" : "Keep") + "</button>") + "</div>";
+  });
+  const need = WEEKLY_SLOTS - keepCount;
+  out += '<div class="hero-sub" style="margin-top:12px;">You\'ll draft <b>' + need + "</b> new player" + (need === 1 ? "" : "s") + " this week." + (others.length ? " Others keeping: " + others.join(", ") + "." : "") + "</div>";
+  return out + "</div>";
+}
+
+function renderTrades(ctx) {
+  if (ctx.kind !== "week" || ctx.draft.status !== "complete") return "";
+  const wk = ctx.wk, m = me(), owners = weeklyOwners(wk), roster = rosterOf(owners), scored = weekScored(wk);
+  const trades = tradesOf(wk), valid = (t) => owners[t.give] === t.from && owners[t.get] === t.to;
+  const pend = trades.filter((t) => t.status === "pending" && valid(t));
+  const inc = m ? pend.filter((t) => t.to === myId) : [], outg = m ? pend.filter((t) => t.from === myId) : [];
+  const done = trades.filter((t) => t.status === "accepted" || t.status === "declined").slice(-4).reverse();
+  const nm = (sid) => (survivors[sid] ? '<b class="nm" role="button" tabindex="0" data-act="info" data-id="' + sid + '">' + esc(survivors[sid].name) + "</b>" : "<b>?</b>");
+  const pn = (mid) => (members[mid] ? esc(members[mid].name) : "someone");
+  const row = (txt, btns) => '<div class="trade-row"><div class="tr-t">' + txt + '</div><div class="tr-b">' + btns + "</div></div>";
+  let out = '<div class="card"><div class="eyebrow">TRADE DESK</div><div class="hero-sub" style="margin:4px 0 12px;">Offer to swap one of your weekly players for someone else\'s — they have to say yes. Season picks can\'t be traded.</div>';
+  if (scored) out += '<div class="banner">This week is already scored, so trades are closed.</div>';
+  if (inc.length) out += '<div class="team-label">OFFERS TO YOU</div>' + inc.map((t) => row("<b>" + pn(t.from) + "</b> offers " + nm(t.give) + " for your " + nm(t.get), scored ? "" : '<button class="btn primary sm" data-act="trade-accept" data-id="' + t.id + '">Accept</button><button class="btn ghost sm" data-act="trade-decline" data-id="' + t.id + '">Decline</button>')).join("");
+  if (outg.length) out += '<div class="team-label">YOUR OFFERS</div>' + outg.map((t) => row("You offered " + nm(t.give) + " to <b>" + pn(t.to) + "</b> for " + nm(t.get) + " — waiting", '<button class="btn ghost sm" data-act="trade-cancel" data-id="' + t.id + '">Cancel</button>')).join("");
+  if (m && !scored) {
+    const live = (mid) => (roster[mid] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated), t = ui.trade || {};
+    const mine = live(myId), others = memberList().filter((x) => x.id !== myId && live(x.id).length), theirs = t.to ? live(t.to) : [];
+    const opt = (v, label, sel) => '<option value="' + v + '"' + (sel ? " selected" : "") + ">" + esc(label) + "</option>";
+    if (mine.length && others.length) out += '<div class="team-label">PROPOSE A TRADE</div><div class="trade-form"><select data-act="trade-give"><option value="">I give…</option>' + mine.map((sid) => opt(sid, survivors[sid].name, t.give === sid)).join("") + '</select><select data-act="trade-to"><option value="">…to</option>' + others.map((x) => opt(x.id, x.name, t.to === x.id)).join("") + '</select><select data-act="trade-get"><option value="">…for</option>' + theirs.map((sid) => opt(sid, survivors[sid].name, t.get === sid)).join("") + '</select><button class="btn primary sm" data-act="trade-send">Send offer</button></div>';
+    else if (!mine.length) out += '<div class="feed-empty">You have no tradable weekly players.</div>';
+  }
+  if (done.length) out += '<div class="team-label">RECENT</div>' + done.map((t) => '<div class="trade-done">' + pn(t.from) + " ⇄ " + pn(t.to) + ": " + (survivors[t.give] ? esc(survivors[t.give].name) : "?") + " for " + (survivors[t.get] ? esc(survivors[t.get].name) : "?") + " — <b>" + t.status + "</b></div>").join("");
+  return out + "</div>";
+}
+
 function renderDraft() {
-  const wk = cfg().currentWeek, d = draftOf(wk), A = isAdmin();
+  const ctx = draftCtx(), d = ctx.draft, wk = ctx.wk, A = isAdmin(), isSeason = ctx.kind === "season";
   let out = "";
   if (wk < 3) out += '<div class="banner info">Weeks 1–2 are for scouting the tribe — the draft opens at week 3. The commissioner can bump the week forward in Setup.</div>';
   if (!memberList().length || !survivorList().length) return out + '<div class="card"><div class="empty"><div class="big">🌴</div>Need at least one player and one castaway before drafting.</div></div>';
-  const picker = d.status === "not_started" ? null : currentPickerId(d);
-  const total = (d.order.length || memberList().length) * d.picksPerMember;
-  const pct = total ? Math.min(100, Math.round((d.feed.length / total) * 100)) : 0;
-  const pickerName = picker && members[picker] ? members[picker].name : "—";
+  const seq = seqOf(d), picker = d.status === "in_progress" ? currentPickerId(d) : null, done = d.feed.length, total = seq.length, rounds = roundsOf(d) || ctx.per;
+  const pct = d.status === "complete" ? 100 : total ? Math.min(100, Math.round((done / total) * 100)) : 0;
+  const pickerName = picker && members[picker] ? members[picker].name : "—", round = d.status === "in_progress" ? roundOfPick(d, done) : rounds;
   let headline, sub;
-  if (d.status === "not_started") { headline = "Ready to draft?"; sub = A ? "Start the order once everyone's here." : "Waiting for the commissioner to start the draft."; }
-  else if (d.status === "complete") { headline = "Draft complete! 🏁"; sub = "Every team is set for week " + wk + "."; }
-  else if (picker === myId) { headline = "It's your pick!"; sub = "Round " + d.round + " of " + d.picksPerMember; }
-  else { headline = "Round " + d.round + " of " + d.picksPerMember; sub = "Waiting on " + esc(pickerName); }
-  out += '<div class="card"><div class="eyebrow">WEEK ' + wk + ' · DRAFT</div><div class="hero-headline">' + esc(headline) + '</div><div class="hero-sub">' + sub + "</div>";
+  if (d.status === "not_started") {
+    headline = isSeason ? "Pick your season three" : "Ready to draft?";
+    sub = isSeason ? "Everyone drafts 3 castaways to keep all season. " + (A ? "Start the order once everyone's here." : "Waiting for the commissioner to start.") : (A ? "Members choose who to keep first, then start the weekly draft." : "Keep or release last week's players below — the commissioner starts the draft.");
+  } else if (d.status === "complete") { headline = isSeason ? "Season squads set! 🔥" : "Draft complete! 🏁"; sub = isSeason ? "Everyone has 3 castaways for the whole season." : "Every squad is set for week " + wk + "."; }
+  else if (picker === myId) { headline = "It's your pick!"; sub = "Round " + round + " of " + rounds + (isSeason ? " · season pick" : ""); }
+  else { headline = "Round " + round + " of " + rounds; sub = "Waiting on " + esc(pickerName) + (isSeason ? " · season pick" : ""); }
+  out += '<div class="card dh ' + (d.status === "complete" ? "dh-done" : d.status === "in_progress" ? (picker === myId ? "dh-your" : "dh-wait") : "dh-idle") + '"><div class="eyebrow">' + (isSeason ? "SEASON DRAFT · 3 EACH, ALL SEASON" : "WEEK " + wk + " · WEEKLY DRAFT") + '</div><div class="hero-headline">' + esc(headline) + '</div><div class="hero-sub">' + sub + "</div>";
   if (d.status !== "not_started") out += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
   const myLast = me() ? d.feed.filter((f) => f.memberId === myId).slice(-1)[0] : null;
   if (myLast && survivors[myLast.survivorId]) out += '<div class="check-chip"><span class="tick">✓</span><div><div class="lbl">Your last pick</div><div class="val">' + esc(survivors[myLast.survivorId].name) + "</div></div></div>";
   if (A && d.status === "in_progress" && picker && picker !== myId && members[picker]) {
     const ph = phones()[picker];
     out += '<div class="check-chip" style="background:rgba(186,210,232,0.5);border-color:#BAD2E8;"><div style="flex:1;"><div class="lbl">Next up</div><div class="val">' + esc(pickerName) + "</div></div>" +
-      (ph ? '<a class="btn primary sm" href="' + esc(smsLink(picker, "🔥 " + pickerName + ", you're on the clock in " + cfg().leagueName + "! Round " + d.round + " — make your pick: " + location.origin + location.pathname)) + '">📱 Text ' + esc(pickerName.split(" ")[0]) + "</a>" : '<button class="btn sm" data-act="set-phone" data-id="' + picker + '">Add their number to text them</button>') + "</div>";
+      (ph ? '<a class="btn primary sm" href="' + esc(smsLink(picker, "🔥 " + pickerName + ", you're on the clock in " + cfg().leagueName + "! Round " + round + " — make your pick: " + location.origin + location.pathname)) + '">📱 Text ' + esc(pickerName.split(" ")[0]) + "</a>" : '<button class="btn sm" data-act="set-phone" data-id="' + picker + '">Add their number to text them</button>') + "</div>";
   }
-  out += "</div>" + renderWishlist(d) + "<div class=\"card\">";
+  out += "</div>" + renderKeep(ctx) + renderWishlist(ctx) + '<div class="card">';
+  const taken = takenInfo(ctx);
   if (d.status === "not_started") {
-    if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> Shuffle order</label><button class="btn primary" data-act="start-draft">Start the draft</button></div>';
+    const canUndoSeason = !isSeason && A && seasonDraft().feed.length && !Object.keys(weeks).some((k) => (weeks[k].draft && weeks[k].draft.feed && weeks[k].draft.feed.length) || weekScored(k));
+    if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> Shuffle order</label><div class="row">' + (canUndoSeason ? '<button class="btn sm ghost" data-act="undo-season">↺ Undo last season pick</button>' : "") + '<button class="btn primary" data-act="start-draft">' + (isSeason ? "Start the season draft" : "Start the weekly draft") + "</button></div></div>";
     else out += '<div class="feed-empty">The commissioner starts the draft from this screen.</div>';
   } else {
-    const drafted = new Set(d.feed.map((f) => f.survivorId));
-    out += '<div class="order-track">' + d.order.map((mid) => { const mm = members[mid]; if (!mm) return ""; return '<span class="order-chip ' + (mid === picker ? "active" : "") + '" style="' + (mid === picker ? "" : "border-color:" + mm.color + "55;") + '">' + esc(mm.name) + (mid === myId ? " (you)" : "") + "</span>"; }).join("") + "</div>";
+    out += '<div class="order-track">' + d.order.filter((mid) => seq.includes(mid)).map((mid) => { const mm = members[mid]; if (!mm) return ""; return '<span class="order-chip ' + (mid === picker ? "active" : "") + '" style="' + (mid === picker ? "" : "border-color:" + mm.color + "55;") + '">' + esc(mm.name) + (mid === myId ? " (you)" : "") + "</span>"; }).join("") + "</div>";
     out += '<div class="feed">' + (d.feed.length ? "" : '<div class="feed-empty">No picks yet — the first name is up.</div>') + d.feed.map((f) => {
-      const mm = members[f.memberId], s = survivors[f.survivorId];
-      return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(f.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + "</b> drafted <b>" + esc(s ? s.name : "?") + "</b></span></div>";
+      const mm = members[f.memberId], sv = survivors[f.survivorId];
+      return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(f.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + "</b> drafted " + (sv ? '<b class="nm" role="button" tabindex="0" data-act="info" data-id="' + sv.id + '">' + esc(sv.name) + "</b>" : "<b>?</b>") + "</span></div>";
     }).join("") + "</div>";
     if (d.status === "in_progress") {
       if (picker === myId || A) {
-        const avail = survivorList().filter((s) => !s.eliminated && !drafted.has(s.id));
+        const avail = survivorList().filter((x) => !x.eliminated && !taken[x.id]);
         out += '<div class="btw" style="margin-bottom:8px;"><div style="font-size:13px;color:var(--sand-dim);">' + (picker === myId ? "Tap your pick:" : "Picking for " + esc(pickerName) + ":") + "</div>" + (A && d.feed.length ? '<button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button>' : "") + "</div>";
-        { const qp = topAvailable(picker, d);
+        { const qp = topAvailable(picker, ctx);
           if (picker === myId && qp) out += '<div style="margin-bottom:12px;"><button class="btn primary" data-act="wl-pick">⚡ Draft my top wishlist pick: ' + esc(survivors[qp].name) + "</button></div>";
           else if (A && picker !== myId && qp) out += '<div style="margin-bottom:12px;"><button class="btn primary sm" data-act="wl-pick-for" data-id="' + picker + '">⚡ Pick from ' + esc(pickerName.split(" ")[0]) + "'s wishlist</button></div>"; }
-        out += avail.length ? '<div class="survivor-grid">' + avail.map((s) => '<button class="survivor-btn" data-act="draft-pick" data-survivor="' + s.id + '">' + thumb(s, 54) + "<b>" + esc(s.name) + "</b><small>" + esc((s.age ? s.age + " · " : "") + (s.job || "")) + "</small></button>").join("") + "</div>" : '<div class="feed-empty">No eligible survivors left this week.</div>';
+        out += avail.length ? '<div class="survivor-grid">' + avail.map((x) => '<div class="sv-wrap"><button class="survivor-btn" data-act="draft-pick" data-survivor="' + x.id + '">' + thumb(x, 54) + "<b>" + esc(x.name) + '</b></button><button class="sv-i" data-act="info" data-id="' + x.id + '" aria-label="About ' + esc(x.name) + '">i</button></div>').join("") + "</div>" : '<div class="feed-empty">No eligible survivors left.</div>';
       } else out += '<div class="feed-empty">Sit tight — you\'ll get a turn.</div>';
     } else if (A) {
-      out += '<div class="row"><button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button><button class="btn primary" data-act="advance-week">Advance to week ' + (wk + 1) + " →</button></div>";
-    }
-    if (d.feed.length) {
-      out += '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); margin-top:18px;">' + d.order.map((mid) => {
-        const mm = members[mid]; if (!mm) return "";
-        const team = d.feed.filter((f) => f.memberId === mid).map((f) => survivors[f.survivorId]).filter(Boolean);
-        return '<div class="team-card" style="border-top-color:' + mm.color + '"><h4><span class="dot" style="background:' + mm.color + '"></span>' + esc(mm.name) + "</h4>" + (team.length ? team.map((s) => '<div class="team-row">' + thumb(s, 28) + "<span>" + esc(s.name) + (s.eliminated ? " 🕯️" : "") + "</span></div>").join("") : '<div style="color:var(--sand-faint);font-size:13px;">No picks yet</div>') + "</div>";
-      }).join("") + "</div>";
+      out += '<div class="row"><button class="btn sm ghost" data-act="undo-pick">↺ Undo last pick</button>' + (isSeason ? "" : '<button class="btn primary" data-act="advance-week">Advance to week ' + (wk + 1) + " →</button>") + "</div>";
     }
   }
-  return out + "</div>";
+  out += squadCards(ctx);
+  return out + "</div>" + renderTrades(ctx);
 }
 
 function renderBonus() {
   if (!ui.bonusWeek) ui.bonusWeek = cfg().currentWeek;
   const wkKey = ui.bonusWeek, joined = !!me();
   const usedSlot = joined && !isAdmin() && bonusList(wkKey).some((b) => b.createdBy === myId);
-  let out = head("Bonus Challenges", "Trivia, predictions, dance-offs — everyone answers and posts their own videos");
+  let out = head("Bonus challenges", "Trivia, predictions, dance-offs — everyone answers and posts their own videos", "EXTRA POINTS");
   out += '<div class="card"><div class="btw"><label class="field" style="margin:0;">Week<br><select data-act="pick-bonus-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wkKey).map((w) => '<option value="' + w + '" ' + (w === Number(wkKey) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label>" +
     (joined ? (usedSlot ? '<span class="correct-badge">✓ You\'ve added this week\'s challenge</span>' : '<button class="btn primary" data-act="toggle-bonus-form">' + (ui.showBonusForm ? "Cancel" : "+ Add challenge") + "</button>") : "") + "</div>";
   if (joined && ui.showBonusForm && !usedSlot) out += '<div class="card" style="margin-top:14px;border-color:var(--torch);">' + bonusForm() + "</div>";
@@ -880,7 +1533,7 @@ function bonusForm() {
 function renderScoring() {
   if (!ui.scoringWeek) ui.scoringWeek = cfg().currentWeek;
   const wk = ui.scoringWeek, joined = !!me(), rubric = cfg().rubric, d = draftOf(wk);
-  let out = head("Cast & Scoring", "Tap a survivor to log what they did this week");
+  let out = head("Points", "Tap a survivor to log what they did this week · tap a photo to see who they are");
   {
     const all = survivorList(), outN = all.filter((x) => x.eliminated).length, A = isAdmin();
     if (!ui.tribeOpen) {
@@ -892,12 +1545,13 @@ function renderScoring() {
     }
   }
   out += '<div class="card"><div class="btw"><h3 style="margin:0;font-size:18px;">Weekly points</h3><label class="field" style="margin:0;">Week<br><select data-act="pick-scoring-week" class="pill-select" style="margin-top:4px;">' + weekOptions(wk).map((w) => '<option value="' + w + '" ' + (w === Number(wk) ? "selected" : "") + ">Week " + w + "</option>").join("") + "</select></label></div>";
-  const draftedBy = {};
-  (d.feed || []).forEach((f) => (draftedBy[f.survivorId] = members[f.memberId]));
+  const draftedBy = {}, sO = seasonOwners(), wO = weeklyOwners(wk);
+  Object.keys(sO).forEach((sid) => { if (members[sO[sid]]) draftedBy[sid] = { name: members[sO[sid]].name, kind: "season" }; });
+  Object.keys(wO).forEach((sid) => { if (members[wO[sid]]) draftedBy[sid] = { name: members[wO[sid]].name, kind: "weekly" }; });
   const list = survivorList().sort((a, b) => (draftedBy[b.id] ? 1 : 0) - (draftedBy[a.id] ? 1 : 0) || a.name.localeCompare(b.name));
   out += '<div style="margin-top:10px;">' + list.map((s) => {
     const tot = survivorWeekScore(wk, s.id), by = draftedBy[s.id], open = ui.openSurv === s.id;
-    let row = '<div class="list-row surv-row" data-act="open-surv" data-id="' + s.id + '"><div style="display:flex;align-items:center;gap:10px;">' + thumb(s, 38) + '<div><div class="t">' + esc(s.name) + (s.eliminated ? " 🕯️" : "") + '</div><div class="sub">' + (by ? "Drafted by " + esc(by.name) : "Not drafted this week") + '</div></div></div><div class="v" style="color:var(--torch-text);">' + (tot > 0 ? "+" : "") + tot + " " + (open ? "▴" : "▾") + "</div></div>";
+    let row = '<div class="list-row surv-row" data-act="open-surv" data-id="' + s.id + '"><div style="display:flex;align-items:center;gap:10px;"><span class="surv-ph" data-act="info" data-id="' + s.id + '">' + thumb(s, 38) + '</span><div><div class="t">' + esc(s.name) + (s.eliminated ? " 🕯️" : "") + '</div><div class="sub">' + (by ? (by.kind === "season" ? "Season pick · " : "Weekly · ") + esc(by.name) : "Not on a squad") + '</div></div></div><div class="v" style="color:var(--torch-text);">' + (tot > 0 ? "+" : "") + tot + " " + (open ? "▴" : "▾") + "</div></div>";
     if (open) {
       row += '<div class="ev-panel">' + rubric.map((r) => {
         const c = Number((((weekDoc(wk).events || {})[s.id]) || {})[r.id]) || 0;
@@ -910,44 +1564,13 @@ function renderScoring() {
   return out;
 }
 
-function renderHistory() {
-  const ml = memberList();
-  let out = head("History", "Each player's picks week by week, and exactly what earned the points");
-  if (!ml.length) return out + '<div class="card"><div class="empty"><div class="big">📜</div>Nothing here yet — history builds as the weeks go by.</div></div>';
-  const mid = ui.histMember && members[ui.histMember] ? ui.histMember : me() ? myId : ml[0].id;
-  const rubric = cfg().rubric;
-  out += '<div class="card"><label class="field" style="margin:0;">Player<br><select data-act="pick-hist-member" class="pill-select" style="margin-top:4px;">' + ml.map((x) => '<option value="' + x.id + '" ' + (x.id === mid ? "selected" : "") + ">" + esc(x.name) + (x.id === myId ? " (you)" : "") + "</option>").join("") + "</select></label></div>";
-  const row = computeStandings().find((r) => r.member.id === mid) || { total: 0, weekly: {} };
-  const wkSet = {};
-  Object.keys(weeks).forEach((k) => { if (((weeks[k].draft && weeks[k].draft.feed) || []).some((f) => f.memberId === mid)) wkSet[k] = true; });
-  Object.values(bonus).forEach((b) => { if (b.resolved && (b.responses || {})[mid] != null) wkSet[b.week] = true; });
-  const keys = Object.keys(wkSet).map(Number).sort((a, b) => b - a);
-  if (!keys.length) return out + '<div class="card"><div class="empty"><div class="big">📜</div>No picks yet for ' + esc(members[mid].name) + ". Once a draft happens, each week shows up here.</div></div>";
-  let best = null;
-  keys.forEach((k) => { if (best === null || (row.weekly[k] || 0) > (row.weekly[best] || 0)) best = k; });
-  out += '<div class="statrow"><div class="col"><div class="n accent">' + row.total + '</div><div class="l">Season total</div></div><div class="col"><div class="n">' + keys.length + '</div><div class="l">Weeks played</div></div><div class="col"><div class="n">' + fmt(row.weekly[best] || 0) + '</div><div class="l">Best week (Wk ' + best + ")</div></div></div>";
-  keys.forEach((wk) => {
-    const feed = ((weeks[wk] && weeks[wk].draft && weeks[wk].draft.feed) || []).filter((f) => f.memberId === mid);
-    const bs = bonusList(wk).filter((b) => b.resolved && (b.responses || {})[mid] != null);
-    out += '<div class="card"><div class="btw" style="margin-bottom:8px;"><div><div class="eyebrow">WEEK ' + wk + '</div><div class="hero-sub">' + feed.length + " pick" + (feed.length === 1 ? "" : "s") + (bs.length ? " · " + bs.length + " bonus" : "") + '</div></div><div class="lb-total">' + fmt(row.weekly[wk] || 0) + "</div></div>";
-    feed.forEach((f) => {
-      const s = survivors[f.survivorId]; if (!s) return;
-      const ev = ((weekDoc(wk).events || {})[s.id]) || {};
-      const lines = rubric.filter((r) => (Number(ev[r.id]) || 0) > 0).map((r) => { const n = Number(ev[r.id]); return '<div class="hist-ev"><span>' + esc(r.label) + (n > 1 ? " ×" + n : "") + "</span><span>" + fmt(n * r.points) + "</span></div>"; }).join("");
-      out += '<div class="hist-pick"><div class="hist-head">' + thumb(s, 42) + '<div style="flex:1;min-width:0;"><div class="t">' + esc(s.name) + (s.eliminated ? " 🕯️" : "") + '</div><div class="sub">' + esc((s.age ? s.age + " · " : "") + (s.job || "")) + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(survivorWeekScore(wk, s.id)) + "</div></div>" + (lines || '<div class="hist-ev"><span style="color:var(--sand-faint);">Nothing scored this week</span><span></span></div>') + "</div>";
-    });
-    bs.forEach((b) => {
-      const mine = b.responses[mid], ok = mine === b.correctOption;
-      out += '<div class="hist-pick"><div class="hist-head"><span class="bonus-type">' + (BONUS_TYPES[b.type] || BONUS_TYPES.other).icon + ' Bonus</span><div style="flex:1;min-width:0;"><div class="t">' + esc(b.title) + '</div><div class="sub">Answered "' + esc(mine) + '"' + (ok ? " ✓" : " · correct was \"" + esc(b.correctOption) + '"') + '</div></div><div class="v" style="color:var(--torch-text);">' + fmt(ok ? Number(b.points) || 0 : 0) + "</div></div></div>";
-    });
-    out += "</div>";
-  });
-  return out;
+function survEditForm(x) {
+  return '<div class="ev-panel"><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;padding:10px 0;"><div><label class="field">Age</label><input type="number" id="es-age" value="' + esc(x.age || "") + '"></div><div><label class="field">Hometown</label><input type="text" id="es-home" value="' + esc(x.hometown || "") + '" placeholder="e.g. Atlanta, GA"></div><div><label class="field">Lives in</label><input type="text" id="es-res" value="' + esc(x.residence || "") + '" placeholder="e.g. Providence, RI"></div><div><label class="field">Job</label><input type="text" id="es-job" value="' + esc(x.job || "") + '"></div><div><label class="field">Three-word description</label><input type="text" id="es-tag" value="' + esc(x.tagline || "") + '" placeholder="e.g. Quick-witted, empathetic"></div></div><button class="btn primary sm" data-act="save-surv" data-id="' + x.id + '" style="margin-bottom:10px;">Save details</button></div>';
 }
 
 function renderSetup() {
   const m = me(), A = isAdmin(), c = cfg();
-  let out = head("Setup", "Your profile, the league, and the commissioner tools");
+  let out = head("Setup", "Your profile, the league, and the commissioner tools", "SETTINGS");
   if (m) {
     out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">Your profile</h3>';
     if (ui.editingProfile) {
@@ -966,6 +1589,8 @@ function renderSetup() {
   out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">League name &amp; week</h3>' + (A ? '<input type="text" id="league-name" value="' + esc(c.leagueName) + '" style="max-width:300px;"><button class="btn sm" data-act="save-name" style="margin-left:8px;">Save</button>' : "<div>" + esc(c.leagueName) + "</div>") +
     '<div class="stepper" style="margin-top:14px;">' + (A ? '<button class="btn sm" data-act="week-dec">−</button>' : "") + '<div class="num">' + c.currentWeek + "</div>" + (A ? '<button class="btn sm" data-act="week-inc">+</button>' : "") + '<div style="font-size:12.5px;color:var(--sand-dim);">Current week. Weeks 1–2 are scouting; drafting starts week 3.</div></div></div>';
 
+  out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Leaderboard page</h3><div class="hero-sub" style="margin-bottom:12px;">Draft night and house rules show on the Board. The photo credit appears in every pop-up and at the bottom of every page.</div>' + (A ? '<label class="field">Draft night</label><div class="row"><input type="datetime-local" id="draft-at" value="' + esc(c.draftAt ? toLocalInput(c.draftAt) : "") + '" style="max-width:240px;"><button class="btn sm ghost" data-act="clear-draft-at">Clear</button></div><label class="field" style="margin-top:14px;">House rules (one per line, optional)</label><textarea id="house-rules" rows="4" placeholder="e.g. Back-to-back picks only when mathematically necessary.">' + esc(c.houseRules || "") + '</textarea><label class="field" style="margin-top:14px;">Photo credit</label><input type="text" id="photo-credit" value="' + esc(c.photoCredit) + '" style="max-width:320px;"><div style="margin-top:14px;"><button class="btn primary sm" data-act="save-extras">Save</button></div>' : '<div class="hero-sub">Only the commissioner can change these.</div>') + "</div>";
+
   out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Scoring rubric</h3><div class="hero-sub" style="margin-bottom:10px;">Every way a survivor can earn or lose points.' + (A ? "" : " (Commissioner can edit.)") + "</div>";
   out += c.rubric.map((r) => A ? '<div class="rubric-row"><input type="text" data-field="rubric-label" data-id="' + r.id + '" value="' + esc(r.label) + '"><input type="number" data-field="rubric-pts" data-id="' + r.id + '" value="' + r.points + '"><button class="iconbtn" data-act="rubric-del" data-id="' + r.id + '">✕</button></div>' : '<div class="list-row"><div class="t">' + esc(r.label) + '</div><div class="v">' + fmt(r.points) + "</div></div>").join("");
   if (A) out += '<div class="rubric-row"><input type="text" id="rub-new-label" placeholder="New scoring possibility"><input type="number" id="rub-new-pts" placeholder="pts"><button class="btn sm" data-act="rubric-add">Add</button></div>';
@@ -974,11 +1599,15 @@ function renderSetup() {
   out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">League roster</h3>' + (memberList().length ? '<div class="list-wrap">' + memberList().map((x) => '<span class="chip"><span class="dot" style="background:' + x.color + '"></span>' + esc(x.name) + (x.id === myId ? " (you)" : "") + (A ? ' <button class="iconbtn" title="' + (phones()[x.id] ? "Number saved — tap to change" : "Add phone number (this device only)") + '" data-act="set-phone" data-id="' + x.id + '">' + (phones()[x.id] ? "📱" : "☎️") + '</button><button class="iconbtn" title="Reset PIN" data-act="reset-pin" data-id="' + x.id + '">🔑</button><button class="iconbtn" title="Remove" data-act="remove-member" data-id="' + x.id + '">✕</button>' : "") + "</span>").join("") + "</div>" + (A ? '<div style="font-size:12px;color:var(--sand-faint);margin-top:8px;">☎️ phone numbers are only stored on this device, for the draft text button. 🔑 resets someone\'s PIN if they forget it.</div>' : "") : '<div class="empty">No one yet — share the link!</div>') + "</div>";
 
   if (A) out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Backup</h3><div class="hero-sub" style="margin-bottom:10px;">Downloads a copy of everything — members, picks, scores, bonus answers, photos. Handy before big changes or once a week. Keep the file private.</div><button class="btn sm" data-act="backup">⬇ Download backup</button></div>';
+  if (A) {
+    const zm = Number(c.photoZoom) || 1.5, fy = c.photoFocus != null ? Number(c.photoFocus) : 0, withPhoto = survivorList().filter((x) => x.photo).slice(0, 5);
+    out += '<div class="card"><h3 style="margin:0 0 4px;font-size:18px;">Photo framing</h3><div class="hero-sub" style="margin-bottom:12px;">Zooms every headshot in on the face. Slide until the heads sit nicely in the circles — it updates for everyone.</div><div class="frame-prev">' + (withPhoto.length ? withPhoto.map((x) => thumb(x, 64)).join("") : '<span class="hero-sub">Add a photo below to preview the framing.</span>') + '</div><label class="field">Zoom <b id="pz-v">' + String(Math.round(zm * 100) / 100) + '×</b></label><input type="range" id="pz" min="1" max="2.6" step="0.05" value="' + zm + '"><label class="field" style="margin-top:12px;">Move the frame down <b id="pf-v">' + fy + '</b></label><input type="range" id="pf" min="0" max="60" step="1" value="' + fy + '"></div>';
+  }
   out += '<div class="card"><h3 style="margin:0 0 10px;font-size:18px;">Survivor cast</h3>';
   if (A) {
-    out += '<div class="hero-sub" style="margin-bottom:6px;">Add a headshot for each castaway — it gets cropped and resized automatically.</div>' + survivorList().map((s) => '<div class="list-row"><div style="display:flex;align-items:center;gap:10px;">' + thumb(s, 40) + '<div><div class="t">' + esc(s.name) + '</div><div class="sub">' + esc((s.age ? s.age + " · " : "") + (s.job || "")) + '</div></div></div><div class="row" style="gap:6px;"><button class="btn sm" data-act="photo-pick" data-id="' + s.id + '">' + (s.photo ? "Change photo" : "Add photo") + "</button>" + (s.photo ? '<button class="btn sm ghost" data-act="photo-remove" data-id="' + s.id + '">Remove</button>' : "") + '<button class="iconbtn" data-act="remove-survivor" data-id="' + s.id + '">✕</button></div></div>').join("");
+    out += '<div class="hero-sub" style="margin-bottom:6px;">Add a headshot for each castaway — it gets cropped and resized automatically. Tap Edit to change details. Everyone sees these in the pop-up when they tap a name.</div><div class="row" style="margin:6px 0 4px;"><button class="btn sm" data-act="apply-cast">Update details from the CBS cast list</button><span style="font-size:12px;color:var(--sand-faint);">Age, job, hometown, where they live, three-word description. Photos and eliminations stay as they are.</span></div><div class="row" style="margin:6px 0 4px;"><button class="btn sm" data-act="photo-bulk">Add many photos at once</button><span style="font-size:12px;color:var(--sand-faint);">Pick all the files together. Each is matched to a castaway by the name in its file name — a first name is enough, like aaliyah.jpg or Aaliyah Puglia.jpg. Full-size originals look sharpest.</span></div>' + (ui.bulkReport ? '<div class="banner info" style="margin:6px 0 10px;">Saved ' + ui.bulkReport.saved + " of " + ui.bulkReport.files + " files." + (ui.bulkReport.missed.length ? " Could not match: " + esc(ui.bulkReport.missed.join(", ")) + ". Use Add photo on those castaways." : "") + "</div>" : "") + '' + survivorList().map((x) => '<div><div class="list-row"><div style="display:flex;align-items:center;gap:10px;">' + thumb(x, 40) + '<div><div class="t">' + esc(x.name) + '</div><div class="sub">' + esc([x.age, x.hometown, x.job].filter(Boolean).join(" · ")) + '</div></div></div><div class="row" style="gap:6px;"><button class="btn sm" data-act="photo-pick" data-id="' + x.id + '">' + (x.photo ? "Change photo" : "Add photo") + "</button>" + (x.photo ? '<button class="btn sm ghost" data-act="photo-remove" data-id="' + x.id + '">Remove</button>' : "") + '<button class="btn sm ghost" data-act="edit-surv" data-id="' + x.id + '">' + (ui.editSurv === x.id ? "Close" : "Edit") + '</button><button class="iconbtn" data-act="remove-survivor" data-id="' + x.id + '">✕</button></div></div>' + (ui.editSurv === x.id ? survEditForm(x) : "") + "</div>").join("");
     out += '<div class="row" style="margin-top:14px;"><input type="text" id="new-surv-name" placeholder="Name" style="max-width:170px;"><input type="number" id="new-surv-age" placeholder="Age" style="max-width:80px;"><input type="text" id="new-surv-job" placeholder="Job" style="max-width:170px;"><button class="btn" data-act="add-survivor">Add</button><button class="btn ghost sm" data-act="toggle-bulk">' + (ui.showBulk ? "Cancel" : "📋 Paste a list") + "</button></div>";
-    if (ui.showBulk) out += '<div style="margin-top:12px;"><label class="field">One castaway per line. Optional: Name | age | job</label><textarea id="bulk-input" rows="6" placeholder="Cirie Fields | 54 | Nurse&#10;Ozzy Lusth&#10;..."></textarea><div class="row" style="margin-top:8px;"><button class="btn primary sm" data-act="add-bulk">Add all</button><span style="font-size:12px;color:var(--sand-faint);">Duplicates and blank lines are skipped</span></div></div>';
+    if (ui.showBulk) out += '<div style="margin-top:12px;"><label class="field">One castaway per line. Optional: Name | age | job | hometown</label><textarea id="bulk-input" rows="6" placeholder="Cirie Fields | 54 | Nurse&#10;Ozzy Lusth&#10;..."></textarea><div class="row" style="margin-top:8px;"><button class="btn primary sm" data-act="add-bulk">Add all</button><span style="font-size:12px;color:var(--sand-faint);">Duplicates and blank lines are skipped</span></div></div>';
   } else out += '<div class="list-wrap">' + orderedCast().map((s) => '<span class="chip ' + (s.eliminated ? "eliminated" : "") + '">' + esc(s.name) + "</span>").join("") + "</div>";
   return out + "</div>";
 }
@@ -991,7 +1620,12 @@ document.addEventListener("click", async (e) => {
   if (el.tagName === "A") e.preventDefault();
   const act = el.getAttribute("data-act"), id = el.getAttribute("data-id");
   switch (act) {
-    case "set-tab": ui.tab = el.getAttribute("data-tab"); return render();
+    case "info": ui.sheet = id; renderModal(); { const x = document.querySelector(".sheet-x"); if (x) x.focus(); } return;
+    case "sheet-close": if (el.classList.contains("sheet-bg") && e.target !== el) return; ui.sheet = null; return renderModal();
+    case "sheet-edit": if (!needAdmin()) return; ui.sheet = null; ui.tab = "setup"; ui.editSurv = id; renderModal(); render(); window.scrollTo(0, 0); return;
+    case "how-toggle": ui.howOpen = !ui.howOpen; return render();
+    case "apply-cast": { if (!needAdmin()) return; if (!confirm("Replace age, job, hometown, where they live and the three-word description for the castaways with CBS's list? Photos and eliminations stay as they are.")) return; const n = await applyCastDetails(false); toast(n ? "Updated " + n + " castaways ✓" : "No matching castaways found."); return; }
+    case "set-tab": ui.tab = el.getAttribute("data-tab"); render(); window.scrollTo(0, 0); return;
     case "go-setup": ui.tab = "setup"; return render();
     case "pick-me": ui.pinFor = id; return render();
     case "pin-back": ui.pinFor = null; return render();
@@ -1008,7 +1642,7 @@ document.addEventListener("click", async (e) => {
     case "set-pass": { const p = val("admin-new").trim(); if (p.length < 4) return toast("Use at least 4 characters."); if (config && config.adminHash && !isAdmin()) return toast("Unlock first."); const h = await sha(p); await setConfig({ adminHash: h }); try { localStorage.setItem("tt_admin", h); } catch (x) {} toast("Passcode saved — you're the commissioner."); return render(); }
     case "unlock": { const h = await sha(val("admin-try")); if (config && h === config.adminHash) { try { localStorage.setItem("tt_admin", h); } catch (x) {} toast("Unlocked 👑"); } else toast("That passcode didn't match."); return render(); }
     case "lock": try { localStorage.removeItem("tt_admin"); } catch (x) {} return render();
-    case "save-name": if (!needAdmin()) return; return setConfig({ leagueName: val("league-name").trim() || "Torch & Tribe" });
+    case "save-name": if (!needAdmin()) return; return setConfig({ leagueName: val("league-name").trim() || DEFAULT_NAME });
     case "week-dec": return stepWeek(-1);
     case "week-inc": return stepWeek(1);
     case "advance-week": await stepWeek(1); ui.tab = "draft"; return render();
@@ -1017,8 +1651,15 @@ document.addEventListener("click", async (e) => {
     case "set-phone": if (!needAdmin()) return; return setPhone(id);
     case "reset-pin": if (!needAdmin()) return; if (!confirm("Reset " + (members[id] ? members[id].name : "this person") + "'s PIN? They'll choose a new one next time they sign in.")) return; return guard(() => updateDoc(doc(db, "members", id), { pinHash: "" }));
     case "remove-member": if (!needAdmin()) return; if (!confirm("Remove " + (members[id] ? members[id].name : "this person") + " from the league?")) return; return guard(() => deleteDoc(doc(db, "members", id)));
-    case "remove-survivor": if (!needAdmin()) return; if (!confirm("Remove " + (survivors[id] ? survivors[id].name : "this castaway") + " from the cast?")) return; return guard(() => deleteDoc(doc(db, "survivors", id)));
+    case "remove-survivor": if (!needAdmin()) return; if (!confirm("Remove " + (survivors[id] ? survivors[id].name : "this castaway") + " from the cast?")) return; return guard(async () => { await deleteDoc(doc(db, "survivors", id)); await deleteDoc(doc(db, "config", "photo-" + id)); });
     case "backup": return downloadBackup();
+    case "open-player": ui.openPlayer = ui.openPlayer === id ? null : id; return render();
+    case "rules-toggle": ui.rulesOpen = !ui.rulesOpen; return render();
+    case "rules-go": { ui.rulesOpen = true; render(); const r = $("rules"); if (r && r.scrollIntoView) r.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    case "edit-surv": ui.editSurv = ui.editSurv === id ? null : id; return render();
+    case "save-surv": { if (!needAdmin()) return; const a = Number(val("es-age")); await guard(() => updateDoc(doc(db, "survivors", id), { age: a || null, hometown: val("es-home").trim(), residence: val("es-res").trim(), job: val("es-job").trim(), tagline: val("es-tag").trim() })); ui.editSurv = null; toast("Saved ✓"); return render(); }
+    case "clear-draft-at": if (!needAdmin()) return; return setConfig({ draftAt: "" });
+    case "save-extras": { if (!needAdmin()) return; const v = val("draft-at"); let draftAt = ""; if (v) { const d = new Date(v); if (!isNaN(d)) draftAt = d.toISOString(); } await setConfig({ draftAt, houseRules: val("house-rules"), photoCredit: val("photo-credit").trim() }); toast("Saved ✓"); return render(); }
     case "wl-toggle": ui.wlOpen = !ui.wlOpen; if (!ui.wlOpen) ui.wlAdd = false; return render();
     case "wl-toggle-add": ui.wlAdd = !ui.wlAdd; return render();
     case "wl-add": { if (!me()) return toast("Sign in first."); const wl = wishlistOf(myId); if (wl.includes(id)) return; return saveWishlist(wl.concat([id])); }
@@ -1028,7 +1669,8 @@ document.addEventListener("click", async (e) => {
     case "wl-pick": if (!needMe()) return; return pickFromWishlist(myId, false);
     case "wl-pick-for": if (!needAdmin()) return; return pickFromWishlist(id, false);
     case "photo-pick": { if (!needAdmin()) return; ui.photoFor = id; const f = $("photo-file"); f.value = ""; return f.click(); }
-    case "photo-remove": if (!needAdmin()) return; return guard(() => updateDoc(doc(db, "survivors", id), { photo: "" }));
+    case "photo-remove": if (!needAdmin()) return; return guard(async () => { await updateDoc(doc(db, "survivors", id), { photo: "", hd: null }); await deleteDoc(doc(db, "config", "photo-" + id)); delete bigPhotos[id]; });
+    case "photo-bulk": { if (!needAdmin()) return; const f = $("photo-bulk"); f.value = ""; return f.click(); }
     case "add-survivor": { const n = val("new-surv-name").trim(); if (!n) return; return addSurvivors([n + "|" + val("new-surv-age") + "|" + val("new-surv-job")]); }
     case "toggle-bulk": ui.showBulk = !ui.showBulk; return render();
     case "add-bulk": { const lines = val("bulk-input").split("\n").map((x) => x.trim()).filter(Boolean); if (!lines.length) return; addSurvivors(lines); ui.showBulk = false; return render(); }
@@ -1040,6 +1682,12 @@ document.addEventListener("click", async (e) => {
     case "start-draft": return startDraft();
     case "draft-pick": return makePick(el.getAttribute("data-survivor"));
     case "undo-pick": return undoPick();
+    case "undo-season": return undoPick(true);
+    case "keep-toggle": return toggleKeep(id);
+    case "trade-send": return sendTrade();
+    case "trade-accept": return respondTrade(id, "accept");
+    case "trade-decline": return respondTrade(id, "decline");
+    case "trade-cancel": return respondTrade(id, "cancel");
     case "toggle-bonus-form": ui.showBonusForm = !ui.showBonusForm; return render();
     case "save-bonus": {
       if (!needMe()) return;
@@ -1078,12 +1726,20 @@ document.addEventListener("click", async (e) => {
 });
 document.addEventListener("change", async (e) => {
   const el = e.target, act = el.getAttribute("data-act"), field = el.getAttribute("data-field");
+  if (el.id === "pz" || el.id === "pf") {
+    if (!needAdmin()) return render();
+    return setConfig({ photoZoom: Number($("pz").value), photoFocus: Number($("pf").value) });
+  }
+  if (el.id === "photo-bulk") { if (!needAdmin()) return; return bulkUploadPhotos(el.files); }
   if (el.id === "photo-file") {
     const f = el.files && el.files[0];
     if (!f || !ui.photoFor || !needAdmin()) return;
     const sid = ui.photoFor;
-    return guard(async () => { const url = await fileToSquareDataUrl(f); await updateDoc(doc(db, "survivors", sid), { photo: url }); toast("Photo saved ✓"); }, "Couldn't save that photo.");
+    return guard(async () => { await savePhotoPair(sid, f); toast("Photo saved ✓"); }, "Couldn't save that photo.");
   }
+  if (act === "trade-give") { ui.trade = Object.assign({}, ui.trade, { give: el.value }); return render(); }
+  if (act === "trade-to") { ui.trade = Object.assign({}, ui.trade, { to: el.value, get: "" }); return render(); }
+  if (act === "trade-get") { ui.trade = Object.assign({}, ui.trade, { get: el.value }); return render(); }
   if (act === "pick-bonus-week") { ui.bonusWeek = Number(el.value); return render(); }
   if (act === "pick-scoring-week") { ui.scoringWeek = Number(el.value); return render(); }
   if (act === "pick-hist-member") { ui.histMember = el.value; return render(); }
@@ -1093,7 +1749,22 @@ document.addEventListener("change", async (e) => {
     saveRubric(cfg().rubric.map((r) => r.id !== id ? r : field === "rubric-label" ? Object.assign({}, r, { label: el.value.trim() || r.label }) : Object.assign({}, r, { points: Number(el.value) || 0 })));
   }
 });
+const prefetchBig = (e) => { const el = e.target && e.target.closest ? e.target.closest('[data-act="info"]') : null; if (el) ensureBig(el.getAttribute("data-id")); };
+document.addEventListener("pointerdown", prefetchBig, { passive: true });
+document.addEventListener("mouseover", prefetchBig, { passive: true });
+document.addEventListener("input", (e) => {
+  const t = e.target;
+  if (!t || (t.id !== "pz" && t.id !== "pf")) return;
+  const z = Number($("pz").value), f = Number($("pf").value);
+  applyPhotoVars(z, f);
+  const zv = $("pz-v"), fv = $("pf-v");
+  if (zv) zv.textContent = String(Math.round(z * 100) / 100) + "×";
+  if (fv) fv.textContent = String(f);
+});
 document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && ui.sheet) { ui.sheet = null; renderModal(); return; }
+  const tg = e.target;
+  if ((e.key === "Enter" || e.key === " ") && tg && tg.getAttribute && tg.getAttribute("role") === "button" && tg.hasAttribute("data-act")) { e.preventDefault(); tg.click(); return; }
   if (e.key !== "Enter") return;
   const map = { "join-name": "join", "join-pin": "join", "pin-input": "signin", "new-surv-name": "add-survivor", "admin-try": "unlock", "admin-new": "set-pass", "my-pin": "set-my-pin" };
   const act = map[e.target && e.target.id];
