@@ -1030,6 +1030,7 @@ function startDraft() {
   const ctx = draftCtx(), ids = Object.keys(members);
   if (!ids.length) return toast("No one has joined yet.");
   if (ctx.draft.status !== "not_started") return toast("This draft already started.");
+  if (!confirm("Start the draft with " + ids.length + " player" + (ids.length === 1 ? "" : "s") + ": " + ids.map((i) => members[i].name).join(", ") + "?\n\nStarting locks this pick order. Anyone who joins after this will sit out until you restart the draft.")) return;
   const order = ui.shuffleOnStart ? shuffle(ids) : ids;
   let needs = {}, kept = {};
   if (ctx.kind === "season") {
@@ -1046,6 +1047,13 @@ function startDraft() {
   const seq = buildSeq(order, needs);
   const draft = { status: seq.length ? "in_progress" : "complete", order, seq, picksPerMember: ctx.per, feed: [] };
   return guard(() => setDoc(ctx.ref, ctx.kind === "season" ? { draft, startWeek: cfg().currentWeek } : { draft, kept }, { merge: true }));
+}
+function resetDraft() {
+  if (!needAdmin()) return;
+  const ctx = draftCtx(), n = (ctx.draft.feed || []).length;
+  if (ctx.draft.status === "not_started") return toast("This draft hasn't started.");
+  if (!confirm("Restart this draft?" + (n ? "\n\nThis clears all " + n + " pick" + (n === 1 ? "" : "s") + " made in it so far" + "." : "") + "\n\nYou can then press Start again and everyone currently in the league will be in the order.")) return;
+  return guard(() => setDoc(ctx.ref, { draft: emptyDraft() }, { merge: true }));
 }
 function makePick(sid, opts) {
   opts = opts || {};
@@ -1217,7 +1225,7 @@ function renderNav() {
   $("side").innerHTML = brand + '<div class="s-week">WEEK ' + c.currentWeek + " · SURVIVOR 51</div><nav class=\"s-nav\">" +
     TABS.map((t) => '<button class="nav-i' + (ui.tab === t.id ? " active" : "") + '" data-act="set-tab" data-tab="' + t.id + '">' + icon(t.icon, 20) + "<span>" + esc(t.label) + "</span>" + badge(t) + "</button>").join("") + '</nav><div class="s-user">' + (m ? idChip(m) : signIn) + "</div>";
   $("topbar").innerHTML = brand + (m ? idChip(m) : signIn);
-  $("tabbar").innerHTML = TABS.filter((t) => t.id !== "setup").map((t) => '<button class="tab-i' + (ui.tab === t.id ? " active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="tab-pill">' + icon(t.icon, 22) + badge(t) + "</span><span>" + esc(t.label) + "</span></button>").join("");
+  $("tabbar").innerHTML = TABS.filter((t) => t.id !== "setup" || m).map((t) => '<button class="tab-i' + (ui.tab === t.id ? " active" : "") + '" data-act="set-tab" data-tab="' + t.id + '"><span class="tab-pill">' + icon(t.icon, 22) + badge(t) + "</span><span>" + esc(t.label) + "</span></button>").join("");
 }
 
 function head(title, meta) {
@@ -1355,19 +1363,50 @@ function playerDetail(mid) {
   return out + "</div>";
 }
 
+function latestScoredWeek() {
+  const ks = Object.keys(weeks).map(Number).filter((k) => k <= cfg().currentWeek && weekScored(k)).sort((a, b) => b - a);
+  return ks.length ? ks[0] : null;
+}
+function nextAction() {
+  const m = me(); if (!m) return null;
+  const ctx = draftCtx(), d = ctx.draft, A = isAdmin(), isSeason = ctx.kind === "season", lw = latestScoredWeek();
+  const draftBtn = { tab: "draft", btn: "Go to the draft" };
+  if (d.status === "in_progress") {
+    const seq = seqOf(d), done = (d.feed || []).length, picker = currentPickerId(d);
+    if (picker === myId) return Object.assign({ tone: "go", title: "It's your turn — make your pick!", text: "You're on the clock" + (isSeason ? " for your season picks." : "."), }, { tab: "draft", btn: "Make my pick" });
+    const ahead = seq.slice(done).indexOf(myId);
+    if (!(d.order || []).includes(myId)) return Object.assign({ tone: "wait", title: "The draft is running without you", text: "You joined after it started, so you're not in the pick order. Ask the commissioner to restart the draft." }, draftBtn);
+    if (ahead === -1) return Object.assign({ tone: "ok", title: "You've made all your picks", text: "Waiting on " + (members[picker] ? esc(members[picker].name) : "the others") + " to finish." }, draftBtn);
+    return Object.assign({ tone: "wait", title: "Draft in progress — waiting for your turn", text: (members[picker] ? esc(members[picker].name) : "Someone") + " is picking now. You're up in " + ahead + " pick" + (ahead === 1 ? "" : "s") + "." }, { tab: "draft", btn: "Watch the draft" });
+  }
+  if (incomingTradeCount()) return Object.assign({ tone: "go", title: "You have a trade offer", text: "Someone wants to swap castaways with you." }, { tab: "draft", btn: "See the offer" });
+  if (d.status === "not_started") {
+    if (A) return { tone: "go", title: isSeason ? "Ready to start the season draft?" : "Ready to start this week's draft?", text: "Make sure everyone has joined first — starting locks the pick order.", tab: "draft", btn: "Open the draft" };
+    return { tone: "wait", title: "Waiting for the draft to start", text: isSeason ? "The commissioner will start the season draft once everyone's in. Build your wishlist while you wait." : "Keep or release last week's players while you wait for the commissioner to start the draft.", tab: "draft", btn: isSeason ? "Build my wishlist" : "Keep or release players" };
+  }
+  const openBonus = Object.keys(bonus).map((k) => bonus[k]).filter((b) => !b.resolved && !(b.responses || {})[myId]);
+  if (openBonus.length) return { tone: "go", title: "A bonus challenge needs your answer", text: openBonus.length + " open — it only takes a tap.", tab: "bonus", btn: "Answer now" };
+  if (lw) return { tone: "ok", title: "Squads are set", text: "Week " + lw + " points are in — see how everyone did.", tab: "scoring", btn: "See week " + lw + " points", week: lw };
+  return { tone: "ok", title: "Squads are set", text: "Points show up here once the commissioner scores the first episode.", tab: "standings", btn: "" };
+}
+function actionBox() {
+  const a = nextAction(); if (!a) return "";
+  const col = a.tone === "go" ? "#F37521" : a.tone === "wait" ? "#BAD2E8" : "#C6B63B";
+  return '<div style="margin:12px 0 4px;padding:12px 14px;border-radius:14px;background:rgba(255,254,246,0.9);border:2px solid ' + col + ';color:#2b0f15;"><div style="font-size:10.5px;font-weight:800;letter-spacing:.12em;opacity:.65;">' + (a.tone === "go" ? "YOUR MOVE" : a.tone === "wait" ? "FOR NOW" : "STATUS") + '</div><div style="font-weight:800;font-size:16px;margin-top:2px;">' + (a.tone === "go" ? "🔥 " : a.tone === "wait" ? "⏳ " : "✅ ") + a.title + '</div><div style="font-size:13.5px;margin-top:2px;opacity:.85;">' + a.text + "</div></div>";
+}
 function renderStandings() {
   const m = me(), c = cfg(), standings = computeStandings();
   const lead = standings[0] && standings[0].total > 0 ? standings[0] : null;
   const topPts = standings[0] ? Math.max(0, standings[0].total) : 0;
-  const n = memberList().length;
-  let out = (m ? "" : '<div class="hiw-wrap">' + howItWorks() + "</div>") + '<section class="bento"><div class="tile t-hero"><div class="t-k">WEEK ' + c.currentWeek + " · " + n + " PLAYER" + (n === 1 ? "" : "S") + '</div><h1 class="t-h">' + (m ? "Hey, " + esc(m.name.split(" ")[0]) : "Welcome, castaway") + '</h1><p class="t-p">' + standingLine(standings) + '</p><div class="t-cta"><button class="btn dark" data-act="set-tab" data-tab="draft">Go to the draft</button><button class="linkbtn" data-act="rules-go">How points work →</button></div></div>' +
+  const n = memberList().length, shownWk = latestScoredWeek() || c.currentWeek;
+  let out = (m ? "" : '<div class="hiw-wrap">' + howItWorks() + "</div>") + '<section class="bento"><div class="tile t-hero"><div class="t-k">WEEK ' + c.currentWeek + " · " + n + " PLAYER" + (n === 1 ? "" : "S") + '</div><h1 class="t-h">' + (m ? "Hey, " + esc(m.name.split(" ")[0]) : "Welcome, castaway") + '</h1><p class="t-p">' + standingLine(standings) + '</p>' + actionBox() + '<div class="t-cta">' + (function () { const a = nextAction(); if (!m) return '<button class="btn dark" data-act="set-tab" data-tab="draft">Go to the draft</button>'; return a && a.btn ? '<button class="btn dark" data-act="see-action">' + esc(a.btn) + "</button>" : ""; })() + '<button class="linkbtn" data-act="rules-go">How points work →</button></div></div>' +
     torchTile() + draftTile() + leadTile(lead) + "</section>";
   const pod = podium(standings);
   if (pod) out += '<section class="section"><h2 class="sec-h">The podium</h2>' + pod + "</section>";
   if (!n) out += '<section class="section"><div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the standings start here.</div></div></section>';
   else out += '<section class="section"><h2 class="sec-h">Full standings</h2><p class="sec-s">Tap a player for the full receipts.</p><div class="lb">' + standings.map((row, i) => {
     const mm = row.member, open = ui.openPlayer === mm.id, first = i === 0 && row.total > 0;
-    return '<button class="lb-r' + (first ? " first" : "") + (open ? " open" : "") + '" data-act="open-player" data-id="' + mm.id + '"><span class="lb-rk">' + (i + 1) + '</span><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><span class="lb-nm">' + esc(mm.name) + (mm.id === myId ? ' <span class="you">(you)</span>' : "") + '<span class="lb-bar"><i style="width:' + (topPts ? Math.round(Math.max(0, row.total) / topPts * 100) : 0) + '%"></i></span></span><span class="lb-wk"><i>WK ' + c.currentWeek + "</i><b>" + (row.weekly[c.currentWeek] || 0) + '</b></span><span class="lb-pt"><b>' + row.total + "</b><i>PTS</i></span>" + '<span class="lb-chev">▾</span></button>' + (open ? playerDetail(mm.id) : "");
+    return '<button class="lb-r' + (first ? " first" : "") + (open ? " open" : "") + '" data-act="open-player" data-id="' + mm.id + '"><span class="lb-rk">' + (i + 1) + '</span><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><span class="lb-nm">' + esc(mm.name) + (mm.id === myId ? ' <span class="you">(you)</span>' : "") + '<span class="lb-bar"><i style="width:' + (topPts ? Math.round(Math.max(0, row.total) / topPts * 100) : 0) + '%"></i></span></span><span class="lb-wk"><i>WK ' + shownWk + "</i><b>" + (row.weekly[shownWk] || 0) + '</b></span><span class="lb-pt"><b>' + row.total + "</b><i>PTS</i></span>" + '<span class="lb-chev">▾</span></button>' + (open ? playerDetail(mm.id) : "");
   }).join("") + "</div></section>";
   return out + '<section class="section">' + rulesPanel() + "</section>";
 }
@@ -1468,7 +1507,7 @@ function renderDraft() {
   } else if (d.status === "complete") { headline = isSeason ? "Season squads set! 🔥" : "Draft complete! 🏁"; sub = isSeason ? "Everyone has 3 castaways for the whole season." : "Every squad is set for week " + wk + "."; }
   else if (picker === myId) { headline = "It's your pick!"; sub = "Round " + round + " of " + rounds + (isSeason ? " · season pick" : ""); }
   else { headline = "Round " + round + " of " + rounds; sub = "Waiting on " + esc(pickerName) + (isSeason ? " · season pick" : ""); }
-  out += '<div class="card dh ' + (d.status === "complete" ? "dh-done" : d.status === "in_progress" ? (picker === myId ? "dh-your" : "dh-wait") : "dh-idle") + '"><div class="eyebrow">' + (isSeason ? "SEASON DRAFT · 3 EACH, ALL SEASON" : "WEEK " + wk + " · WEEKLY DRAFT") + '</div><div class="hero-headline">' + esc(headline) + '</div><div class="hero-sub">' + sub + "</div>";
+  out += '<div class="card dh ' + (d.status === "complete" ? "dh-done" : d.status === "in_progress" ? (picker === myId ? "dh-your" : "dh-wait") : "dh-idle") + '"><div class="eyebrow">' + (isSeason ? "SEASON DRAFT · 3 EACH, ALL SEASON" : "WEEK " + wk + " · WEEKLY DRAFT") + ' <span style="display:inline-block;margin-left:6px;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;background:' + (d.status === "in_progress" ? "#C6B63B" : d.status === "complete" ? "#8B162B" : "#BAD2E8") + ";color:" + (d.status === "complete" ? "#F6F3CF" : "#3a1018") + ';">' + (d.status === "in_progress" ? "🟢 OPEN · LIVE" : d.status === "complete" ? "🔒 CLOSED" : "⏳ NOT STARTED") + '</span></div><div class="hero-headline">' + esc(headline) + '</div><div class="hero-sub">' + sub + "</div>";
   if (d.status !== "not_started") out += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
   const myLast = me() ? d.feed.filter((f) => f.memberId === myId).slice(-1)[0] : null;
   if (myLast && survivors[myLast.survivorId]) out += '<div class="check-chip"><span class="tick">✓</span><div><div class="lbl">Your last pick</div><div class="val">' + esc(survivors[myLast.survivorId].name) + "</div></div></div>";
@@ -1477,12 +1516,20 @@ function renderDraft() {
     out += '<div class="check-chip" style="background:rgba(186,210,232,0.5);border-color:#BAD2E8;"><div style="flex:1;"><div class="lbl">Next up</div><div class="val">' + esc(pickerName) + "</div></div>" +
       (ph ? '<a class="btn primary sm" href="' + esc(smsLink(picker, "🔥 " + pickerName + ", you're on the clock in " + cfg().leagueName + "! Round " + round + " — make your pick: " + location.origin + location.pathname)) + '">📱 Text ' + esc(pickerName.split(" ")[0]) + "</a>" : '<button class="btn sm" data-act="set-phone" data-id="' + picker + '">Add their number to text them</button>') + "</div>";
   }
+  if (d.status !== "not_started") {
+    const late = memberList().filter((x) => !(d.order || []).includes(x.id));
+    if (late.length) {
+      const names = late.map((x) => esc(x.name)).join(", ");
+      out += '<div class="banner" style="margin-top:10px;">' + (late.some((x) => x.id === myId) ? "<b>You joined after this draft started, so you're not in the pick order.</b> " : "<b>" + names + " joined after this draft started and isn't in the pick order.</b> ") + (A ? 'Restart the draft to include everyone.' : "Ask the commissioner to restart the draft so you're included.") + "</div>";
+    }
+    if (A) out += '<div style="margin-top:10px;"><button class="btn sm ghost" data-act="reset-draft">⟲ Restart this draft' + (d.feed.length ? " (clears " + d.feed.length + " pick" + (d.feed.length === 1 ? "" : "s") + ")" : "") + "</button></div>";
+  }
   out += "</div>" + renderKeep(ctx) + renderWishlist(ctx) + '<div class="card">';
   const taken = takenInfo(ctx);
   if (d.status === "not_started") {
     const canUndoSeason = !isSeason && A && seasonDraft().feed.length && !Object.keys(weeks).some((k) => (weeks[k].draft && weeks[k].draft.feed && weeks[k].draft.feed.length) || weekScored(k));
-    if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> Shuffle order</label><div class="row">' + (canUndoSeason ? '<button class="btn sm ghost" data-act="undo-season">↺ Undo last season pick</button>' : "") + '<button class="btn primary" data-act="start-draft">' + (isSeason ? "Start the season draft" : "Start the weekly draft") + "</button></div></div>";
-    else out += '<div class="feed-empty">The commissioner starts the draft from this screen.</div>';
+    if (A) out += '<div class="btw"><label class="row" style="font-size:13px;color:var(--sand-dim);"><input type="checkbox" ' + (ui.shuffleOnStart ? "checked" : "") + ' style="width:auto;margin-right:6px;" data-act="toggle-shuffle"> 🎲 Randomize pick order</label><div class="row">' + (canUndoSeason ? '<button class="btn sm ghost" data-act="undo-season">↺ Undo last season pick</button>' : "") + '<button class="btn primary" data-act="start-draft">' + (isSeason ? "Start the season draft" : "Start the weekly draft") + "</button></div></div>";
+    else out += '<div class="feed-empty">The commissioner starts the draft from this screen, and the pick order is randomized each time. (Only the commissioner sees the start and randomize options.)</div>';
   } else {
     out += '<div class="order-track">' + d.order.filter((mid) => seq.includes(mid)).map((mid) => { const mm = members[mid]; if (!mm) return ""; return '<span class="order-chip ' + (mid === picker ? "active" : "") + '" style="' + (mid === picker ? "" : "border-color:" + mm.color + "55;") + '">' + esc(mm.name) + (mid === myId ? " (you)" : "") + "</span>"; }).join("") + "</div>";
     out += '<div class="feed">' + (d.feed.length ? "" : '<div class="feed-empty">No picks yet — the first name is up.</div>') + d.feed.map((f) => {
@@ -1552,7 +1599,7 @@ function bonusForm() {
 }
 
 function renderScoring() {
-  if (!ui.scoringWeek) ui.scoringWeek = cfg().currentWeek;
+  if (!ui.scoringWeek) ui.scoringWeek = (isAdmin() ? null : latestScoredWeek()) || cfg().currentWeek;
   const wk = ui.scoringWeek, joined = !!me(), rubric = cfg().rubric, d = draftOf(wk);
   let out = head("Points", "Tap a survivor to log what they did this week · tap a photo to see who they are");
   {
@@ -1647,6 +1694,7 @@ document.addEventListener("click", async (e) => {
     case "how-toggle": ui.howOpen = !ui.howOpen; return render();
     case "apply-cast": { if (!needAdmin()) return; if (!confirm("Replace age, job, hometown, where they live and the three-word description for the castaways with CBS's list? Photos and eliminations stay as they are.")) return; const n = await applyCastDetails(false); toast(n ? "Updated " + n + " castaways ✓" : "No matching castaways found."); return; }
     case "set-tab": ui.tab = el.getAttribute("data-tab"); render(); window.scrollTo(0, 0); return;
+    case "see-action": { const a = nextAction(); if (!a) return; if (a.week) ui.scoringWeek = a.week; ui.tab = a.tab; render(); window.scrollTo(0, 0); return; }
     case "go-setup": ui.tab = "setup"; return render();
     case "pick-me": ui.pinFor = id; return render();
     case "pin-back": ui.pinFor = null; return render();
@@ -1704,6 +1752,7 @@ document.addEventListener("click", async (e) => {
     case "draft-pick": return makePick(el.getAttribute("data-survivor"));
     case "undo-pick": return undoPick();
     case "undo-season": return undoPick(true);
+    case "reset-draft": return resetDraft();
     case "keep-toggle": return toggleKeep(id);
     case "trade-send": return sendTrade();
     case "trade-accept": return respondTrade(id, "accept");
