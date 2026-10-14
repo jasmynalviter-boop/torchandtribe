@@ -1004,26 +1004,20 @@ function joinAs(name, pin) {
     pickMe(ref.id); toast("Welcome, " + name + "!");
   }, "Couldn't join — try again.");
 }
-/* weekly squads are "up to 3": everyone gets the same number the castaways allow, spares go to whoever is furthest behind */
+/* weekly squads are "up to N" and always equal: if the open pool can't fill another full round, the draft stops there. No spares, so nobody ends up with an extra player. */
 function weeklyPlan(wk, order) {
-  const ids = Object.keys(members), sOwn = seasonOwners(), used = {}, kept = {}, needs = {};
+  const ids = Object.keys(members), sOwn = seasonOwners(), used = {}, keptAll = {}, kept = {}, needs = {};
   ids.forEach((m) => {
-    kept[m] = (keptOf(wk)[m] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated && !sOwn[sid] && !used[sid] && (used[sid] = true)).slice(0, WEEKLY_SLOTS);
+    keptAll[m] = (keptOf(wk)[m] || []).filter((sid) => survivors[sid] && !survivors[sid].eliminated && !sOwn[sid] && !used[sid] && (used[sid] = true)).slice(0, WEEKLY_SLOTS);
   });
-  const keptSet = new Set(); Object.values(kept).forEach((a) => a.forEach((x) => keptSet.add(x)));
-  const pool = survivorList().filter((x) => !x.eliminated && !sOwn[x.id] && !keptSet.has(x.id)).length;
-  const need = (T) => ids.reduce((n, m) => n + Math.max(0, T - kept[m].length), 0);
-  let T = WEEKLY_SLOTS; while (T > 0 && need(T) > pool) T--;
-  ids.forEach((m) => (needs[m] = Math.max(0, T - kept[m].length)));
-  let spare = pool - need(T);
-  if (T < WEEKLY_SLOTS && spare > 0) {
-    const pts = {}; computeStandings().forEach((r) => (pts[r.member.id] = r.total));
-    const pos = (m) => (order ? order.indexOf(m) : ids.indexOf(m));
-    ids.filter((m) => kept[m].length + needs[m] === T).sort((a, b) => (pts[a] || 0) - (pts[b] || 0) || pos(b) - pos(a)).forEach((m) => { if (spare > 0) { needs[m]++; spare--; } });
-  }
-  const totals = {}; ids.forEach((m) => (totals[m] = kept[m].length + needs[m]));
-  const vals = ids.map((m) => totals[m]), lo = vals.length ? Math.min(...vals) : 0, hi = vals.length ? Math.max(...vals) : 0;
-  return { kept, needs, totals, pool, lo, hi, limited: lo < WEEKLY_SLOTS, note: "Only " + pool + " castaway" + (pool === 1 ? " is" : "s are") + " open this week, so weekly squads are " + (lo === hi ? lo : lo + "–" + hi) + " each." };
+  const open = survivorList().filter((x) => !x.eliminated && !sOwn[x.id]).length;
+  const T = ids.length ? Math.max(0, Math.min(WEEKLY_SLOTS, Math.floor(open / ids.length))) : WEEKLY_SLOTS;
+  ids.forEach((m) => { kept[m] = keptAll[m].slice(0, T); needs[m] = T - kept[m].length; });
+  const trimmed = ids.some((m) => keptAll[m].length > T), left = open - ids.length * T;
+  const pool = open - ids.reduce((n, m) => n + kept[m].length, 0), totals = {};
+  ids.forEach((m) => (totals[m] = T));
+  return { kept, needs, totals, pool, lo: T, hi: T, limited: T < WEEKLY_SLOTS,
+    note: "Only " + open + " castaways are still in, so the draft stops after " + T + " pick" + (T === 1 ? "" : "s") + " each and everyone has the same number" + (left > 0 ? " (" + left + " won't be drafted this week)" : "") + "." + (trimmed ? " Anyone keeping more than " + T + " will have the extras released." : "") };
 }
 function startDraft() {
   if (!needAdmin()) return;
@@ -1035,10 +1029,9 @@ function startDraft() {
   let needs = {}, kept = {};
   if (ctx.kind === "season") {
     const pool = survivorList().filter((x) => !x.eliminated).length;
-    ids.forEach((m) => (needs[m] = SEASON_SLOTS));
-    let total = ids.length * SEASON_SLOTS, capped = false;
-    while (total > pool) { const m = ids.reduce((a, b) => (needs[b] > needs[a] ? b : a), ids[0]); if (needs[m] <= 0) break; needs[m]--; total--; capped = true; }
-    if (capped) toast("Not enough castaways for every slot — some players get fewer picks.");
+    const per = Math.max(0, Math.min(SEASON_SLOTS, Math.floor(pool / ids.length)));
+    ids.forEach((m) => (needs[m] = per));
+    if (per < SEASON_SLOTS) toast("Not enough castaways for a full round, so the draft stops after " + per + " pick" + (per === 1 ? "" : "s") + " each and everyone has the same number.");
   } else {
     const plan = weeklyPlan(ctx.wk, order);
     needs = plan.needs; kept = plan.kept;
@@ -1084,6 +1077,20 @@ function undoPick(forSeason) {
     if (!d || !d.feed.length) return;
     tx.update(ref, { draft: Object.assign({}, d, { feed: d.feed.slice(0, -1), status: "in_progress" }) });
   }));
+}
+function removePick(i) {
+  if (!needAdmin()) return;
+  const ctx = draftCtx(), ref = ctx.ref, f0 = (ctx.draft.feed || [])[i];
+  if (!f0) return;
+  const who = members[f0.memberId], sv = survivors[f0.survivorId];
+  if (!confirm("Remove " + (sv ? sv.name : "this pick") + " from " + (who ? who.name + "'s" : "the") + " squad?\n\nThis also removes that pick slot, so the draft won't wait for a replacement and nobody else's picks change.")) return;
+  return guard(() => runTransaction(db, async (tx) => {
+    const snap = await tx.get(ref), d = snap.exists() && snap.data().draft;
+    if (!d || !d.feed || !d.feed[i] || d.feed[i].survivorId !== f0.survivorId) throw new Error("That pick already changed. Give it a second and try again.");
+    const feed = d.feed.slice(), seq = seqOf(d).slice();
+    feed.splice(i, 1); seq.splice(i, 1);
+    tx.update(ref, { draft: Object.assign({}, d, { feed, seq, status: feed.length >= seq.length ? "complete" : "in_progress" }) });
+  }), "Couldn't remove that pick. Try again.");
 }
 function toggleKeep(sid) {
   if (!needMe()) return;
@@ -1323,7 +1330,7 @@ function rulesPanel() {
   if (!ui.rulesOpen) return '<div id="rules"><button class="card wl-bar" data-act="rules-toggle"><span class="wl-bar-t">How points work</span><span class="wl-bar-s">' + c.rubric.length + ' ways to score</span><span class="wl-bar-c">▾</span></button></div>';
   const rows = c.rubric.map((r) => '<div class="rule"><span>' + esc(r.label) + '</span><b class="' + (r.points < 0 ? "neg" : "pos") + '">' + fmt(r.points) + "</b></div>").join("");
   const rulings = (c.houseRules || "").split("\n").map((x) => x.trim()).filter(Boolean);
-  return '<div id="rules" class="card"><div class="btw" style="margin-bottom:8px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE RULES</div><h2 class="h2" style="margin-top:6px;">How points work</h2></div><button class="btn sm ghost" data-act="rules-toggle">Hide ▴</button></div><div class="fmt"><div class="eyebrow" style="margin-bottom:8px;">THE FORMAT</div><p><b>3 season picks</b> — drafted once, they score for you every week all season.</p><p><b>Up to 3 weekly picks</b> — drafted each week. If there aren\'t enough castaways left for everyone to get 3, squads shrink evenly and any spares go to whoever is furthest behind. Keep them for next week, or offer a trade to another player.</p></div><div class="rules">' + rows + "</div>" +
+  return '<div id="rules" class="card"><div class="btw" style="margin-bottom:8px;flex-wrap:nowrap;"><div style="flex:1;min-width:0;"><div class="eyebrow">THE RULES</div><h2 class="h2" style="margin-top:6px;">How points work</h2></div><button class="btn sm ghost" data-act="rules-toggle">Hide ▴</button></div><div class="fmt"><div class="eyebrow" style="margin-bottom:8px;">THE FORMAT</div><p><b>3 season picks</b> — drafted once, they score for you every week all season.</p><p><b>Up to 3 weekly picks</b> — drafted each week. If there aren\'t enough castaways left for everyone to get 3, the draft stops once a full round can\'t be filled, so everyone always has the same number. Keep them for next week, or offer a trade to another player.</p></div><div class="rules">' + rows + "</div>" +
     (rulings.length ? '<div class="rulings"><div class="eyebrow" style="margin-bottom:8px;">HOUSE RULES</div>' + rulings.map((x) => "<p>" + esc(x) + "</p>").join("") + "</div>" : "") + "</div>";
 }
 
@@ -1463,7 +1470,7 @@ function renderKeep(ctx) {
     out += '<div class="keep-row' + (k && !gone ? " kept" : "") + (gone ? " gray" : "") + '"><span class="wl-info" data-act="info" data-id="' + sid + '">' + thumb(sv, 40) + '</span><div class="wl-t" data-act="info" data-id="' + sid + '"><div class="t">' + esc(sv.name) + '</div><div class="sub">' + (gone ? "Eliminated — can't be kept" : "") + "</div></div>" + (gone ? "" : '<button class="btn sm ' + (k ? "primary" : "ghost") + '" data-act="keep-toggle" data-id="' + sid + '">' + (k ? "✓ Keeping" : "Keep") + "</button>") + "</div>";
   });
   const plan = weeklyPlan(ctx.wk), need = plan.needs[myId] != null ? plan.needs[myId] : WEEKLY_SLOTS - keepCount;
-  out += '<div class="hero-sub" style="margin-top:12px;">You\'ll draft ' + (plan.limited ? "up to " : "") + "<b>" + need + "</b> new player" + (need === 1 ? "" : "s") + " this week." + (others.length ? " Others keeping: " + others.join(", ") + "." : "") + "</div>" + (plan.limited ? '<div class="hero-sub" style="margin-top:6px;">' + esc(plan.note) + " Any spare castaways go to whoever is furthest behind.</div>" : "");
+  out += '<div class="hero-sub" style="margin-top:12px;">You\'ll draft ' + "<b>" + need + "</b> new player" + (need === 1 ? "" : "s") + " this week." + (others.length ? " Others keeping: " + others.join(", ") + "." : "") + "</div>" + (plan.limited ? '<div class="hero-sub" style="margin-top:6px;">' + esc(plan.note) + "</div>" : "");
   return out + "</div>";
 }
 
@@ -1532,9 +1539,9 @@ function renderDraft() {
     else out += '<div class="feed-empty">The commissioner starts the draft from this screen, and the pick order is randomized each time. (Only the commissioner sees the start and randomize options.)</div>';
   } else {
     out += '<div class="order-track">' + d.order.filter((mid) => seq.includes(mid)).map((mid) => { const mm = members[mid]; if (!mm) return ""; return '<span class="order-chip ' + (mid === picker ? "active" : "") + '" style="' + (mid === picker ? "" : "border-color:" + mm.color + "55;") + '">' + esc(mm.name) + (mid === myId ? " (you)" : "") + "</span>"; }).join("") + "</div>";
-    out += '<div class="feed">' + (d.feed.length ? "" : '<div class="feed-empty">No picks yet — the first name is up.</div>') + d.feed.map((f) => {
+    out += '<div class="feed">' + (d.feed.length ? "" : '<div class="feed-empty">No picks yet — the first name is up.</div>') + d.feed.map((f, fi) => {
       const mm = members[f.memberId], sv = survivors[f.survivorId];
-      return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(f.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + "</b> drafted " + (sv ? '<b class="nm" role="button" tabindex="0" data-act="info" data-id="' + sv.id + '">' + esc(sv.name) + "</b>" : "<b>?</b>") + "</span></div>";
+      return '<div class="feed-msg"><span class="fav" style="background:' + (mm ? mm.color : "#C6B63B") + '">' + esc(mm ? initials(mm.name) : "?") + '</span><span class="txt"><span class="ts">' + new Date(f.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "</span><b>" + esc(mm ? mm.name : "?") + "</b> drafted " + (sv ? '<b class="nm" role="button" tabindex="0" data-act="info" data-id="' + sv.id + '">' + esc(sv.name) + "</b>" : "<b>?</b>") + "</span>" + (A ? '<button class="iconbtn" data-act="remove-pick" data-i="' + fi + '" title="Remove this pick" aria-label="Remove this pick" style="flex:none;">✕</button>' : "") + "</div>";
     }).join("") + "</div>";
     if (d.status === "in_progress") {
       if (picker === myId || A) {
@@ -1751,6 +1758,7 @@ document.addEventListener("click", async (e) => {
     case "start-draft": return startDraft();
     case "draft-pick": return makePick(el.getAttribute("data-survivor"));
     case "undo-pick": return undoPick();
+    case "remove-pick": return removePick(Number(el.getAttribute("data-i")));
     case "undo-season": return undoPick(true);
     case "reset-draft": return resetDraft();
     case "keep-toggle": return toggleKeep(id);
