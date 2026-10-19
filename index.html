@@ -546,6 +546,60 @@
   /* older small photos: half the zoom, so the head isn't clipped and it isn't stretched as far */
   .cp{ --zc: calc(1 + (var(--pz,1.5) - 1) * 0.5); }
   .cp img.zimg{ width:calc(var(--zc) * 100%); height:calc(var(--zc) * 100%); left:calc((1 - var(--zc)) * 50%); top:calc((1 - var(--zc)) * var(--pf,0%)); }
+
+  /* home page: standings first */
+  .home-main{ margin-top:26px; }
+  .home-alert{ margin-top:18px; }
+  .home-alert .t-cta{ margin-top:-4px; }
+  .home-h{ font-family:'Staatliches','Work Sans',sans-serif; font-weight:400; font-size:clamp(40px,9vw,60px); line-height:0.95; margin:8px 0 8px; }
+  .home-p{ font-size:16.5px; line-height:1.5; margin:0 0 18px; color:var(--sand-dim); }
+  .lb-note{ font-size:12.5px; line-height:1.5; color:var(--sand-faint); margin:10px 2px 0; }
+  .bento.below{ padding-top:0; margin-top:34px; }
+  @media (min-width:900px){
+    .bento.below .t-torch{ grid-row:auto; grid-column:8 / span 5; }
+    .bento.below .t-draft{ grid-column:1 / span 4; }
+    .bento.below .t-lead{ grid-column:5 / span 3; }
+  }
+
+  /* ===== spacing pass: 4/8pt scale, 32px (mobile) / 48px (desktop) between sections, 12-16 heading to content ===== */
+  :root{ --gap-sec:32px; --gap-blk:16px; }
+  @media (min-width:900px){ :root{ --gap-sec:48px; --gap-blk:20px; } }
+  .page{ padding-bottom:40px; }
+  .home-main{ margin-top:var(--sp-5); }
+  .home-alert{ margin-top:var(--gap-blk); }
+  .home-alert .t-cta{ margin-top:0; gap:var(--sp-4); }
+  .home-h{ margin:var(--sp-2) 0 var(--sp-3); }
+  .home-p{ margin:0 0 var(--sp-5); line-height:1.55; }
+  .lb{ display:flex; flex-direction:column; gap:var(--sp-2); }
+  .lb-r{ padding:16px 18px; gap:14px; }
+  .lb-nm .lb-bar{ margin-top:10px; }
+  .lb-note{ font-size:13px; line-height:1.55; margin:var(--sp-4) 2px 0; max-width:62ch; }
+  .section{ margin-top:var(--gap-sec); }
+  .sec-h{ margin:0 0 var(--sp-4); }
+  .bento{ gap:var(--sp-4); }
+  .bento.below{ margin-top:var(--gap-sec); }
+  .tile{ padding:var(--sp-5); }
+  .card{ padding:20px; }
+  .card + .card{ margin-top:var(--sp-4); }
+  .hero-headline{ margin:var(--sp-2) 0 var(--sp-1); }
+  .hero-sub{ line-height:1.5; margin-top:var(--sp-1); }
+  .pagebar{ padding:28px 0 var(--sp-4); }
+  .ev-row{ padding:12px 0; }
+  .ev-ctl{ gap:var(--sp-3); }
+  .list-row{ padding:14px 4px; }
+  .team-card{ padding:14px 16px; }
+  .keep-row{ padding:12px 4px; }
+  .wl-row{ padding:12px 4px; }
+  .btn.sm{ padding:10px 14px; min-height:40px; font-size:13px; }
+  .iconbtn{ min-width:40px; min-height:40px; padding:8px 10px; }
+  .ld-row{ flex-wrap:wrap; gap:var(--sp-2) var(--sp-3); margin-top:var(--sp-4); }
+  .ld-n{ white-space:normal; overflow:visible; line-height:1.05; }
+  @media (min-width:720px){ .card{ padding:28px; } .lb-r{ padding:18px 22px; } }
+  @media (min-width:900px){
+    .bento.below{ grid-template-columns:repeat(3,1fr); }
+    .bento.below .t-torch, .bento.below .t-draft, .bento.below .t-lead{ grid-column:auto; grid-row:1; }
+  }
+  @media (max-width:420px){ .lb-nm .you{ display:none; } }
 </style>
 </head>
 <body>
@@ -1399,22 +1453,30 @@ function nextAction() {
 function actionBox() {
   const a = nextAction(); if (!a) return "";
   const go = a.tone === "go";
-  return '<div style="margin:22px 0 20px;padding:16px 18px;border-radius:16px;background:rgba(139,22,43,' + (go ? "0.16" : "0.08") + ");border:2px solid rgba(139,22,43," + (go ? "0.85" : "0.35") + ');color:#8B162B;"><div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;opacity:.7;">' + (go ? "YOUR MOVE" : a.tone === "wait" ? "FOR NOW" : "STATUS") + '</div><div style="font-weight:800;font-size:17px;line-height:1.25;margin-top:6px;">' + (go ? "🔥 " : a.tone === "wait" ? "⏳ " : "✅ ") + a.title + '</div><div style="font-size:14px;line-height:1.45;margin-top:6px;opacity:.88;">' + a.text + "</div></div>";
+  return '<div style="margin:0 0 16px;padding:16px 18px;border-radius:16px;background:rgba(139,22,43,' + (go ? "0.16" : "0.08") + ");border:2px solid rgba(139,22,43," + (go ? "0.85" : "0.35") + ');color:#8B162B;"><div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;opacity:.7;">' + (go ? "YOUR MOVE" : a.tone === "wait" ? "FOR NOW" : "STATUS") + '</div><div style="font-weight:800;font-size:17px;line-height:1.25;margin-top:6px;">' + (go ? "🔥 " : a.tone === "wait" ? "⏳ " : "✅ ") + a.title + '</div><div style="font-size:14px;line-height:1.45;margin-top:6px;opacity:.88;">' + a.text + "</div></div>";
 }
 function renderStandings() {
   const m = me(), c = cfg(), standings = computeStandings();
   const lead = standings[0] && standings[0].total > 0 ? standings[0] : null;
   const topPts = standings[0] ? Math.max(0, standings[0].total) : 0;
   const n = memberList().length, shownWk = latestScoredWeek() || c.currentWeek;
-  let out = (m ? "" : '<div class="hiw-wrap">' + howItWorks() + "</div>") + '<section class="bento"><div class="tile t-hero"><div class="t-k">WEEK ' + c.currentWeek + " · " + n + " PLAYER" + (n === 1 ? "" : "S") + '</div><h1 class="t-h">' + (m ? "Hey, " + esc(m.name.split(" ")[0]) : "Welcome, castaway") + '</h1><p class="t-p">' + standingLine(standings) + '</p>' + actionBox() + '<div class="t-cta">' + (function () { const a = nextAction(); if (!m) return '<button class="btn dark" data-act="set-tab" data-tab="draft">Go to the draft</button>'; return a && a.btn ? '<button class="btn dark" data-act="see-action">' + esc(a.btn) + "</button>" : ""; })() + '<button class="linkbtn" data-act="rules-go">How points work →</button></div></div>' +
-    torchTile() + draftTile() + leadTile(lead) + "</section>";
+  const scored = Object.keys(weeks).map(Number).filter((k) => weekScored(k)).sort((a, b) => a - b);
+  const act = m ? nextAction() : null, urgent = !!(act && act.tone === "go");
+  const cta = (function () { if (!m) return '<button class="btn dark" data-act="set-tab" data-tab="draft">Go to the draft</button>'; return act && act.btn ? '<button class="btn dark" data-act="see-action">' + esc(act.btn) + "</button>" : ""; })();
+  const ctaRow = '<div class="t-cta">' + cta + '<button class="linkbtn" data-act="rules-go">How points work →</button></div>';
+  let out = m ? "" : '<div class="hiw-wrap">' + howItWorks() + "</div>";
+  if (urgent) out += '<section class="home-alert">' + actionBox() + ctaRow + "</section>";
+  out += '<section class="home-main"><div class="t-k">SEASON STANDINGS · ' + (scored.length ? "AFTER WEEK " + scored[scored.length - 1] : "WEEK " + c.currentWeek) + '</div><h1 class="home-h">' + (m ? "Hey, " + esc(m.name.split(" ")[0]) : "Welcome, castaway") + '</h1><p class="home-p">' + standingLine(standings) + "</p>";
+  if (!n) out += '<div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the standings start here.</div></div>';
+  else out += '<div class="lb">' + standings.map((row, i) => {
+    const mm = row.member, open = ui.openPlayer === mm.id, first = i === 0 && row.total > 0;
+    return '<button class="lb-r' + (first ? " first" : "") + (open ? " open" : "") + '" data-act="open-player" data-id="' + mm.id + '"><span class="lb-rk">' + (i + 1) + '</span><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><span class="lb-nm">' + esc(mm.name) + (mm.id === myId ? ' <span class="you">(you)</span>' : "") + '<span class="lb-bar"><i style="width:' + (topPts ? Math.round(Math.max(0, row.total) / topPts * 100) : 0) + '%"></i></span></span><span class="lb-wk"><i>WK ' + shownWk + "</i><b>" + (row.weekly[shownWk] || 0) + '</b></span><span class="lb-pt"><b>' + row.total + "</b><i>SEASON</i></span>" + '<span class="lb-chev">▾</span></button>' + (open ? playerDetail(mm.id) : "");
+  }).join("") + '</div><p class="lb-note">Tap a player for the full receipts. Season totals add up every scored week: season picks, weekly picks and bonus questions you got right' + (scored.length ? " (weeks scored so far: " + scored.join(", ") + ")" : "") + ".</p>";
+  out += "</section>";
   const pod = podium(standings);
   if (pod) out += '<section class="section"><h2 class="sec-h">The podium</h2>' + pod + "</section>";
-  if (!n) out += '<section class="section"><div class="card"><div class="empty"><div class="big">🏝️</div>No one has joined yet — once people pick their names, the standings start here.</div></div></section>';
-  else out += '<section class="section"><h2 class="sec-h">Full standings</h2><p class="sec-s">Tap a player for the full receipts.</p><div class="lb">' + standings.map((row, i) => {
-    const mm = row.member, open = ui.openPlayer === mm.id, first = i === 0 && row.total > 0;
-    return '<button class="lb-r' + (first ? " first" : "") + (open ? " open" : "") + '" data-act="open-player" data-id="' + mm.id + '"><span class="lb-rk">' + (i + 1) + '</span><span class="lb-av" style="background:' + mm.color + '">' + esc(initials(mm.name)) + '</span><span class="lb-nm">' + esc(mm.name) + (mm.id === myId ? ' <span class="you">(you)</span>' : "") + '<span class="lb-bar"><i style="width:' + (topPts ? Math.round(Math.max(0, row.total) / topPts * 100) : 0) + '%"></i></span></span><span class="lb-wk"><i>WK ' + shownWk + "</i><b>" + (row.weekly[shownWk] || 0) + '</b></span><span class="lb-pt"><b>' + row.total + "</b><i>PTS</i></span>" + '<span class="lb-chev">▾</span></button>' + (open ? playerDetail(mm.id) : "");
-  }).join("") + "</div></section>";
+  if (!urgent) { const box = actionBox(); out += '<section class="home-alert">' + box + ctaRow + "</section>"; }
+  out += '<section class="bento below">' + torchTile() + draftTile() + leadTile(lead) + "</section>";
   return out + '<section class="section">' + rulesPanel() + "</section>";
 }
 
